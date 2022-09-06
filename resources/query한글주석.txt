@@ -1,0 +1,288 @@
+220905 2240
+================
+한글주석 달아놨습니다.
+컨트롤+F 이용하시면 편합니다
+Properties 많이 이용해 주세요 ㅠ
+-------------------------------------------------------------------------
+DAOImpl.java 파일들속에
+import java.util.Properties;
+클래스안에 맨위->//private Properties proFile = DbUtil.getProFile();
+메소드 속에->//String sql = proFile.getProperty("key값");
+-------------------------------------------------------------------------
+history : 
+220905 1330 user_coupon,gift_info,goods_category 일부 추가,통계 추가
+220905 1520 user_info 검색 일부 추가
+220905 1850 size_op 검색 일부추가(세륜님), nutrition에 검색 일부 추가
+join 쿼리 full join으로 변경
+220905 2240 goods 등록, order_order 등록 일부 추가
+-------------------------------------------------------------------------
+
+#key=value
+#admin
+admin.insert=insert into admin values (?, ?)
+admin.updatePw=update admin set admin_pw = ? where admin_id = ?
+admin.delete=delete from admin where admin_id = ?
+admin.selectLogin=select * from admin where admin_id = ? and admin_pw = ?
+
+admin.selectPw=select * from admin where admin_id = ?
+
+
+#notice
+//공지검색 넣을거면 검색할때 키워드부분에 넣어주세요(db에서 ~~포함된 글자 찾는 기능) -> "%"+ ~~ +"%"  (step11-BoardDAOImpl 참조)
+notice.insert=insert into notice (admin_id, notice_title, notice_content) values (?, ?, ?)
+
+notice.updateTitle=update notice set notice_title = ? where notice_num = ?
+notice.updateContent=update notice set notice_content = ? where notice_num = ?
+
+notice.delete=delete from notice where notice_num = ?
+
+notice.selectContent=select notice_content from notice
+
+notice.selectAllAll=select * from notice order by notice_num desc
+notice.selectAllByNum=select * from notice where notice_num = ?
+notice.selectAllById=select * from notice where admin_id = ? order by notice_num desc
+notice.selectAllByDate=select * from notice where notice_date = ? order by notice_num desc
+
+notice.selectAllByTitle=select * from notice where notice_title like ? order by notice_num desc
+notice.selectAllByContent=select * from notice where notice_content like ? order by notice_num desc
+
+
+#user_info
+userInfo.insert=insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) values (?, ?, ?, ?, ?, ?, 0)
+
+userInfo.updatePw=update user_info set user_pw = ? where user_id = ?
+userInfo.updateName=update user_info set user_name = ? where user_id = ?
+userInfo.updatePhone=update user_info set phone_num = ? where user_id = ?
+userInfo.updateEmail=update user_info set email = ? where user_id = ?
+userInfo.updateStamp=update user_info set stamp = ? where user_id = ?
+
+userInfo.selectLogin=select * from user_info where user_id = ? and user_pw = ?
+userInfo.selectStampByLogin=select stamp from user_info where user_id = ? and user_pw = ?
+userInfo.selectStampById=select stamp from user_info where user_id = ?
+
+//레이아웃대로 조회 id조회(폰으로) / 패스워드조회(id,폰으로)
+userInfo.selectIdByPhone=select user_id where phone_num = ?
+userInfo.selectPwPhoneByPhone=select user_pw where user_id = ? and phone_num = ?
+
+userInfo.selectAllAll=select * from user_info order by reg_date
+userInfo.selectAllById=select user_id, user_name, phone_num, email, reg_date, pin_num, stamp from user_info where id = ?
+userInfo.selectAllByName=select user_id, user_name, phone_num, email, reg_date, pin_num, stamp from user_info where user_name = ?
+userInfo.selectAllByPhone=select user_id, user_name, phone_num, email, reg_date, pin_num, stamp from user_info where phone_num = ?
+userInfo.selectAllByEmail=select user_id, user_name, phone_num, email, reg_date, pin_num, stamp from user_info where email = ?
+userInfo.selectAllByPin=select user_id, user_name, phone_num, email, reg_date, pin_num, stamp from user_info where pin_num like ?%
+userInfo.selectAllByReg=select user_id, user_name, phone_num, email, reg_date, pin_num, stamp from user_info where reg_date = ?
+
+
+#goods_category
+goodsCategory.insert=insert into goods_category (category_name) values (?)
+
+goodsCategory.updateName=update goods_category set category_name = ? where category_code = ?
+
+goodsCategory.delete=delete goods_category where category_code = ?
+
+goodsCategory.selectByCode=select * from goods_category where category_code = ?
+goodsCategory.selectAll=select * from goods_category
+
+//카테고리 코드로 이름만 조회/이름으로 코드만 조회
+goodsCategory.selectCodeByName=select category_code from goods_category where category_code = ?
+goodsCategory.selectNameByCode=select category_name from goods_category where category_code = ?
+
+
+#goods
+goods.insert=insert into goods (goods_name, goods_price, goods_detail, category_code) values (?, ?, ?, ?)
+goods.insertMd=insert into goods (goods_name, goods_price, goods_detail, sold_out, stock, category_code) values (?, ?, ?, ?, ?, ?)
+goods.insertNormal=insert into goods (goods_name, goods_price, goods_detail, sold_out, category_code) values (?, ?, ?, ?, ?)
+
+goods.updateAllByCode=update goods set goods_name = ?, goods_price = ?, goods_detail = ?, sold_out = ?, stock = ?, category_code = ? where goods_code = ?
+goods.updateNameByCode=update goods set goods_name = ? where goods_code = ?
+goods.updatePriceByCode=update goods set goods_price = ? where goods_code = ?
+goods.updateDetailByCode=update goods set goods_detail = ? where goods_code = ?
+goods.updateSoldOutByCode=update goods set sold_out = ? where goods_code = ?
+goods.updateStockNullByCode=update goods set stock is null where goods_code= ?
+goods.updateStockByCode=update goods set stock = ? where goods_code = ?
+goods.updateCategoryByCode=update goods set category_code = ? where goods_code = ?
+
+goods.deleteByCode=delete from goods where goods_code = ?
+goods.deleteByName=delete from goods where goods_name = ?
+
+goods.selectCodeNameByCategory=select goods_code, goods_name from goods where category_code = ?
+goods.selectAllAll=select * from goods
+goods.selectAllByCode=select * from goods where goods_code = ?
+goods.selectAllByCategory=select * from goods where category_code = ?
+
+
+#nutrition
+nutrition.insertAll=insert into nutrition values (?, ?, ?, ?, ?, ?)
+nutrition.insert=insert into nutrition (calorie, sugar, natrium, caffein, warnning) values (?, ?, ?, ?, ?)
+nutrition.insertMini=insert into nutrition (calorie, sugar, natrium, caffein) values (?, ?, ?, ?)
+
+nutrition.updateAllByCode=update nutrition set calorie = ?, sugar = ?, natrium = ?, caffeine = ?, warnning = ?
+nutrition.updateCalorieByCode=update nutrition set calorie = ? where goods_code = ?
+nutrition.updateNatriumByCode=update nutrition set natrium = ? where goods_code = ?
+nutrition.updateCaffeinByCode=update nutrition set caffein = ? where goods_code = ?
+nutrition.updateWarnningByCode=update nutrition set warnning = ? where goods_code = ?
+
+nutrition.deleteByCode=delete from nutrition where goods_code = ?
+
+nutrition.selectAllAll=select * from nutrition
+nutrition.selectAllByCode=select * from nutrition where goods_code = ?
+
+
+#my_menu
+myMenu.insert=insert into my_menu (goods_code, mm_name, tem, syrup, def, whip, size_size) values (?, ?, ?, ?, ?, ?, ?)
+myMenu.insertMini=insert into my_menu (goods_code) values (?)
+
+myMenu.updateAll=update my_menu set goods_code = ?, mm_name = ?, tem = ?, syrup = ?, def = ?, whip = ?, size_size = ? where user_id = ?
+myMenu.updateCode=update my_menu set goods_code = ? where user_id = ?
+myMenu.updateName=update my_menu set mm_name = ? where user_id = ?
+myMenu.updateTem=update my_menu set tem = ? where user_id = ?
+myMenu.updateSyrup=update my_menu set syrup = ? where user_id = ?
+myMenu.updateDef=update my_menu set def = ? where user_id = ?
+myMenu.updateWhip=update my_menu set whip = ? where user_id = ?
+myMenu.updateSize=update my_menu set size = ? where user_id = ?
+
+myMenu.delete=delete from my_menu where user_id = ?
+
+myMenu.selectAll=select * from my_menu
+
+
+#coupon_info
+couponInfo.insert=insert into coupon_info (cp_code, cp_name, sale_price) values (?, ?, ?)
+couponInfo.insertLimitGoodsCode=insert into coupon_info (cp_code, cp_name, sale_price, goods_code) values (?, ?, ?, ?)
+couponInfo.insertLimitDate=insert into coupon_info(cp_code, cp_name, sale_price, cp_limit_date) values (?, ?, ?, ?)
+couponInfo.insertGoodsCodeLimitDate=insert into coupon_info (cp_code, cp_name, sale_price, goods_code, cp_limit_date) values (?, ?, ?, ?, ?)
+couponInfo.insertGoodsCodeCountDate=insert into coupon_info (cp_code, cp_name, sale_price, goods_code, cp_count_date) values (?, ?, ?, ?, ?)
+
+//기프티코드와 쿠폰사용코드는 시퀀스 적용 안하므로, 자바에서 넣어주세요
+//중복 안되도록 해야합니다.
+//사용한 기프티코드,쿠폰은 사용여부(gift_flag)레코드를 기본값 N에서 Y(=사용)로 바꿔주세요(update쿼리)
+
+couponInfo.updateName=update coupon_info set cp_name = ? where cp_code = ?
+couponInfo.updatePrice=update coupon_info set sale_price = ? where cp_code = ?
+couponInfo.updateGoodsCode=update coupon_info set goods_code = ? where cp_code = ?
+couponInfo.updateLimitDate=update coupon_info set cp_limit_date = ? where cp_code = ?
+couponInfo.updateCountDate=update coupon_info set cp_count_date = ? where cp_code = ?
+
+couponInfo.delete=delete from coupon_info where cp_code = ?
+
+couponInfo.selectAll=select * from coupon_info
+couponInfo.selectAllByCode=select * from coupon_info where cp_code = ?
+
+
+#user_coupon
+userCoupon.insert=insert into user_coupon (user_cp_code, cp_code, user_id) values (?, ?, ?)
+userCoupon.updateFlag=update user_coupon set cp_flag = ? where user_cp_code = ?
+
+userCoupon.selectAllById=select * from user_coupon where user_id = ?
+userCoupon.selectAllByUserCpCode=selec * from user_coupon where user_cp_code = ?
+userCoupon.selectById=select cp_code, user_id, cp_flag from user_coupon where user_id = ?
+userCoupon.selectByIdFlag=select cp_code, user_id, cp_flg from user_coupon where user_id = ? and cp_flag = ?
+userCoupon.selectByIdCpCode=select cp_code, user_id, cp_flg from user_coupon where user_id = ? and cp_code= ?
+
+//user_coupon코드만 조회-> ID로/ ID+사용여부
+userCoupon.selectCodeById=select user_cp_code from user_coupon where user_id = ?
+userCoupon.selectCodeByIdFlag=select user_cp_code from user_coupon where user_id = ? and cp_flag = ?
+
+#gift_info
+giftInfo.insert=insert into gift_info (gift_code, order_code, gift_limit_date) values (?, ?, ?)
+giftInfo.updateFlag=update gift_info set gift_flag = ? where gift_code = ?
+
+//기프티코드와 쿠폰사용코드는 시퀀스 적용 안하므로, 자바에서 넣어주세요
+//중복 안되도록 해야합니다.
+//사용한 기프티코드,쿠폰은 사용여부(gift_flag)레코드를 기본값 N에서 Y(=사용)로 바꿔주세요(update쿼리)
+
+giftInfo.selectAllByGiftCode=select * from gift_info where gift_code = ?
+giftInfo.selectAllByOrderCode=select * from gift_info where order_code = ?
+
+//기프티코드만 조회-> id로/id+사용여부
+giftInfo.selectCodeByOrderCode=select gift_code from gift_info where order_code = ?
+giftInfo.selectCodeByOrderCodeFlag=select gift_code from gift_info where order_code = ? and gift_flag = ?
+
+#order_order
+orderOrder.insertAll=insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
+orderOrder.insertCoupon=insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, take_out) values (?, ?, ?, ?, ?, ?)
+orderOrder.insertGift=insert into order_order (user_id, order_quan, order_price, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?)
+orderOrder.insertMini=insert into order_order (user_id, order_quan, order_price, order_payment, take_out) values (?, ?, ?, ?, ?)
+
+orderOrder.delete=delete from order_order where order_code = ?
+
+orderOrder.selectAllById=select * from order_order where user_id = ?
+orderOrder.selectAllByOrderCode=select * from order_order where order_code = ?
+
+#review
+review.insert=insert into review (order_code, user_id, goods_code, review_star) values (?, ?, ?, ?)
+
+review.selectAllById=select * from review where user_id = ? order by review_date
+review.selectAllByOrderCode=select * from review where order_code = ?
+
+review.selectStarByGoodsCode=select review_star from review where goods_code = ? order by desc
+
+#size_op
+sizeOp.insert=insert into size_op (size_size, size_price) values (?, ?)
+
+sizeOp.updateSize=update size_op set size_size = ? where size_code = ?
+sizeOp.updatePrice=update size_op set size_price = ? where size_code = ?
+
+sizeOp.delete=delete from size_op where size_code = ?
+
+sizeOp.selectAll=select * from size_op
+sizeOp.selectSizeName=select size_size from size_op where size_code = ?
+
+
+#order_detail
+orderDetail.insert=insert into order_detail (order_code, goods_code, detail_price, detail_quan) values (?, ?, ?, ?)
+orderDetail.insertMini=insert into order_detail (order_code, goods_code) values (?, ?)
+
+orderDetail.delete=delete from order_detail where detail_code = ?
+orderDetail.deleteByOrderCode=delete from order_detail where order_code = ?
+
+orderDetail.selectAllByDetailCode=select * from order_detail where detail_code = ?
+
+
+#option_op
+optionOp.insert=insert into option_op ( size_code, tem, syrup, def, whip ) values (?, ?, ?, ?, ?)
+optionOp.delete=delete from option_op where detatil_code = ?
+optionOp.selectAllByDetailCode=select * from option_op where detail_code = ?
+
+
+#join
+join.selectGoodsNCategoryByCategory=select * from goods full join goods_category using (category_code) where category_code = ?
+join.selectGoodsNCategoryByGoodsCode=select * from goods full join goods_category using (category_code) where goods_code = ?
+
+join.selectGoodsNCategoryNNutritionByCategory=select * from goods full join goods_category using (category_code) full join nutrition using (goods_code) where category_code = ?
+join.selectGoodsNCategoryNNutritionByGoodsCode=select * from goods full join goods_category using (category_code) full join nutrition using (goods_code) where goods_code = ?
+
+join.selectOrderNOpNSizeByOrderCode=select * from order_detail full join option_op using (detail_code) full join size_op using (size_code) where order_code = ?
+join.selectOrderNOpNSizeByDetailCode=select * from order_detail full join option_op using (detail_code) full join size_op using (size_code) where detail_code = ?
+
+join.selectOrderNDetailByOrderCode=select * from order_order full join order_detail using ( order_code ) where order_code = ?
+join.selectOrderNDetailByDetailCode=select * from order_order full join order_detail using ( order_code ) where detail_code = ?
+join.selectOrderNDetailByUserId=select * from order_order full join order_detail using ( order_code ) where user_id = ?
+
+join.selectOrderNDetailNOpNSizeByOrderCode=select * from order_order full join order_detail using ( order_code ) full join option_op using (detail_code) full join size_op using(size_code) where order_code = ?
+join.selectOrderNDetailNOpNSizeByDetailCode=select * from order_order full join order_detail using ( order_code ) full join option_op using (detail_code) full join size_op using(size_code) where detail_code = ?
+join.selectOrderNDetailNOpNSizeByUserId=select * from order_order full join order_detail using ( order_code ) full join option_op using (detail_code) full join size_op using(size_code) where user_id = ?
+
+
+
+#tongye 테이블, 컬럼, 조건
+//통계
+//기간설정 조건 : 1)일별조회 2)전월조회 3)날짜지정조회
+// 매출조회-일별조회 
+// 하루조회시 코딩-> ? 2개는 서로 동일 날짜,  220905  형식으로 입력
+// 날짜지정 조회시 코딩 -> ?(왼쪽)이 시작일 ?(오른쪽)이 조회마지막일, 220905  형식으로 입력
+tongye.selectByDate=select sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where where order_time >=to_date(?, 'yymmdd') and order_time<to_date(?+1, 'yymmdd')
+//매출조회-월조회 
+//한달 조회시 코딩-> ? 2개는 서로 동일 월, 09 형식으로 입력
+//날짜지정 조회시 코딩-> ?(왼쪽)이 시작월 ?(오른쪽)이 조회마지막 달, 09 형식으로 입력
+tongye.selectByMonth=select sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where where order_time >=to_date(?, 'yymm') and order_time<to_date(?+1, 'yymm')
+
+//베스트 상품 조회
+//일별 조회-매출금액 많은순서
+tongye.selectBestGoodsByDatePrice=select goods_code, sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where order_time >=to_date(?, 'yymmdd') and order_time<to_date(?+1, 'yymmdd') group by goods_code order by detail_price desc
+//일별 조회-매출수량 많은순서
+tongye.selectBestGoodsByDateQuan=select goods_code, sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where order_time >=to_date(?, 'yymmdd') and order_time<to_date(?+1, 'yymmdd') group by goods_code order by detail_quan desc
+//월별 조회-매출금액 많은순서
+tongye.selectBestGoodsByMonthPrice=select goods_code, sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where order_time >=to_date(?, 'yymm') and order_time<to_date(?+1, 'yymm') group by goods_code order by detail_price desc
+//월별 조회-매출수량 많은순서
+tongye.selectBestGoodsByMonthQuan=select goods_code, sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where order_time >=to_date(?, 'yymm') and order_time<to_date(?+1, 'yymm') group by goods_code order by detail_quan desc
