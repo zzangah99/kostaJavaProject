@@ -12,12 +12,12 @@ public class UserSession {
 		this.userSessionId = userSessionId;
 		attributes = new HashMap<>();
 	}
-	
+	/*
 	public UserSession(String phonNum) {
 		this.phonNum = phonNum;
 		attributes = new HashMap<>();
 	}
-	
+	*/
 	public UserSession(String userId, String phonNum) {
 		//customerservice 비밀번호 찾기 때문에 일단 만들어 놓았습니다. 
 	}

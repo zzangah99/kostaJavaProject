@@ -3,6 +3,7 @@ package mvc.view;
 import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
+import mvc.controller.CartController;
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.controller.CustomerController;
@@ -191,6 +192,7 @@ public class MenuView {//메인 메뉴
 						System.exit(0);
 					}//switch 끝 : 주문-카테고리 select		
 			case 2: // 장바구니
+				CartController.viewCart(userId);
 			case 3: // 기프티콘으로 구매하기
 			case 4: // 마이페이지
 				CustomerController.myPage(null);
