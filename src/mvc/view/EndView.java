@@ -30,29 +30,28 @@ public class EndView {
 		int tem = 0;
 		String temS=null;
 		
-		System.out.println("-----상품 " + coffeeList.size() + "개 -------------");
-
+		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
 		for (Goods goods : coffeeList) {
 			int no=1;
-			System.out.print(no +"."+goods.getGoodsName() +" ");
+			System.out.print(no++ +"."+goods.getGoodsName() +" \t");
 			goodsCodeList.add(goods.getGoodsCode());
 		}
-		System.out.print("주문할 상품 번호를 고르세요> ");
+		System.out.print("\n주문할 상품 번호를 고르세요> ");
 		int orderNo = sc.nextInt();
 		int orderCode = goodsCodeList.get(orderNo-1);
 		
 		if(orderNo != 6 && orderNo != 7) {//디저트, md 상품이 아니면
 			System.out.println("선택해주세요");
-			System.out.println("1.Hot  2.Ice");
+			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextInt();
-			System.out.println("0.없음 1.Small  2.Regular  3.Large");
+			System.out.println("0.없음\t 1.Small\t 2.Regular\t 3.Large");
 			cup = sc.nextInt();
-			System.out.println("1.시럽 추가  2.추가 안 함");
+			System.out.println("1.시럽 추가\t 2.추가 안 함");
+			op[0] = sc.nextInt();
+			System.out.println("1.디카페인\t 2.해당 없음");
 			op[1] = sc.nextInt();
-			System.out.println("1.디카페인  2.해당 없음");
+			System.out.println("1.휘핑 추가\t 2.추가 없음");
 			op[2] = sc.nextInt();
-			System.out.println("1.휘핑 추가  2.추가 없음");
-			op[3] = sc.nextInt();
 		}
 		System.out.println("수량을 입력하세요");
 		int quan = sc.nextInt();
@@ -73,20 +72,27 @@ public class EndView {
 		}
 		
 		
-		Orders order = new Orders(0,null,null,null,0,quan,null,null,null);
+		Orders order = new Orders(0,null,null,null,0,quan,null,null,null);//userId 받아야함
 		OrderLine orderline = new OrderLine(0,0,orderCode,0,quan);
 		Option option = new Option(0,cup,null,temS,op2[0],op2[1],op2[2]);
 		
 		order.getOrderLineList().add(orderline);
 		orderline.getOptionList().add(option);
 		
-		OrdersController.insertOrders(order);//주문 or 장바구니담기
+		System.out.println("1.주문하기\t 2.장바구니에 담기");
+		switch(sc.nextInt()){
+		case 1:	
+			System.out.println("- 주문 상품 : ");
+			
+			OrdersController.insertOrders(order); break;
+		case 2: 
+		}
 		
 		System.out.println();
 	}
 	 
 	 
-	 
+
 	public static void printMessage(String message) {//
 		System.out.println(message);
 	}
