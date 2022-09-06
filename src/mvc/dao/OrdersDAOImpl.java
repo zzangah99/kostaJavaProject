@@ -37,7 +37,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public int orderInsert(Orders order) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = profile.getProperty("orderOrder.insert");//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
+		String sql = profile.getProperty("orderOrder.insertAll");//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
 		int result = 0;
 		
 		try {
