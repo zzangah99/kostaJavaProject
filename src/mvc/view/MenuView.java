@@ -3,6 +3,7 @@ package mvc.view;
 import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
+import mvc.controller.CartController;
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.controller.CustomerController;
@@ -23,26 +24,34 @@ public class MenuView {//메인 메뉴
 		while (true) {
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(ss.getSet());
-
 			System.out.println("=============================== Cafe ================================");
 			System.out.println("-------------------------접속 유형을 선택해주세요--------------------------");
 			System.out.println("| 1. 회원으로 주문하기 | 2. 비회원으로 주문하기 | 3.  관리자 접속   | 0.  종료   |");
-			int menu = Integer.parseInt(sc.nextLine());
-			switch (menu) {
-			case 1:
-				MenuView.printMenuForMember(); 
-				break;
-			case 2:
-				// 회원이면 printUserMenu(회원ID)
-				// 비회원이면 printUserMenu(null)
-				MenuView.printUserMenu(null);// 비회원은 바로 메인 메뉴 선택으로
-				break;
-			case 3:
-				MenuView.AdminLogin(null);
-				break;
-			case 0:
-				System.exit(0);
-			}//menu끝
+			try {
+				int menu = Integer.parseInt(sc.nextLine());
+				switch (menu) {
+					case 1:
+						MenuView.printMenuForMember(); 
+						break;
+					case 2:
+						// 회원이면 printUserMenu(회원ID)
+						// 비회원이면 printUserMenu(null)
+						MenuView.printUserMenu(null);// 비회원은 바로 메인 메뉴 선택으로
+						break;
+					case 3:
+						MenuView.AdminLogin(null);
+						break;
+					case 0:
+						System.exit(0);
+						break;
+					default:
+						System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+				}//switch끝
+			}catch (NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+				MenuView.menu();
+			}
 		}//while끝
 	} //초기 메뉴 끝
 
@@ -55,24 +64,32 @@ public class MenuView {//메인 메뉴
 			System.out.println("=========================== 회원으로 주문하기 =============================");
 			System.out.println("---------------------------메뉴를 선택해주세요------------------------------");
 			System.out.println("| 1. 로그인  | 2. 아이디 찾기 | 3. 비밀번호 찾기 | 4. 회원가입 하기 | 0. 돌아가기  |");
-			int menu = Integer.parseInt(sc.nextLine());
-			switch (menu) {
-			case 1:
-				MenuView.login();
-				break;
-			case 2:
-				MenuView.findId();
-				break;
-			case 3:
-				MenuView.findPw();
-				break;
-			case 4:
-				MenuView.register();
-				break;
-			case 0:
-				menu();
-				break;
-			}//switch끝
+			try {
+				int menu = Integer.parseInt(sc.nextLine());
+				switch (menu) {
+				case 1:
+					MenuView.login();
+					break;
+				case 2:
+					MenuView.findId();
+					break;
+				case 3:
+					MenuView.findPw();
+					break;
+				case 4:
+					MenuView.register();
+					break;
+				case 0:
+					MenuView.menu();
+					break;	
+				default:
+					System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+				}//switch끝
+			}catch (NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+				MenuView.printMenuForMember();
+			}
 		} //while끝
 	}//회원메뉴 출력 메소드 끝
 	
@@ -103,7 +120,7 @@ public class MenuView {//메인 메뉴
 		String phonNum = sc.nextLine();
 		
 		CustomerController.findPw(userId,phonNum);
-		//CustomerController.findId(phonNum); 없어도 될듯...?
+		//CustomerController.findId(phonNum); //없어도 될듯...?
 	}//비번찾기 메소드 끝
 
 	private static void register() {//회원가입
@@ -122,41 +139,47 @@ public class MenuView {//메인 메뉴
 	 */
 	public static void printUserMyPage(String userId) {//회원마이페이지
 		while (true) {
-			System.out.println("=== 마이페이지 ===");
-			System.out.println("반갑습니다." +userId+ "님 !");
-			System.out.println("1. 개인정보 변경   |   2. 최근 주문내역조회   |  3. 나만의 메뉴   |  4. 스탬프 조회   |  5. 쿠폰조회  |  6. 등록한 리뷰보기  |"
-					+ "\n 0. 돌아가기 ");
-			int mymenu =Integer.parseInt( sc.nextLine());
-			switch(mymenu) {
-			case 1: 
-				CustomerController.userInfoChange(userId);
-				break;
-			case 2: 
-				CustomerController.selectOrderReent(userId);
-				break;
-			case 3: 
-				CustomerController.myMenu(userId);
-				break;
-			case 4: 
-				CustomerController.myStamp(userId);
-				break;
-			case 5: 
-				CustomerController.myCp(userId);
-				break;
-			case 6: 
-				CustomerController.myReview(userId);
-				break;
-			case 0:
-				System.exit(0);
-			}//switch 끝
+			System.out.println("============================== 마이페이지 =================================");
+			System.out.println("-------------------반갑습니다." +userId+ "님 !----------------------");
+			System.out.println("| 1. 개인정보 변경 | 2. 최근 주문내역조회 | 3. 나만의 메뉴 | 4. 스탬프 조회  |"
+						   + "\n|  5. 쿠폰조회    | 6. 등록한 리뷰보기  |  9. 주문하기   | 0.  종료하기   |");
+			try {
+				int mymenu =Integer.parseInt( sc.nextLine());
+				switch(mymenu) {
+					case 1: 
+						CustomerController.userInfoChange(userId);
+						break;
+					case 2: 
+						CustomerController.selectOrderReent(userId);
+						break;
+					case 3: 
+						CustomerController.myMenu(userId);
+						break;
+					case 4: 
+						CustomerController.myStamp(userId);
+						break;
+					case 5: 
+						CustomerController.myCp(userId);
+						break;
+					case 6: 
+						CustomerController.myReview(userId);
+						break;
+					case 9:
+						MenuView.printUserMenu(userId);
+						break;
+					case 0:
+						System.exit(0);
+						break;
+					default:
+						System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+				}//switch끝
+			}catch (NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+				MenuView.printUserMyPage(userId);
+			}
 		}//while 끝
 	}//회원마이페이지 메소드 끝
-	
-	public static void inputGoodsByName() {//상품 이름을 검색해서 찾기
-	System.out.print("찾을 상품을 검색해주세요> ");
-	String word = sc.nextLine();
-	GoodsController.goodsSelectByName(word);
-	}
 		/**
 		 * 주문 메뉴
 		 * 초기메뉴 (회원주문->회원메뉴//비회원주문) ->  "주문메뉴(회원/비회원상태)"
@@ -168,48 +191,42 @@ public class MenuView {//메인 메뉴
 			System.out.println("================================== 메뉴 선택 =====================================");
 			System.out.println("-------------------------------메뉴를 선택해주세요-----------------------------------");
 			System.out.println("|  1. 주문하기   |  2. 장바구니   | 3.기프티콘으로 구매하기 |  4. 마이페이지   |   0. 종료   |");
-			int menu = Integer.parseInt(sc.nextLine());
-			switch (menu) {
-			case 1 :
-			    System.out.println("| 1. 커피 | 2. 스무디/프라페 | 3. 에이드/주스 | 4. 병음료 | 5. 티 | 6. 디저트 | 7. MD상품 | 8. 상품이름검색 |"
-			    		+ "\n| 0. 돌아가기 |");
-			    int menu2 =Integer.parseInt( sc.nextLine());
-				switch(menu2) {
-					case 1 :
-					case 2 :
-					case 3 :
-					case 4 :
-					case 5 : 
-					case 6 : 
-					case 7 :
-						GoodsController.goodsSelectByCategory(menu2);
-						break;
-					case 8 :
-						MenuView.inputGoodsByName(); //상품이름검색
-						break;
-					case 0 :
-						System.exit(0);
-					}//switch 끝 : 주문-카테고리 select		
-			case 2: // 장바구니
-			case 3: // 기프티콘으로 구매하기
-			case 4: // 마이페이지
-				CustomerController.myPage(null);
-				break;
-			case 0:
-				System.exit(0);
-			}//switch 메뉴선택 끝
+			try {
+				int menu = Integer.parseInt(sc.nextLine());
+				switch (menu) {
+				case 1 : //카테고리 메뉴들 출력
+					//GoodsController.goodsSelectAll(userId);
+					break;
+				case 2:
+					CartController.viewCart(userId);
+					break;
+				case 3: // 기프티콘으로 구매하기
+					
+				case 4:
+					CustomerController.myPage(userId);
+					break;
+				case 0:
+					System.exit(0);				
+				default:
+					System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+				}//switch끝
+			}catch (NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+				MenuView.printUserMenu(userId);
+			}
 		}//while 메뉴선택 끝
 	}//주문메뉴 메소드 끝
-					
-		/**
-		 * 관리자 로그인 메뉴
-		 * 초기메뉴(관리자주문) ->"관리자 로그인 메뉴" -> 관리자 메뉴
-		 */
+	
+	/**
+	 * 관리자 로그인 메뉴
+	 * 초기메뉴(관리자주문) ->"관리자 로그인 메뉴" -> 관리자 메뉴
+	 */
 	public static void AdminLogin(String adminId) {//관리자 로그인 메뉴
 		System.out.println(">>>>관리자로 로그인하기>>>>");
-		 System.out.print("\n아이디 : ");
+		 System.out.print("아이디 : ");
 		 String adminIn = sc.nextLine();
-		 System.out.print("\t비번 : ");
+		 System.out.print("비번 : ");
 		 String adminPw = sc.nextLine();
 		 
 		 AdminController.login(adminId, adminPw); 
@@ -219,36 +236,42 @@ public class MenuView {//메인 메뉴
 		 * 관리자 로그인 메뉴
 		 * 초기메뉴(관리자주문) -> 관리자 로그인 메뉴(로그인) -> "관리자 메뉴"
 		 */
-    public static void printMenuForAdmin(String adminId) {//관리자 메뉴
-    	while(true) {
+	public static void printMenuForAdmin(String adminId) {//관리자 메뉴
+		while(true) {
 			//AdminSessionSet ss = AdminSessionSet.getInstance();
 			//System.out.println(ss.getSet()); //Set객체 [session]
 			System.out.println("================================ 관리자 로그인 중====================================");
 			System.out.println("| 1. 상품 등록  | 2. 상품 수정  | 3. 상품삭제  | 4. 판매통계보기  | 5. 공지입력하기 | 0. 종료  |");
+			try {
 			int menu =Integer.parseInt( sc.nextLine());
 			switch(menu) {
 				case 1 : //상품 등록(새로운) 
 					MenuView.GoodsInsert(adminId);
 					break;	
 				case 2 : //상품 수정
-					MenuView.GoodsUpdat(adminId);
+					MenuView.GoodsUpdate(adminId);
 					break;
 				case 3 : //상품삭제
-					MenuView.Goodsdelete1(adminId);
+					MenuView.Goodsdelete(adminId);
 					break;
 				case 4 : //판매통계보기
 					MenuView.Statistic1(adminId);
 					break;
 				case 5 : //공지입력하기
-					MenuView.NoticePrint1();
+					MenuView.NoticePrint();
 					break;
 				case 0:
 					System.exit(0);
-			}//switch 관리자메뉴 끝
-    	}//while 관리자메뉴 끝
+				default:
+					System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+				}//switch끝
+			}catch (NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+				MenuView.printMenuForAdmin(adminId);
+			}
+		}//while 끝
 	}//관리자메뉴 메소드 끝
-	private static void GoodsUpdate(String adminId) {
-	}
 	//상품등록하기
 	public static void GoodsInsert (String adminId) {
 		System.out.println("--새로운 상품 등록하기 --");
@@ -273,39 +296,49 @@ public class MenuView {//메인 메뉴
 		System.out.print("카테고리코드를 입력해주세요 : ");
 		String categoryCode =sc.nextLine();
 		
-		Goods goods =  new Goods("goodsCode", "goodsName", 0, "soldOut","stock",0,"categoryCode");
+		Goods goods =  new Goods(0, "goodsName", 0, "soldOut","stock",0,0);
 	}
 	//상품 수정하기
-	private static void GoodsUpdat(String goodsCode) {
+	private static void GoodsUpdate(String goodsCode) {
 		while(true) {
 			System.out.println("--------상품수정하기---------");
 			System.out.println(" 1) 상품이름 |  2) 상품가격  |  3) 품절여부 |  4 )재고수량 ");
-			int menu =Integer.parseInt( sc.nextLine());
-			switch(menu) {
-				case 1 : //상품이름 
-					MenuView.GoodsUpdateName();
-					break;
-				case 2 : //상품가격
-					MenuView.GoodsUpdatePr();
-					break;
-				case 3 : //품절여부
-					MenuView.GoodsUpdateSo();
-					break;
-				case 4 : //재고수량
-					MenuView.GoodsUpdateSt();
-					break;	
-			}
-		}				
-	}
+			try {
+				int menu =Integer.parseInt( sc.nextLine());
+				switch(menu) {
+					case 1 : //상품이름 
+						MenuView.GoodsUpdateName();
+						break;
+					case 2 : //상품가격
+						MenuView.GoodsUpdatePr();
+						break;
+					case 3 : //품절여부
+						MenuView.GoodsUpdateSo();
+						break;
+					case 4 : //재고수량
+						MenuView.GoodsUpdateSt();
+						break;	
+					default:
+						System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+					}//switch끝
+				}catch (NumberFormatException e){
+					//e.printStackTrace();
+					System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+					MenuView.GoodsUpdate(goodsCode);
+				}
+			}//while끝
+		}//GoodsUpdate 메소드 끝
 	//상품 삭제하기
-	public static void Goodsdelete1 (String goodsCode) {
+	public static void Goodsdelete (String goodsCode) {
 		AdminController.Goodsdelete();
-    }  
+		 int gcode = Integer.parseInt(sc.nextLine());
+	}  
 	//통계조회하기
 	public static void Statistic1(String message) {
 	   while(true) {
 		   System.out.println("--------상품수정하기---------");
 		   System.out.println(" 1) 일 통계 |  2) 월 통계 ");
+		   try {
 		   int menu =Integer.parseInt( sc.nextLine());
 		   switch(menu) {
 		   		case 1 : // 일
@@ -313,29 +346,59 @@ public class MenuView {//메인 메뉴
 					break;	
 				case 2 : // 월
 					AdminController.MonStatistic();
-					break;
-		   }
-	   }
-	}
+					break;	
+				default:
+					System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
+				}//switch끝
+			}catch (NumberFormatException e){
+				//e.printStackTrace();
+				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
+				MenuView.Statistic1(message);
+			}
+		}//while끝
+	}//Statistic1 메소드 끝
 	//공지 띄우기
-	private static void NoticePrint1() {	
-		  AdminController.NoticePrint();
-	}	
+	
+	public static void NoticePrint () {
+		   
+		 System.out.println("공지등록하기");
+	
+	  	 System.out.println("공지번호를 입력해주세요?");
+	  	 int noticeNum = Integer.parseInt(sc.nextLine());
+	  	 
+	  	 System.out.println("작성자를 입력해주세요?");
+	  	 String adminId = sc.nextLine();
+	  	 
+	  	 System.out.println("작성일자");
+	  	 String noticeDate = sc.nextLine();
+	  	 
+	  	 System.out.println("제목을 입력해주세요");
+	  	 String noticeTitel = sc.nextLine();
+	  	 
+	  	 System.out.println("내용을 입력해주세요?");
+	  	 String noticeContent= sc.nextLine();
+	
+	  	 
+	  	 //Notice notice =  new Notice(0, "adminId", "noticeDate", "noticeTitel", "noticeContent");
+	   }
+	
 	//상세수정하기
 	public static void GoodsUpdateName() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String gcode = sc.nextLine();
+		String goodsCode = sc.nextLine();
 	}
 	public static void GoodsUpdatePr() {
-			System.out.println("수정 할 상품의 상품코드는?");
-			String gcode = sc.nextLine();
+		System.out.println("수정 할 상품의 상품코드는?");
+		String goodsCode = sc.nextLine();
 	}     
 	public static void GoodsUpdateSo() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String gcode = sc.nextLine();
+		String goodsCode = sc.nextLine();
 	} 
 	public static void GoodsUpdateSt() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String gcode = sc.nextLine();
-	}// admin메뉴 끝
+		String goodsCode = sc.nextLine();
+	  
+	}
+
 }//클래스 끝
