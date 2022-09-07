@@ -12,8 +12,8 @@ public class GoodsService {
 	/**
 	 * 대분류 해당하는 상품 검색 
 	 */
-	public List<Goods> goodsSelectByCategory(int menu2) throws SQLException{
-		List<Goods> menuList = goodsDao.goodsSelectByCategory(menu2);
+	public List<Goods> goodsSelectByCategory() throws SQLException{
+		List<Goods> menuList = goodsDao.goodsSelectByCategory();
 		if(menuList.size() == 0) throw new SQLException("현재 상품이 없습니다.");
 		return menuList;
 		

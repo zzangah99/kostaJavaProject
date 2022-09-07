@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import kosta.mvc.controller.OrderController;
+
 import mvc.controller.OrdersController;
 import mvc.dto.Goods;
 import mvc.dto.Option;
@@ -16,6 +16,21 @@ import mvc.session.UserSessionSet;
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
+	
+	//
+	
+	public static void printsGoodsList(List<Goods> list) {
+		System.out.println("-----상품 "+ list.size() +"개 -------------");
+		for(Goods goods : list) {
+			System.out.println(goods);
+		}
+		
+		System.out.println();
+	}
+	
+	
+	
+	
 	
 	/**
 	 * 상품 전체 출력
