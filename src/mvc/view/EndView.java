@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import kosta.mvc.controller.OrderController;
 import mvc.controller.OrdersController;
 import mvc.dto.Goods;
 import mvc.dto.Option;
@@ -89,7 +88,6 @@ public class EndView {
 		case 2:
 			temS="I";
 			break;
-			break;
 		case 3:
 			temS="I";
 			break;
@@ -110,13 +108,12 @@ public class EndView {
 			
 			OrdersController.insertOrders(order); break;
 		case 2: 
->>>>>>> parent of 1ff5a6d (엔드뷰 상품 출력 후 주문 메소드 작성 중, 쿠폰 처리 필요)
 		}
 		
 		
-		Orders order = new Orders(0,null,null,null,0,quan,null,null,null);
-		OrderLine orderline = new OrderLine(0,0,orderCode,0,quan);
-		Option option = new Option(0,cup,null,temS,op2[0],op2[1],op2[2]);
+		Orders orders = new Orders(0,null,null,null,0,quan,null,null,null);
+		OrderLine ordLine = new OrderLine(0,0,orderCode,0,quan);
+		Option option2 = new Option(0,cup,null,temS,op2[0],op2[1],op2[2]);
 		
 		order.getOrderLineList().add(orderline);
 		orderline.getOptionList().add(option);
