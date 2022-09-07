@@ -9,17 +9,16 @@ import mvc.dto.Goods;
 public class GoodsService {
 	GoodsDAO goodsDao = new GoodsDAOImpl();
 	
-	public List<Goods> goodsSelectByCategory(int menu2) throws SQLException{
-		List<Goods> menuList = goodsDao.goodsSelectByCategory(menu2);
+	/**
+	 * 카테고리에 해당하는 상품 검색 
+	 */
+	public List<Goods> selectBever(int num) throws SQLException{
+		List<Goods> menuList = goodsDao.selectBever(num);
 		if(menuList.size() == 0) throw new SQLException("현재 상품이 없습니다.");
 		return menuList;
 		
 		
 	}
-	
-	
-	
-
 	
 	
 	/**
@@ -30,6 +29,10 @@ public class GoodsService {
 		if(key.size() == 0 || key.isEmpty()) throw new SQLException(keyword + "의 상품을 찾을 수 없습니다.");
 		return key;
 	}
+	
+	/**
+	 * 상품 재고
+	 */
 	
 	
 	

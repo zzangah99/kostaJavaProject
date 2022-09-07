@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.util.DbUtil;
 
@@ -20,32 +21,59 @@ public class GoodsDAOImpl implements GoodsDAO {
 	 */
 	
 	@Override
-	public List<Goods> goodsSelectByCategory(int menu2) throws SQLException {
+	public List<Goods> selectBever(int num) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<Goods> goodsList = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectAllByCategory"); // select * from goods where category_code = ?
+		List<Goods> list = new ArrayList<Goods>();
+		String sql = proFile.getProperty("goods.selectAllByCategory"); //select * from goods where category_code = ?
 
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			// ?
-			ps.setInt(1, menu2);
+			ps.setInt(1, num);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
-						rs.getInt(6), rs.getInt(7));
-				goodsList.add(goods);
+			    Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				
+			    list.add(goods);
 			}
 		} finally {
 			DbUtil.dbClose(con, ps, rs);
 		}
-		return goodsList;
+		return list;
 
 	}
 	
+	/**
+	 * 재고 품절 여부 확인
+	 */
+	
+	public List<Goods> goodsSelectByStock() throws SQLException {
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		List<Goods> list = new ArrayList<Goods>();
+		String sql = proFile.getProperty("goods.selectAllAll");// select * from goods
+
+		try {
+			con = DbUtil.getConnection();
+			ps = con.prepareStatement(sql);
+			// ?가 있다면 setXxx설정
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
+						rs.getInt(6), rs.getInt(7));
+				list.add(goods);
+			}
+
+		} finally {
+			DbUtil.dbClose(con, ps, rs);
+		}
+
+		return list;
+	}
 	
 	/**
 	 * 상품 이름으로 검색

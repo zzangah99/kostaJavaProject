@@ -5,9 +5,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+<<<<<<< HEAD
 import kosta.mvc.controller.OrderController;
 import mvc.controller.CartController;
+=======
+
+>>>>>>> SIKBRANCH/searchItem
 import mvc.controller.OrdersController;
+import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
@@ -18,11 +23,25 @@ import mvc.session.UserSessionSet;
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
 	
+	
+	
+	public static void printsCategoryList(List<Category> categoryList) {
+		for (Category list : categoryList) {
+			System.out.print("  " + list.getCategoryCode() + "." + list.getCategoryName() + "   ");
+
+		}
+		System.out.println();
+		System.out.println();
+		System.out.print("주문하실 종류의 번호를 입력해주세요 > ");
+		
+	}
+
 	/**
 	 * 메뉴 출력 후 주문
 	 */
-	public static void printGoodsList(List<Goods> coffeeList) {// 수정 필요
+	public static void printGoodsList(List<Goods> categoryList) {// 수정 필요
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
+<<<<<<< HEAD
 		String op[] = new String[3];
 		int cup=0;
 		String tem=null;
@@ -47,6 +66,26 @@ public class EndView {
 		int orderCode = goodsCodeList.get(orderNo-1);
 		
 		if(orderNo != 6 && orderNo != 7) {//디저트, md 상품이 아니면 옵션 선택
+=======
+		int op[] = new int[3];
+		String op2[] = new String[3];
+		int cup = 0;
+		int tem = 0;
+		String temS = null;
+
+		System.out.println("-----상품 " + categoryList.size() + "개 -------------");
+
+		for (Goods goods : categoryList) {
+			int no = 1;
+			System.out.print(no + "." + goods.getGoodsName() + " ");
+			goodsCodeList.add(goods.getGoodsCode());
+		}
+		System.out.print("주문할 상품 번호를 고르세요> ");
+		int orderNo = sc.nextInt();
+		int orderCode = goodsCodeList.get(orderNo - 1);
+
+		if (orderNo != 6 && orderNo != 7) {// 디저트, md 상품이 아니면
+>>>>>>> SIKBRANCH/searchItem
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
@@ -64,6 +103,7 @@ public class EndView {
 			op[2] = sc.nextLine();
 		}
 		System.out.println("수량을 입력하세요");
+<<<<<<< HEAD
 		int quan = Integer.parseInt(sc.nextLine());
 		
 		for(int i=0; i<op.length; i++) {
@@ -106,21 +146,52 @@ public class EndView {
 
 			OrdersController.insertOrders(order);
 			System.out.println("어디야");
+=======
+		int quan = sc.nextInt();
+
+		for (int i = 0; i < op.length; i++) {
+			if (op[i] == 1) {
+				op2[i] = "Y";
+			} else
+				op2[i] = "N";
+		}
+
+		switch (tem) {
+		case 1:
+			temS = "H";
+			break;
+		case 2:
+			temS = "I";
+>>>>>>> SIKBRANCH/searchItem
 			break;
 		case 2: //장바구니 담기
 			
 		}
+<<<<<<< HEAD
 		
 		System.out.println();
 	}
 	 
 	 
+=======
+
+		Orders order = new Orders(0, null, null, null, 0, quan, null, null, null);
+		OrderLine orderline = new OrderLine(0, 0, orderCode, 0, quan);
+		Option option = new Option(0, cup, null, temS, op2[0], op2[1], op2[2]);
+
+		order.getOrderLineList().add(orderline);
+		orderline.getOptionList().add(option);
+
+		OrdersController.insertOrders(order);// 주문 or 장바구니담기
+
+		System.out.println();
+	}
+>>>>>>> SIKBRANCH/searchItem
 
 	public static void printMessage(String message) {//
 		System.out.println(message);
 	}
-	 
-	
+
 	/**
 	 * 장바구니 보기
 	 **/
@@ -128,10 +199,24 @@ public class EndView {
 		System.out.println("----------------장바구니------------------");
 		// 장바구니 목록
 		for (Goods goods : cart.keySet()) {
+<<<<<<< HEAD
 			int goodsCode = goods.getGoodsCode();// 상품번호
 			String goodsName = goods.getGoodsName();// 상품번호
 			// 상품옵션
 			int goodsPrice = goods.getGoodsPrice();// 상품번호
+=======
+			String goodsCode = goods.getGoodsCode();// 상품번호
+			String goodsName = goods.getGoodsCode();// 상품번호
+			int goodsPrice = goods.getGoodsPrice();// 상품번호
+			String goodsDetail = goods.getGoodsDetail();// 상품번호
+			String soldout = goods.getGoodsCode();// 상품번호
+			int stock = goods.getGoodsCode();// 상품번호
+
+			String goodsId = goods.getGoodsCode();// 상품번호
+			String name = goods.getGoodsName();// 상품이름
+			int price = goods.getGoodsPrice();// 상품가격
+
+>>>>>>> SIKBRANCH/searchItem
 			int quantity = cart.get(goods);//
 
 			System.out.println(" [ 상품코드:" + goodsCode + "\t | 상품이름: " + goodsName + "\t | 상품옵션: " + goodsName
@@ -144,6 +229,7 @@ public class EndView {
 		System.out.println("1.결제하기  | 2.수정하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
 		switch (Integer.parseInt(sc.nextLine())) {
 		case 1:
+<<<<<<< HEAD
 			CartController.payingCart(userId, cart);
 			break;
 		case 2:
@@ -153,6 +239,26 @@ public class EndView {
 			System.out.println("수정할 제품의 이름을 입력해주십시오 > ");
 			String modifyingGoods = sc.nextLine();
 			CartController.gifticonCart(modifyingGoods, cart);
+=======
+
+			Orders orders = new Orders(null, null, userId, null, 0, 0, null, null, null);
+
+			List<OrderLine> orderLineList = orders.getOrderLineList();
+
+			for (Goods goodsKey : cart.keySet()) {
+				int qty = cart.get(goodsKey);
+				OrderLine orderLine = new OrderLine(0, null, goodsKey.getGoodsCode(), 0, 0);
+				orderLineList.add(orderLine);
+			}
+
+			System.out.println("orderLineList 개수 : " + orderLineList.size());
+			OrdersController.insertOrders(orders);
+
+			// 장바구니비우기
+			UserSessionSet ss = UserSessionSet.getInstance();
+			UserSession userSession = ss.get(userId);
+			userSession.removeAttribute("cart");
+>>>>>>> SIKBRANCH/searchItem
 			break;
 
 		case 4:
@@ -164,8 +270,6 @@ public class EndView {
 
 	}
 
-	
-	
 	/**
 	 * 주문 내역보기
 	 */
@@ -175,10 +279,10 @@ public class EndView {
 		for (Orders order : orderList) {
 			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
 					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
-			
+
 			for (OrderLine orderLine : order.getOrderLineList()) {
 				System.out.println("  ▶ " + orderLine);
-				for(Option option : orderLine.getOptionList()) {
+				for (Option option : orderLine.getOptionList()) {
 					System.out.println("     - " + option);
 				}
 			}
@@ -186,6 +290,4 @@ public class EndView {
 		}
 	}
 
-
-	
 }

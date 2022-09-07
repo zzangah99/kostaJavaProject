@@ -11,15 +11,19 @@ import mvc.view.FailView;
 public class GoodsController {
 	static GoodsService goodsService = new GoodsService();
 	
-	public static void goodsSelectByCategory(int menu2) {
+	/**
+	 * 카테고리에 따른 음료 가져오기
+	 */
+	public static void selectBever(int num) {
 		try {
-			List<Goods> categoryList = goodsService.goodsSelectByCategory(menu2);
+			List<Goods> categoryList = goodsService.selectBever(num);
 			EndView.printGoodsList(categoryList);
 		}catch (Exception e) {
 			FailView.errorMessage(e.getMessage());
 		}
 		
 	}
+	
 	
 	
 	
