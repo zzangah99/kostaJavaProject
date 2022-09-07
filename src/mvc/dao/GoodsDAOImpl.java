@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.util.DbUtil;
 
@@ -21,59 +20,32 @@ public class GoodsDAOImpl implements GoodsDAO {
 	 */
 	
 	@Override
-	public List<Goods> selectBever(int num, String userId) throws SQLException {
+	public List<Goods> goodsSelectByCategory(int menu2) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectAllByCategory"); //select * from goods where category_code = ?
+		List<Goods> goodsList = new ArrayList<Goods>();
+		String sql = proFile.getProperty("goods.selectAllByCategory"); // select * from goods where category_code = ?
 
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
-			ps.setInt(1, num);
+			// ?
+			ps.setInt(1, menu2);
 			rs = ps.executeQuery();
 
-			while (rs.next()) {
-			    Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
-			    goods.setUserId(userId);
-			    list.add(goods);
-			}
-		} finally {
-			DbUtil.dbClose(con, ps, rs);
-		}
-		return list;
-
-	}
-	
-	/**
-	 * 재고 품절 여부 확인
-	 */
-	
-	public List<Goods> goodsSelectByStock() throws SQLException {
-		Connection con = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectAllAll");// select * from goods
-
-		try {
-			con = DbUtil.getConnection();
-			ps = con.prepareStatement(sql);
-			// ?가 있다면 setXxx설정
-			rs = ps.executeQuery();
 			while (rs.next()) {
 				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
 						rs.getInt(6), rs.getInt(7));
-				list.add(goods);
+				goodsList.add(goods);
 			}
-
 		} finally {
 			DbUtil.dbClose(con, ps, rs);
 		}
+		return goodsList;
 
-		return list;
 	}
+	
 	
 	/**
 	 * 상품 이름으로 검색

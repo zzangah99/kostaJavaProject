@@ -9,7 +9,6 @@ public class Goods {
 		private String soldout;
 		private int    stock;
 		private int categoryCode;
-		private String userId;
 		
 		public Goods() {}
 		
@@ -23,14 +22,6 @@ public class Goods {
 			this.stock =stock;
 			this.categoryCode = categoryCode;
 			
-		}
-		
-		public String getUserId() {
-			return userId;
-		}
-		
-		public void setUserId(String userId) {
-			this.userId = userId;
 		}
 
 		public int getGoodsCode() {

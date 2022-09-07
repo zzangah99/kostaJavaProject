@@ -37,7 +37,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public int orderInsert(Orders order) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
-		String sql = profile.getProperty("orderOrder.insert");//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
+		String sql = profile.getProperty("orderOrder.insertAll");//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
 		int result = 0;
 		
 		try {
@@ -191,7 +191,11 @@ public class OrdersDAOImpl implements OrdersDAO {
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
 			else if(goods.getStock() <  line.getDetailQuan()) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
 			
+			
 	    	total += line.getDetailQuan() * goods.getGoodsPrice() ;
+	    	if(order.getUserCpCode()==null) {
+	    		//쿠폰 사용해서 금액 할인
+	    	}
 	    }
 		return total;
 	}
