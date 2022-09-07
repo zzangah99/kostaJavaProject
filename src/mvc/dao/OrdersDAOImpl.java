@@ -191,7 +191,11 @@ public class OrdersDAOImpl implements OrdersDAO {
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
 			else if(goods.getStock() <  line.getDetailQuan()) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
 			
+			
 	    	total += line.getDetailQuan() * goods.getGoodsPrice() ;
+	    	if(order.getUserCpCode()==null) {
+	    		//쿠폰 사용해서 금액 할인
+	    	}
 	    }
 		return total;
 	}
