@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import kosta.mvc.controller.OrderController;
+import mvc.controller.CartController;
 import mvc.controller.OrdersController;
 import mvc.dto.Goods;
 import mvc.dto.Option;
@@ -18,73 +19,103 @@ public class EndView {
 	static Scanner sc = new Scanner(System.in);
 	
 	/**
-	 * 상품 전체 출력
+	 * 메뉴 출력 후 주문
 	 */
 	public static void printGoodsList(List<Goods> coffeeList) {// 수정 필요
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
-		int op[] = new int[3];
-		String op2[] = new String[3];
+		String op[] = new String[3];
 		int cup=0;
-		int tem = 0;
-		String temS=null;
+		String tem=null;
 		
-		System.out.println("-----상품 " + coffeeList.size() + "개 -------------");
-
+		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
+		int goodsNo=0;
 		for (Goods goods : coffeeList) {
-			int no=1;
-			System.out.print(no +"."+goods.getGoodsName() +" ");
+			System.out.print((++goodsNo) +"."+goods.getGoodsName() +"\t");
 			goodsCodeList.add(goods.getGoodsCode());
 		}
-		System.out.print("주문할 상품 번호를 고르세요> ");
-		int orderNo = sc.nextInt();
+		
+		//용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
+		
+		
+		
+		
+		
+		
+		//
+		System.out.print("\n주문할 상품 번호를 고르세요> ");
+		int orderNo = Integer.parseInt(sc.nextLine());
 		int orderCode = goodsCodeList.get(orderNo-1);
 		
-		if(orderNo != 6 && orderNo != 7) {//디저트, md 상품이 아니면
+		if(orderNo != 6 && orderNo != 7) {//디저트, md 상품이 아니면 옵션 선택
 			System.out.println("선택해주세요");
-			System.out.println("1.Hot  2.Ice");
-			tem = sc.nextInt();
-			System.out.println("0.없음 1.Small  2.Regular  3.Large");
-			cup = sc.nextInt();
-			System.out.println("1.시럽 추가  2.추가 안 함");
-			op[1] = sc.nextInt();
-			System.out.println("1.디카페인  2.해당 없음");
-			op[2] = sc.nextInt();
-			System.out.println("1.휘핑 추가  2.추가 없음");
-			op[3] = sc.nextInt();
+			System.out.println("1.Hot\t 2.Ice");
+			tem = sc.nextLine();
+			tem = tem.replace("1", "H");
+			tem = tem.replace("2", "I");
+			
+			System.out.println("0.없음\t 1.Small\t 2.Regular\t 3.Large");
+			cup = Integer.parseInt(sc.nextLine());
+			
+			System.out.println("1.시럽 추가\t 2.추가 안 함");
+			op[0] = sc.nextLine();
+			System.out.println("1.디카페인\t 2.해당 없음");
+			op[1] = sc.nextLine();
+			System.out.println("1.휘핑 추가\t 2.추가 없음");
+			op[2] = sc.nextLine();
 		}
 		System.out.println("수량을 입력하세요");
-		int quan = sc.nextInt();
+		int quan = Integer.parseInt(sc.nextLine());
 		
 		for(int i=0; i<op.length; i++) {
-			if(op[i]==1) {
-				op2[i] = "Y";
-			}else op2[i]="N";
+			op[i] = op[i].replace("1", "Y");
+			op[i] = op[i].replace("2", "N");
 		}
 		
-		switch(tem) {
+		System.out.println("1.주문하기\t 2.장바구니에 담기");
+		int choice = sc.nextInt();
+		System.out.println("- 주문 상품 : "+ coffeeList.get(orderNo-1).getGoodsName() +"\t주문 수량 : " + quan );
+		
+		switch(choice){
 		case 1:
-			temS="H";
+			System.out.println("쿠폰을 사용하시겠습니까?\n1.사용\t 2.사용 안 함");
+			String cpChoice = sc.nextLine();
+			if(cpChoice.equals("1")) {
+				System.out.println("사용 가능한 쿠폰 목록");
+				
+			}
+			
+			System.out.println("\n- 결제 수단 선택");
+			System.out.println("1.현금\t 2.카드\t");
+			String payment= sc.nextLine();
+			payment = payment.replace("1", "현금");
+			payment = payment.replace("2", "카드");
+			
+			System.out.println("\n테이크 아웃 여부를 선택해주세요");
+			System.out.println("1.먹고가기\t 2.가져가기");
+			String takeOut = sc.nextLine();
+			takeOut = takeOut.replace("1", "N");
+			takeOut = takeOut.replace("2", "Y");
+			
+			
+			Orders order = new Orders(0, null, null/*userId*/, null, 0, quan, payment, null, takeOut);// userId 받아야함
+			OrderLine orderline = new OrderLine(0, 0, orderCode, 0, quan);
+			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+
+			order.getOrderLineList().add(orderline);
+			orderline.getOptionList().add(option);
+
+			OrdersController.insertOrders(order);
+			System.out.println("어디야");
 			break;
-		case 2:
-			temS="I";
-			break;
+		case 2: //장바구니 담기
+			
 		}
-		
-		
-		Orders order = new Orders(0,null,null,null,0,quan,null,null,null);
-		OrderLine orderline = new OrderLine(0,0,orderCode,0,quan);
-		Option option = new Option(0,cup,null,temS,op2[0],op2[1],op2[2]);
-		
-		order.getOrderLineList().add(orderline);
-		orderline.getOptionList().add(option);
-		
-		OrdersController.insertOrders(order);//주문 or 장바구니담기
 		
 		System.out.println();
 	}
 	 
 	 
-	 
+
 	public static void printMessage(String message) {//
 		System.out.println(message);
 	}
@@ -94,50 +125,38 @@ public class EndView {
 	 * 장바구니 보기
 	 **/
 	public static void printViewCart(String userId, Map<Goods, Integer> cart) {
-		System.out.println("장바구니");
-
+		System.out.println("----------------장바구니------------------");
+		// 장바구니 목록
 		for (Goods goods : cart.keySet()) {
-			String goodsCode = goods.getGoodsCode();// 상품번호
-			 String goodsName = goods.getGoodsCode();// 상품번호
-			 int    goodsPrice = goods.getGoodsPrice();// 상품번호
-			 String goodsDetail = goods.getGoodsDetail();// 상품번호
-			 String soldout = goods.getGoodsCode();// 상품번호
-			 int    stock = goods.getGoodsCode();// 상품번호
-			
-			String goodsId = goods.getGoodsCode();// 상품번호
-			String name = goods.getGoodsName();// 상품이름
-			int price = goods.getGoodsPrice();// 상품가격
-
+			int goodsCode = goods.getGoodsCode();// 상품번호
+			String goodsName = goods.getGoodsName();// 상품번호
+			// 상품옵션
+			int goodsPrice = goods.getGoodsPrice();// 상품번호
 			int quantity = cart.get(goods);//
-			System.out.println(goodsId + " : " + name + " : " + price + " \t " + quantity);
+
+			System.out.println(" [ 상품코드:" + goodsCode + "\t | 상품이름: " + goodsName + "\t | 상품옵션: " + goodsName
+					+ "\t | 상품개수:" + quantity + "\t | 상품가격:" + goodsPrice + " ]");
+
 		}
 
+		// 장바구니 메뉴로 이동하기.
 		Scanner sc = new Scanner(System.in);
-		System.out.println("1.결제라디  |  9.나가기");
+		System.out.println("1.결제하기  | 2.수정하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
 		switch (Integer.parseInt(sc.nextLine())) {
 		case 1:
-
-
-			Orders orders = new Orders(null, null,userId, null, 0, 0,null, null, null);
-
-			List<OrderLine> orderLineList = orders.getOrderLineList();
-
-			for (Goods goodsKey : cart.keySet()) {
-				int qty = cart.get(goodsKey);
-				OrderLine orderLine = new OrderLine(0,null, goodsKey.getGoodsCode(), 0, 0);
-				orderLineList.add(orderLine);
-			}
-
-			System.out.println("orderLineList 개수 : " + orderLineList.size());
-			OrdersController.insertOrders(orders);
-
-			// 장바구니비우기
-			UserSessionSet ss = UserSessionSet.getInstance();
-			UserSession userSession = ss.get(userId);
-			userSession.removeAttribute("cart");
+			CartController.payingCart(userId, cart);
+			break;
+		case 2:
+			CartController.modifyingCart(userId, cart);
+			break;
+		case 3:
+			System.out.println("수정할 제품의 이름을 입력해주십시오 > ");
+			String modifyingGoods = sc.nextLine();
+			CartController.gifticonCart(modifyingGoods, cart);
 			break;
 
-		case 9:
+		case 4:
+			MenuView.printUserMenu(userId);
 			break;
 		}
 
