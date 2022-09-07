@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+<<<<<<< HEAD
+=======
 import kosta.mvc.controller.OrderController;
 import mvc.controller.CartController;
+>>>>>>> seryun
 import mvc.controller.OrdersController;
 import mvc.dto.Goods;
 import mvc.dto.Option;
@@ -27,12 +30,30 @@ public class EndView {
 		int cup=0;
 		String tem=null;
 		
+<<<<<<< HEAD
+
+		System.out.println("-----상품 " + coffeeList.size() + "개 -------------");
+
+=======
 		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
 		int goodsNo=0;
+>>>>>>> seryun
 		for (Goods goods : coffeeList) {
 			System.out.print((++goodsNo) +"."+goods.getGoodsName() +"\t");
 			goodsCodeList.add(goods.getGoodsCode());
 		}
+<<<<<<< HEAD
+		System.out.print("주문할 상품 번호를 고르세요> ");
+
+		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
+		for (Goods goods : coffeeList) {
+			int no=1;
+			System.out.print(no++ +"."+goods.getGoodsName() +" \t");
+			goodsCodeList.add(goods.getGoodsCode());
+		}
+		System.out.print("\n주문할 상품 번호를 고르세요> ");
+		int orderNo = sc.nextInt();
+=======
 		
 		//용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
 		
@@ -44,10 +65,35 @@ public class EndView {
 		//
 		System.out.print("\n주문할 상품 번호를 고르세요> ");
 		int orderNo = Integer.parseInt(sc.nextLine());
+>>>>>>> seryun
 		int orderCode = goodsCodeList.get(orderNo-1);
 		
 		if(orderNo != 6 && orderNo != 7) {//디저트, md 상품이 아니면 옵션 선택
 			System.out.println("선택해주세요");
+<<<<<<< HEAD
+
+			System.out.println("1.Hot  2.Ice");
+			tem = sc.nextInt();
+			System.out.println("0.없음 1.Small  2.Regular  3.Large");
+			cup = sc.nextInt();
+			System.out.println("1.시럽 추가  2.추가 안 함");
+			op[1] = sc.nextInt();
+			System.out.println("1.디카페인  2.해당 없음");
+			op[2] = sc.nextInt();
+			System.out.println("1.휘핑 추가  2.추가 없음");
+			op[3] = sc.nextInt();
+
+			System.out.println("1.Hot\t 2.Ice");
+			tem = sc.nextInt();
+			System.out.println("0.없음\t 1.Small\t 2.Regular\t 3.Large");
+			cup = sc.nextInt();
+			System.out.println("1.시럽 추가\t 2.추가 안 함");
+			op[0] = sc.nextInt();
+			System.out.println("1.디카페인\t 2.해당 없음");
+			op[1] = sc.nextInt();
+			System.out.println("1.휘핑 추가\t 2.추가 없음");
+			op[2] = sc.nextInt();
+=======
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
 			tem = tem.replace("1", "H");
@@ -62,6 +108,7 @@ public class EndView {
 			op[1] = sc.nextLine();
 			System.out.println("1.휘핑 추가\t 2.추가 없음");
 			op[2] = sc.nextLine();
+>>>>>>> seryun
 		}
 		System.out.println("수량을 입력하세요");
 		int quan = Integer.parseInt(sc.nextLine());
@@ -107,10 +154,45 @@ public class EndView {
 			OrdersController.insertOrders(order);
 			System.out.println("어디야");
 			break;
+<<<<<<< HEAD
+		case 3:
+			temS="I";
+			break;
+		}
+		
+		
+		Orders order = new Orders(0,null,null,null,0,quan,null,null,null);//userId 받아야함
+		OrderLine orderline = new OrderLine(0,0,orderCode,0,quan);
+		Option option = new Option(0,cup,null,temS,op2[0],op2[1],op2[2]);
+		
+		order.getOrderLineList().add(orderline);
+		orderline.getOptionList().add(option);
+		
+		System.out.println("1.주문하기\t 2.장바구니에 담기");
+		switch(sc.nextInt()){
+		case 1:	
+			System.out.println("- 주문 상품 : ");
+			
+			OrdersController.insertOrders(order); break;
+		case 2: 
+		}
+		
+		
+		Orders orders = new Orders(0,null,null,null,0,quan,null,null,null);
+		OrderLine ordLine = new OrderLine(0,0,orderCode,0,quan);
+		Option option2 = new Option(0,cup,null,temS,op2[0],op2[1],op2[2]);
+		
+		order.getOrderLineList().add(orderline);
+		orderline.getOptionList().add(option);
+		
+		OrdersController.insertOrders(order);//주문 or 장바구니담기
+		
+=======
 		case 2: //장바구니 담기
 			
 		}
 		
+>>>>>>> seryun
 		System.out.println();
 	}
 	 
