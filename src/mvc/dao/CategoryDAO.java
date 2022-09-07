@@ -7,6 +7,8 @@ import mvc.dto.Category;
 
 public interface CategoryDAO {
 	
-	List<Category> selectCategory() throws SQLException;
+	 List<Category> selectCategory() throws SQLException;
+		
+	
 
 }

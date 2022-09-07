@@ -21,21 +21,23 @@ public class GoodsDAOImpl implements GoodsDAO {
 	 */
 	
 	@Override
-	public List<Goods> goodsSelectByCategory() throws SQLException {
+	public List<Goods> selectBever(int num) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goodsCategory.selectAll"); //select * from goods_category
+		String sql = proFile.getProperty("goods.selectAllByCategory"); //select * from goods where category_code = ?
 
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
+			ps.setInt(1, num);
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-			 //   Goods goods = new Category(rs.getInt(1), rs.getString(2));
-				list.add(goods);
+			    Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+				
+			    list.add(goods);
 			}
 		} finally {
 			DbUtil.dbClose(con, ps, rs);

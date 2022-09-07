@@ -8,12 +8,12 @@ import mvc.view.EndView;
 import mvc.view.FailView;
 
 public class CategoryController {
-	static CategoryService categoryservice = new CategoryService();
+	static CategoryService categoryService = new CategoryService();
 	
 	public static void selectCategory() {
 		try {
-			List<Category> categoryList = categoryservice.selectCategory();
-			//EndView.printGoodsList(categoryList));
+			List<Category> categoryList = categoryService.selectCategory();
+			EndView.printsCategoryList(categoryList);
 			
 		}catch(Exception e) {
 			FailView.errorMessage(e.getMessage());

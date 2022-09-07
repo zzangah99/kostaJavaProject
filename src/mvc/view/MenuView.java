@@ -17,7 +17,6 @@ import mvc.session.UserSessionSet;
 import mvc.controller.GoodsController;
 
 public class MenuView {//메인 메뉴
-	CategoryController category = new CategoryController();
 	private static Scanner sc = new Scanner(System.in);
 	
 		/**
@@ -199,8 +198,10 @@ public class MenuView {//메인 메뉴
 				switch (menu) {
 				case 1 : //카테고리 메뉴들 출력
 					CategoryController.selectCategory();
-					//GoodsController.goodsSelectAll(userId);
-					break;
+					int num = Integer.parseInt(sc.nextLine());
+					GoodsController.selectBever(num);
+					
+					
 				case 2:
 					CartController.viewCart(userId);
 					break;

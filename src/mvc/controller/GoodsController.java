@@ -10,21 +10,14 @@ import mvc.view.FailView;
 
 public class GoodsController {
 	static GoodsService goodsService = new GoodsService();
-	/** 테스트
-	public static void goodsSelectByCategory() {
+	
+	/**
+	 * 카테고리에 따른 음료 가져오기
+	 */
+	public static void selectBever(int num) {
 		try {
-			List<Goods> categoryList = goodsService.goodsSelectByCategory();
+			List<Goods> categoryList = goodsService.selectBever(num);
 			EndView.printGoodsList(categoryList);
-		}catch (Exception e) {
-			FailView.errorMessage(e.getMessage());
-		}
-		
-	}
-	**/
-	public static void goodsSelectByCategory() {
-		try {
-			List<Goods> categoryList = goodsService.goodsSelectByCategory();
-			EndView.printsGoodsList(categoryList);
 		}catch (Exception e) {
 			FailView.errorMessage(e.getMessage());
 		}

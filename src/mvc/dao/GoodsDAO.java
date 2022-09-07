@@ -10,7 +10,7 @@ public interface GoodsDAO {
 	 * 대분류 상품 검색 
 	 */
 	
-	List<Goods> goodsSelectByCategory() throws SQLException;
+	List<Goods> selectBever(int num) throws SQLException;
 
 	/**
 	 * goodsName에 해당하는 정보 검색
