@@ -4,12 +4,14 @@ import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
+import mvc.controller.CategoryController;
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.controller.CustomerController;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
 import mvc.controller.GoodsController;
+import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.session.UserSessionSet;
 import mvc.controller.GoodsController;
@@ -219,8 +221,11 @@ public class MenuView {//메인 메뉴
 				int menu = Integer.parseInt(sc.nextLine());
 				switch (menu) {
 				case 1 : //카테고리 메뉴들 출력
-					//GoodsController.goodsSelectAll(userId);
-					break;
+					CategoryController.selectCategory();
+					int num = Integer.parseInt(sc.nextLine());
+					GoodsController.selectBever(num, userId);
+					
+					
 				case 2:
 					CartController.viewCart(userId);
 					break;
