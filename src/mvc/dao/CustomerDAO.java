@@ -16,18 +16,22 @@ public interface CustomerDAO {
 	 * 폰번호 인수로 받아 아이디 찾기 
 	 * select user_id where phone_num = ?
 	 */
-	Customer findId(String phonNum)throws SQLException;
+	String findId(String phonNum)throws SQLException;
 	
 	/**
 	 * 아이디, 폰번호 인수로 받아 비번 찾기 
 	 */
-	Customer findPw(String useId, String phonNum)throws SQLException;
+	String findPw(String useId, String phonNum)throws SQLException;
 
+	
 	/**
-	 * 아이디, 비번, 폰번호 인수로 받아 회원가입 
-	 * insert into user_info (user_id, user_pw, phone_num)values (?, ?, ?)
-	 */
-	int register(String userId, String userPw, String phonNum)throws SQLException;
+	 * 아이디, 비번, 폰번호 인수로 받아 회원가입
+	 * @throws SQLException  
+	 * */
+	int register(String userId, String userPw, String userName, String phoneNum, 
+			String email, String pinNum, int stamp)
+			throws SQLException;
+	
 
 	/**
 	 * 아이디 인수로 받아 마이페이지가기 
@@ -58,7 +62,7 @@ public interface CustomerDAO {
 	/**
 	 * 아이디 인수로 받아 스탬프 조회
 	 */
-	Customer myStamp(String userId)throws SQLException;
+	String myStamp(String userId)throws SQLException;
 
 	
 	/**
@@ -70,7 +74,11 @@ public interface CustomerDAO {
 	/**
 	 * 아이디 인수로 받아 별점 조회 
 	 */
-	Customer myStar(String userId)throws SQLException;
+	String myStar(String userId)throws SQLException;
+
+	
+
+	
 	
 	
 	

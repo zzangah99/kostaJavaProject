@@ -7,7 +7,9 @@ import mvc.service.CustomerService;
 
 public class CustomerController {
 	static CustomerService customerService = new CustomerService();
-
+//컨드롤러에서는 성공했을 때 어떻게 나와야하는지 여부 -> view로간다/failview로 간다 
+	
+	
 	/**
 	 * 아이디, 비번 인수로 받아 로그인  
 	 */
@@ -28,9 +30,9 @@ public class CustomerController {
 	 */
 	public static void findId(String phonNum) {
 		try {
-			Customer customer = customerService.findId(phonNum);
+			String catchUserId = customerService.findId(phonNum);
 			
-	    MenuView.printMenuForMember(); //찾은 아이디로 다시 로그인하러 가기 
+	    MenuView.printMenuForMember(); //로그인하러 가기 
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -43,9 +45,9 @@ public class CustomerController {
 	  * */
 	public static void findPw(String userId, String phonNum) {
 		try {
-		Customer customer = customerService.findPw(userId,phonNum);
+		String catchUserPw = customerService.findPw(userId, phonNum);
 		
-		MenuView.printMenuForMember(); //찾은 비번으로 다시 로그인하러 가기
+		MenuView.printMenuForMember(); //로그인하러 가기
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -54,13 +56,14 @@ public class CustomerController {
 	}
 
 	/**
-	  * 아이디, 비번, 폰번호 인수로 받아 회원가입
+	  * 아이디, 비번, 닉네임, 폰번호, 주민번호 인수로 받아 회원가입
 	  * */
-	public static void register(String userId, String userPw, String phonNum) {
+	public static void register(String userId, String userPw, String userName, String phoneNum, String pinNum, String email,
+			int stamp) {
 		try {
-		int customer = customerService.register(userId,userPw,phonNum);
+		int customer = customerService.register(userId, userPw, userName, phoneNum, email, pinNum, 0);
 		
-		MenuView.printMenuForMember();
+		MenuView.printMenuForMember(); //로그인하러 가기 
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -70,7 +73,7 @@ public class CustomerController {
 
 	
 	/**
-	  * 아이디 인수로 받아 개인정보 변경 
+	  * 비번 인수로 받아 개인정보 변경 
 	  * */
 	public static void userInfoChange(String userId) {
 		try {
@@ -121,7 +124,7 @@ public class CustomerController {
 	  * */
 	public static void myStamp(String userId) {
 		try {
-			Customer customer = customerService.myStamp(userId);
+			String myStamp = customerService.myStamp(userId);
 			
 			MenuView.printMenuForMember();
 			
@@ -147,7 +150,7 @@ public class CustomerController {
 	}
 	
 	/**
-	  * 아이디 인수로 받아 내가 쓴 리뷰보기 
+	  * 아이디 인수로 받아 내가 쓴 별 보기 
 	  * */
 	public static void myStar(String userId) {
 		try {
@@ -160,13 +163,28 @@ public class CustomerController {
 				FailView.errorMessage(e.getMessage());
 			}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	/**
+	  * 아이디 인수로 받아 마이페이지가기 
+	  * */
+	public static void myPage(String userId) {
+		try {
+			Customer customer = customerService.myPage(userId);
+			
+			MenuView.printUserMyPage(userId);//아이디가 있어야 마이페이지감  
+
+			}catch (Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			
+			}
+		
+	}
 }
+	
+	
+	
+	
+	
+	
+	

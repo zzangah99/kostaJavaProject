@@ -28,6 +28,7 @@ public class Customer {
 		this.stamp = stamp;
 	}
 
+
 	public String getUserId() {
 		return userId;
 	}
