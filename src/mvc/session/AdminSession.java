@@ -1,9 +1,20 @@
 package mvc.session;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 public class AdminSession {
 
 	private String adminssionId;
+	private Map<String,Object> attributes;
 
+	
+	public AdminSession(String adminssionId) {
+		this.adminssionId = adminssionId;
+		attributes = new HashMap<>();
+	}
+	
 	public AdminSession() {}
 
 	public String getAdminSessionId() {
@@ -14,25 +25,6 @@ public class AdminSession {
 		this.adminssionId = adminssionId;
 	}
 
-	@Override
-	public String toString() {
-		return "AdminSession [adminssionId=" + adminssionId + "]";
-	}
 
-	@Override
-	public int hashCode() {
-		return adminssionId.hashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		AdminSession other = (AdminSession) obj;
-		if (adminssionId.equals(other.adminssionId)) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
 
 }

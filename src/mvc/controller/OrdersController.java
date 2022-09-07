@@ -26,7 +26,7 @@ public class OrdersController {
 	/**
 	 * 주문내역보기
 	 * */
-	public static void selectOrdersByUserId(String userId) {
+	public static void selectOrder(String userId) {
 		try {
 			 List<Orders> orderList = orderService.selectOrdersByUserId(userId);
              EndView.printOrderByUserId(orderList);

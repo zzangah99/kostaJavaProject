@@ -166,6 +166,23 @@ public class EndView {
 			System.out.println();
 		}
 	}
+	
+	
+	public static void printOrderByDaySt(List<Orders> orderList) {
+		System.out.println("금일 통계");
+		for (Orders order : orderList) {
+			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
+					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
+			
+			for (OrderLine orderLine : order.getOrderLineList()) {
+				System.out.println("  ▶ " + orderLine);
+				for(Option option : orderLine.getOptionList()) {
+					System.out.println("     - " + option);
+				}
+			}
+			System.out.println();
+		}
+	}
 
 
 	

@@ -29,7 +29,11 @@ public interface AdminDAO {
 	 * GoodsCode에 해당하는 게시물 내용 수정하기
 	 * update goods set content = ? where goosdCode = ?
 	 */
-	int GoodsUpdate(Goods goods) throws SQLException;
+
+	int GoodsUpdateName(Goods goods) throws SQLException;
+	int GoodsUpdatePr(Goods goods) throws SQLException;
+	int GoodsUpdateSo(Goods goods) throws SQLException;
+	int GoodsUpdateSt(Goods goods) throws SQLException;
 	
 	/**
 	 * GoodsCode에 해당하는 레코드 삭제
@@ -50,8 +54,12 @@ public interface AdminDAO {
 					+ "values(?,?,sysdate,?,?,)
 	 */
 	int NoticePrint(Notice notice) throws SQLException;
-	
 
+	int goodsDelete();
+
+
+
+	
 	
 }
 

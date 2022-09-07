@@ -19,7 +19,7 @@ public interface OrdersDAO {
 	 */
 	int orderInsert(Orders order) throws SQLException;
 
-	/**
+	/*
 	 * 주문내역보기
 	 */
 	List<Orders> selectOrdersByUserId(String userId) throws SQLException;
