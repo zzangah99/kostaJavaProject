@@ -69,7 +69,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 //Customer customer=null;
 		 String catchUserId=null; 
 		 
-		 String sql=proFile.getProperty("userInfo.selectIdByPhone");
+		 //String sql=proFile.getProperty("userInfo.selectIdByPhone");
+		 String sql="select user_id FROM user_info where phone_num = ?";
 		 //폰번호를 입력하면 아이디 알려주는 쿼리 
 		 //select user_id FROM user_info where phone_num = ?
 		 //select user_id FROM user_info where phone_num = '01012345678';
@@ -102,14 +103,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 	  * catchUserPw -> 찾은 비번 
 	  * */
 	@Override
-	public String findPw(String userId, String phonNum) throws SQLException {
+	public String findPw(String userId, String phoneNum) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 //Customer customer=null;
 		 String catchUserPw=null;
 		 
-		 String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
+		 //String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
+		 String sql="select user_pw from user_info where user_id=? and phone_num=?";
 		 //폰번호, 아이디 입력하면 비밀번호 알려주는 쿼리 
 		 //select user_pw where user_id = ? and phone_num = ?
 		 //SELECT USER_PW  FROM user_info where phone_num = '01012345678' AND USER_ID='firstid';
@@ -120,12 +122,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 			 
 			 //'?'있으니까 setXxx
 			 ps.setString(1, userId);
-			 ps.setString(2, phonNum);
+			 ps.setString(2, phoneNum);
 			 
 			 //쿼리문 실행 
 			 rs=ps.executeQuery();
 			
-			 if(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 버번컬럼 하나만 결과임 
+			 //중복값으로 폰번호가 들어가서 2명의 사용자 비번이 나와야할 경우에는 여길 어떻게 처리해야할까 
+			 while(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 버번컬럼 하나만 결과임 
 				 catchUserPw=rs.getString(1); //이게 결과임 
 			 	}//if
 			 
@@ -151,7 +154,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 int chatchRegister=0;
 		 //Customer customer=null;
 		 
-		 String sql=proFile.getProperty("userInfo.insert");
+		 //String sql=proFile.getProperty("userInfo.insert");
+		   String sql="insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) \r\n"
+		   		+ "		  * values (?, ?, ?, ?, ?, ?, 0)";
+		 
 		 //아이디, 비번, 폰번호 입력
 		 /*
 		  * insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) 
@@ -193,7 +199,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 	
 	/**
-	  * 아이디 인수로 받아 개인정보 변경(update)
+	  * 비밀번호 인수로 받아 개인정보 변경(update)
 	 * @throws SQLException 
 	  * */
 	@Override
@@ -207,6 +213,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 //쿼리를 뭘 써야하나 
 		 String sql=proFile.getProperty("");
 		 //
+		 
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
@@ -285,7 +292,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 ResultSet rs=null;
 		 Customer customer=null;
 		 
-		 String sql=proFile.getProperty("myMenu.selectAl");
+		 //String sql=proFile.getProperty("myMenu.selectAl");
+		 String sql="select * from my_menu";
+		 
 		 //select * from my_menu
 		 
 		 try {
@@ -319,14 +328,15 @@ public class CustomerDAOImpl implements CustomerDAO {
 	 * @throws SQLException 
 	  * */
 	@Override
-	public String myStamp(String userId) throws SQLException {
+	public int myStamp(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 //Customer customer=null;
-		 String myStamp=null;
+		 int myStamp=0;
 		 
-		 String sql=proFile.getProperty("userInfo.selectStampById");
+		 //String sql=proFile.getProperty("userInfo.selectStampById");
+		 String sql="select stamp from user_info where user_id = ?";
 		 //아이디로 스탬프 조회 
 		 //select stamp from user_info where user_id = ?
 		 //select stamp from user_info where user_id = 'yuna';
@@ -343,7 +353,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			
 			 //이게 맞는지... 
 			 if(rs.next()) {
-				 myStamp=rs.getString(1);
+				 myStamp=rs.getint(1);
 			 	}//if
 			
 		 }finally {

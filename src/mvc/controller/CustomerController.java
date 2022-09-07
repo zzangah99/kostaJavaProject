@@ -75,9 +75,9 @@ public class CustomerController {
 	/**
 	  * 비번 인수로 받아 개인정보 변경 
 	  * */
-	public static void userInfoChange(String userId) {
+	public static void userInfoChange(String userPw) {
 		try {
-		int customer = customerService.userInfoChange(userId);
+		int customer = customerService.userInfoChange(userPw);
 		
 		MenuView.printMenuForMember();
 		
@@ -124,9 +124,9 @@ public class CustomerController {
 	  * */
 	public static void myStamp(String userId) {
 		try {
-			String myStamp = customerService.myStamp(userId);
+			int myStamp = customerService.myStamp(userId);
 			
-			MenuView.printMenuForMember();
+			//MenuView.printMenuForMember();
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -171,8 +171,10 @@ public class CustomerController {
 		try {
 			Customer customer = customerService.myPage(userId);
 			
-			MenuView.printUserMyPage(userId);//아이디가 있어야 마이페이지감  
-
+			if(userId!=null) {
+			MenuView.printUserMyPage(userId);
+			}
+			
 			}catch (Exception e) {
 				//e.printStackTrace();
 				FailView.errorMessage(e.getMessage());

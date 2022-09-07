@@ -106,6 +106,7 @@ public class CustomerService {
 			throw new NotFoundException("회원만 사용가능합니다. 로그인 후 이용해주세요.");
 		}
 		
+		//MenuView.printUserMyPage(userId);
 		
 		return customer;
 		//저스트 마이페이지만 가는것이기 때문에 세션,세션셋이 필요가 없음요 
@@ -177,12 +178,16 @@ public class CustomerService {
 	 * @throws NotFoundException 
 	 * @throws SQLException 
 	  * */
-	public String myStamp(String userId) throws NotFoundException, SQLException {
-		String myStamp=customerDao.myStamp(userId);
+	public int myStamp(String userId) throws NotFoundException, SQLException {
+		int myStamp=customerDao.myStamp(userId);
 		
-		if(myStamp==null) {
+		if(userId==null) {
 			throw new NotFoundException("회원만 사용가능합니다. 로그인 후 이용해주세요.");
 		}
+		
+		//서비스는 성공했을 때 어떻네 나와야하는지 처리 그럼 여기서 이게 맞음? --> 여기서 말고 앤드뷰로
+		System.out.println("보유하신 스탬프 "+myStamp+ "개 입니다.");
+		
 		
 		UserSession userSession = new UserSession(userId); 
 		

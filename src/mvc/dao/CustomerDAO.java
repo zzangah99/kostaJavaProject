@@ -62,7 +62,7 @@ public interface CustomerDAO {
 	/**
 	 * 아이디 인수로 받아 스탬프 조회
 	 */
-	String myStamp(String userId)throws SQLException;
+	int myStamp(String userId)throws SQLException;
 
 	
 	/**
