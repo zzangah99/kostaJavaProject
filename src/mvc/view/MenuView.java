@@ -199,7 +199,7 @@ public class MenuView {//메인 메뉴
 				case 1 : //카테고리 메뉴들 출력
 					CategoryController.selectCategory();
 					int num = Integer.parseInt(sc.nextLine());
-					GoodsController.selectBever(num);
+					GoodsController.selectBever(num, userId);
 					
 					
 				case 2:

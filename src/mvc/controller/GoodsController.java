@@ -14,9 +14,9 @@ public class GoodsController {
 	/**
 	 * 카테고리에 따른 음료 가져오기
 	 */
-	public static void selectBever(int num) {
+	public static void selectBever(int num, String userId) {
 		try {
-			List<Goods> categoryList = goodsService.selectBever(num);
+			List<Goods> categoryList = goodsService.selectBever(num, userId);
 			EndView.printGoodsList(categoryList);
 		}catch (Exception e) {
 			FailView.errorMessage(e.getMessage());

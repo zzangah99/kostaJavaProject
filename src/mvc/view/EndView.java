@@ -41,6 +41,7 @@ public class EndView {
 		int cup = 0;
 		int tem = 0;
 		String temS = null;
+		String userId = null;
 
 		System.out.println("-----상품 " + categoryList.size() + "개 -------------");
 
@@ -85,7 +86,7 @@ public class EndView {
 			break;
 		}
 
-		Orders order = new Orders(0, null, null, null, 0, quan, null, null, null);
+		Orders order = new Orders(0, null, userId, null, 0, quan, null, null, null);
 		OrderLine orderline = new OrderLine(0, 0, orderCode, 0, quan);
 		Option option = new Option(0, cup, null, temS, op2[0], op2[1], op2[2]);
 

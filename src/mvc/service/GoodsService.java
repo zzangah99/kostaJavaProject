@@ -12,8 +12,8 @@ public class GoodsService {
 	/**
 	 * 카테고리에 해당하는 상품 검색 
 	 */
-	public List<Goods> selectBever(int num) throws SQLException{
-		List<Goods> menuList = goodsDao.selectBever(num);
+	public List<Goods> selectBever(int num, String userId) throws SQLException{
+		List<Goods> menuList = goodsDao.selectBever(num, userId);
 		if(menuList.size() == 0) throw new SQLException("현재 상품이 없습니다.");
 		return menuList;
 		

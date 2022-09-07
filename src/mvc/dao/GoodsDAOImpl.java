@@ -21,7 +21,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 	 */
 	
 	@Override
-	public List<Goods> selectBever(int num) throws SQLException {
+	public List<Goods> selectBever(int num, String userId) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -36,7 +36,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 
 			while (rs.next()) {
 			    Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
-				
+			    goods.setUserId(userId);
 			    list.add(goods);
 			}
 		} finally {
