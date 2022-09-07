@@ -9,8 +9,8 @@ public class CustomerController {
 	static CustomerService customerService = new CustomerService();
 
 	/**
-	  * 로그인
-	  * */
+	 * 아이디, 비번 인수로 받아 로그인  
+	 */
 	public static void login(String userId, String userPw) {
 		try {
 		Customer customer = customerService.login(userId, userPw);
@@ -24,8 +24,8 @@ public class CustomerController {
 	}
 	
 	/**
-	  * 아이디 찾기 
-	  * */
+	 * 폰번호 인수로 받아 아이디 찾기 
+	 */
 	public static void findId(String phonNum) {
 		try {
 			Customer customer = customerService.findId(phonNum);
@@ -36,11 +36,10 @@ public class CustomerController {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 		}
-		
 	}
 	
 	/**
-	  * 비밀번호 찾기 
+	  * 아이디, 폰번호 인수로 받아 비밀번호 찾기 
 	  * */
 	public static void findPw(String userId, String phonNum) {
 		try {
@@ -55,11 +54,11 @@ public class CustomerController {
 	}
 
 	/**
-	  * 회원가입하기 
+	  * 아이디, 비번, 폰번호 인수로 받아 회원가입
 	  * */
 	public static void register(String userId, String userPw, String phonNum) {
 		try {
-		Customer customer = customerService.register(userId,userPw,phonNum);
+		int customer = customerService.register(userId,userPw,phonNum);
 		
 		MenuView.printMenuForMember();
 		
@@ -69,68 +68,97 @@ public class CustomerController {
 		}
 	}
 
+	
 	/**
-	  * 마이페이지 가기 
+	  * 아이디 인수로 받아 개인정보 변경 
 	  * */
-	public static void myPage(String userId) {
-		System.out.println("반갑습니다." +userId+ "님 !");
-		
+	public static void userInfoChange(String userId) {
 		try {
-		Customer customer = customerService.myPage(userId);
-		MenuView.printUserMyPage(userId);
+		int customer = customerService.userInfoChange(userId);
+		
+		MenuView.printMenuForMember();
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 		}
+
 	}
-	
+
 	/**
-	  * 개인정보 변경 
+	  * 아이디 인수로 받아 최근주문내역 조회 
 	  * */
-	public static void userInfoChange(String userId) {
-		// TODO Auto-generated method stub
+	public static void selectOrderRecent(String userId) {
+		try {
+			Customer customer = customerService.selectOrderRecent(userId);
+			
+			MenuView.printMenuForMember();
+			
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
 		
 	}
 
 	/**
-	  * 최근주문내역 조회 
-	  * */
-	public static void selectOrderReent(String userId) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	/**
-	  * 나만의 메뉴 
+	  * 아이디 인수로 받아 나만의 메뉴 
 	  * */
 	public static void myMenu(String userId) {
-		// TODO Auto-generated method stub
-		
+		try {
+			Customer customer = customerService.myMenu(userId);
+			
+			MenuView.printMenuForMember();
+			
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
 	}
 
 	/**
-	  * 스탬프 조회 
+	  * 아이디 인수로 받아 스탬프 조회 
 	  * */
 	public static void myStamp(String userId) {
-		// TODO Auto-generated method stub
-		
+		try {
+			Customer customer = customerService.myStamp(userId);
+			
+			MenuView.printMenuForMember();
+			
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
 	}
 
 	/**
-	  * 쿠폰 조회 
+	  * 아이디 인수로 받아 쿠폰 조회 
 	  * */
 	public static void myCp(String userId) {
-		// TODO Auto-generated method stub
-		
+		try {
+			Customer customer = customerService.myCp(userId);
+			
+			MenuView.printMenuForMember();
+			
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
 	}
 	
 	/**
-	  * 내가 쓴 리뷰보기 
+	  * 아이디 인수로 받아 내가 쓴 리뷰보기 
 	  * */
-	public static void myReview(String userId) {
-		// TODO Auto-generated method stub
-		
+	public static void myStar(String userId) {
+		try {
+			Customer customer = customerService.myStar(userId);
+			
+			MenuView.printMenuForMember();
+			
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
 	}
 	
 	
