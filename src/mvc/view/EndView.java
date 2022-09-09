@@ -108,14 +108,13 @@ public class EndView {
 			takeOut = takeOut.replace("2", "Y");
 
 			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
-			OrderLine orderline = new OrderLine(0, 0, orderCode, 0, quan);
+			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
 			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 
 			order.getOrderLineList().add(orderline);
 			orderline.getOptionList().add(option);
 
 			OrdersController.insertOrders(order);
-			System.out.println("어디야");
 			break;
 		case 2: // 장바구니 담기
 

@@ -185,9 +185,9 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public int getOrderPrice(Orders order) throws SQLException {
 		List<OrderLine> orderLineList= order.getOrderLineList();
 	    int total=0;
-	    
+	   
 		for(OrderLine line : orderLineList) {
-			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());
+			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());//오류 있음
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
 			else if(goods.getStock() <  line.getDetailQuan()) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
 			
