@@ -4,12 +4,14 @@ import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
+import mvc.controller.CategoryController;
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.controller.CustomerController;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
 import mvc.controller.GoodsController;
+import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.session.UserSessionSet;
 import mvc.controller.GoodsController;
@@ -110,6 +112,7 @@ public class MenuView {// 메인 메뉴
 		String phonNum = sc.nextLine();
 
 		CustomerController.findId(phonNum);
+
 	}// 아이디찾기 메소드 끝
 
 	static void findPw() {// 비번찾기
@@ -119,18 +122,29 @@ public class MenuView {// 메인 메뉴
 		String phonNum = sc.nextLine();
 
 		CustomerController.findPw(userId, phonNum);
-		// CustomerController.findId(phonNum); //없어도 될듯...?
 	}// 비번찾기 메소드 끝
 
 	private static void register() {// 회원가입
-		System.out.print("아이디를 입력해 주세요 >");
+		System.out.print("아이디를 입력해주세요 >");
 		String userId = sc.nextLine();
+
 		System.out.print("비밀번호를 입력해 주세요 >");
 		String userPw = sc.nextLine();
-		System.out.print("전화번호를 입력해 주세요 >");
-		String phonNum = sc.nextLine();
 
-		CustomerController.register(userId, userPw, phonNum);
+		System.out.print("닉네임을 입력해 주세요 >");
+		String userName = sc.nextLine();
+
+		System.out.print("핸드폰 번호를 입력해 주세요 >");
+		String phoneNum = sc.nextLine();
+
+		System.out.print("이메일 주소를 입력해 주세요 >");
+		String email = sc.nextLine();
+
+		System.out.print("생년월일을 입력해 주세요 >");
+		String pinNum = sc.nextLine();
+
+		int stamp = 0;// 여기 이렇게 하면 되나...? 사용자한테는 stamp 값 안받을 건데
+		CustomerController.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
 	}// 회원가입 메소드 끝
 
 	/**
@@ -143,13 +157,15 @@ public class MenuView {// 메인 메뉴
 			System.out.println("| 1. 개인정보 변경 | 2. 최근 주문내역조회 | 3. 나만의 메뉴 | 4. 스탬프 조회  |"
 					+ "\n|  5. 쿠폰조회    | 6. 등록한 리뷰보기  |  9. 주문하기   | 0.  종료하기   |");
 			try {
+
 				int mymenu = Integer.parseInt(sc.nextLine());
 				switch (mymenu) {
 				case 1:
-					CustomerController.userInfoChange(userId);
+					// CustomerController.userInfoChange(userPw);
+					MenuView.userInfoChange(userId);
 					break;
 				case 2:
-					CustomerController.selectOrderReent(userId);
+					CustomerController.selectOrderRecent(userId);
 					break;
 				case 3:
 					CustomerController.myMenu(userId);
@@ -161,7 +177,7 @@ public class MenuView {// 메인 메뉴
 					CustomerController.myCp(userId);
 					break;
 				case 6:
-					CustomerController.myReview(userId);
+					CustomerController.myStar(userId);
 					break;
 				case 9:
 					MenuView.printUserMenu(userId);
@@ -181,9 +197,21 @@ public class MenuView {// 메인 메뉴
 	}// 회원마이페이지 메소드 끝
 
 	/**
+	 * 마이페이지 switch 사용 메소드 개인정보변경=userInfoChange(), 아이디찾기=findId(), 비번찾기=findPw(),
+	 * 회원가입=register()
+	 */
+	private static void userInfoChange(String userId) {// 개인정보변경
+		System.out.print("개인정보 보호를 위해 비밀번호를 한번 더 입력해 주세요 >");
+		String userPw = sc.nextLine();
+
+		CustomerController.userInfoChange(userId);
+	}// 개인정보변경 메소드 끝
+
+	/**
 	 * 주문 메뉴 초기메뉴 (회원주문->회원메뉴//비회원주문) -> "주문메뉴(회원/비회원상태)"
 	 */
 	public static void printUserMenu(String userId) {// 주문메뉴
+
 		while (true) {
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(us.getSet()); //Set객체
@@ -194,9 +222,12 @@ public class MenuView {// 메인 메뉴
 			try {
 				int menu = Integer.parseInt(sc.nextLine());
 				switch (menu) {
+
 				case 1: // 카테고리 메뉴들 출력
-					// GoodsController.goodsSelectAll(userId);
-					break;
+					CategoryController.selectCategory();
+					int num = Integer.parseInt(sc.nextLine());
+					GoodsController.selectBever(num, userId);
+
 				case 2:
 					CartController.viewCart(userId);
 					break;
@@ -204,6 +235,7 @@ public class MenuView {// 메인 메뉴
 
 				case 4:
 					CustomerController.myPage(userId);
+					// MenuView.printUserMyPage(userId);//마이페이지가기
 					break;
 				case 0:
 					System.exit(0);
@@ -329,7 +361,7 @@ public class MenuView {// 메인 메뉴
 			}
 		} // while끝
 	}// GoodsUpdate 메소드 끝
-	// 상품 삭제하기
+		// 상품 삭제하기
 
 	public static void Goodsdelete(String goodsCode) {
 		AdminController.Goodsdelete();
