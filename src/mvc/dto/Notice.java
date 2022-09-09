@@ -1,4 +1,4 @@
-package mvc.model.dto;
+package mvc.dto;
 
 public class Notice {
 	

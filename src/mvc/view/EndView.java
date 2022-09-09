@@ -5,9 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import kosta.mvc.controller.OrderController;
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
+
+import mvc.dto.Customer;
+
+import mvc.dto.Category;
+
 import mvc.dto.Goods;
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
@@ -17,45 +21,56 @@ import mvc.session.UserSessionSet;
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
-	
+
+	/**
+	 * 대분류 출력
+	 */
+
+	public static void printsCategoryList(List<Category> categoryList) {
+		for (Category list : categoryList) {
+			System.out.print("  " + list.getCategoryCode() + "." + list.getCategoryName() + "   ");
+
+		}
+		System.out.println();
+		System.out.println();
+		System.out.print("주문하실 종류의 번호를 입력해주세요 > ");
+	}
+
 	/**
 	 * 메뉴 출력 후 주문
 	 */
 	public static void printGoodsList(List<Goods> coffeeList) {// 수정 필요
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
 		String op[] = new String[3];
-		int cup=0;
-		String tem=null;
-		
+		int cup = 0;
+		String tem = null;
+		String userId = null;
+
 		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
-		int goodsNo=0;
+		int goodsNo = 0;
 		for (Goods goods : coffeeList) {
-			System.out.print((++goodsNo) +"."+goods.getGoodsName() +"\t");
+			System.out.print((++goodsNo) + "." + goods.getGoodsName() + "\t");
 			goodsCodeList.add(goods.getGoodsCode());
+			userId = goods.getUserId();
 		}
-		
-		//용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
-		
-		
-		
-		
-		
-		
+
+		// 용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
+
 		//
 		System.out.print("\n주문할 상품 번호를 고르세요> ");
 		int orderNo = Integer.parseInt(sc.nextLine());
-		int orderCode = goodsCodeList.get(orderNo-1);
-		
-		if(orderNo != 6 && orderNo != 7) {//디저트, md 상품이 아니면 옵션 선택
+		int orderCode = goodsCodeList.get(orderNo - 1);
+
+		if (orderNo != 6 && orderNo != 7) {// 디저트, md 상품이 아니면 옵션 선택
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
 			tem = tem.replace("1", "H");
 			tem = tem.replace("2", "I");
-			
+
 			System.out.println("0.없음\t 1.Small\t 2.Regular\t 3.Large");
 			cup = Integer.parseInt(sc.nextLine());
-			
+
 			System.out.println("1.시럽 추가\t 2.추가 안 함");
 			op[0] = sc.nextLine();
 			System.out.println("1.디카페인\t 2.해당 없음");
@@ -65,62 +80,57 @@ public class EndView {
 		}
 		System.out.println("수량을 입력하세요");
 		int quan = Integer.parseInt(sc.nextLine());
-		
-		for(int i=0; i<op.length; i++) {
+
+		for (int i = 0; i < op.length; i++) {
 			op[i] = op[i].replace("1", "Y");
 			op[i] = op[i].replace("2", "N");
 		}
-		
+
 		System.out.println("1.주문하기\t 2.장바구니에 담기");
 		int choice = sc.nextInt();
-		System.out.println("- 주문 상품 : "+ coffeeList.get(orderNo-1).getGoodsName() +"\t주문 수량 : " + quan );
-		
-		switch(choice){
+		System.out.println("- 주문 상품 : " + coffeeList.get(orderNo - 1).getGoodsName() + "\t주문 수량 : " + quan);
+
+		switch (choice) {
 		case 1:
 			System.out.println("쿠폰을 사용하시겠습니까?\n1.사용\t 2.사용 안 함");
 			String cpChoice = sc.nextLine();
-			if(cpChoice.equals("1")) {
+			if (cpChoice.equals("1")) {
 				System.out.println("사용 가능한 쿠폰 목록");
-				
+
 			}
-			
+
 			System.out.println("\n- 결제 수단 선택");
 			System.out.println("1.현금\t 2.카드\t");
-			String payment= sc.nextLine();
+			String payment = sc.nextLine();
 			payment = payment.replace("1", "현금");
 			payment = payment.replace("2", "카드");
-			
+
 			System.out.println("\n테이크 아웃 여부를 선택해주세요");
 			System.out.println("1.먹고가기\t 2.가져가기");
 			String takeOut = sc.nextLine();
 			takeOut = takeOut.replace("1", "N");
 			takeOut = takeOut.replace("2", "Y");
-			
-			
-			Orders order = new Orders(0, null, null/*userId*/, null, 0, quan, payment, null, takeOut);// userId 받아야함
-			OrderLine orderline = new OrderLine(0, 0, orderCode, 0, quan);
+
+			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
+			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
 			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 
 			order.getOrderLineList().add(orderline);
 			orderline.getOptionList().add(option);
 
 			OrdersController.insertOrders(order);
-			System.out.println("어디야");
 			break;
-		case 2: //장바구니 담기
-			
+		case 2: // 장바구니 담기
+
 		}
-		
+
 		System.out.println();
 	}
-	 
-	 
 
 	public static void printMessage(String message) {//
 		System.out.println(message);
 	}
-	 
-	
+
 	/**
 	 * 장바구니 보기
 	 **/
@@ -164,8 +174,6 @@ public class EndView {
 
 	}
 
-	
-	
 	/**
 	 * 주문 내역보기
 	 */
@@ -175,10 +183,10 @@ public class EndView {
 		for (Orders order : orderList) {
 			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
 					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
-			
+
 			for (OrderLine orderLine : order.getOrderLineList()) {
 				System.out.println("  ▶ " + orderLine);
-				for(Option option : orderLine.getOptionList()) {
+				for (Option option : orderLine.getOptionList()) {
 					System.out.println("     - " + option);
 				}
 			}
@@ -187,5 +195,82 @@ public class EndView {
 	}
 
 
+
+	/**
+	  * 마이페이지->개인정보 보여주기 
+	  * */
+	public static void userInfoChange(Customer customer) {
+		System.out.println("개인정보 변경");
+		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
+		for() {
+		System.out.println("변경할 내용을 선택해주세요.");
+		
+		
+	}
+
+
+	/**
+	  * 마이페이지  
+	  * 아이디 인수로 받아 스탬프 조회 
+	  * */
+	public static void myStamp(int myStamp) {
+		System.out.println("보유한 스탬프는" +myStamp+ "개입니다.");
+		
+		Customer customer = new Customer();
+		customer.getStamp();
+		for(int i=1; i>=5; i++) {
+			System.out.println("*");
+		}
+		
+	}
+
+
+	/** 
+	 *  마이페이지 
+	  * 아이디 인수로 받아 최근주문내역 조회 
+	  * */
+	public static void selectOrderRecent(Customer customer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/** 
+	  * 마이페이지 
+	  * 아이디 인수로 받아 나만의 메뉴 
+	  * */
+	public static void myMenu(Customer customer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/**
+	  * 마이페이지->쿠폰코드 조회
+	  * */
+	public static void UserCoupon(String userId, String UserCoupon) {
+		System.out.println(userId+ "님의 쿠폰 보유 현황");
+		System.out.println("======보유한 쿠폰 List=====");
+		System.out.println("[쿠폰코드] " +UserCoupon+ " | [쿠폰이름] " + "| [할인금액] " + "| [기한] " );
+		
+		
+		
+	}
+
+
+	/**
+	  * 아이디 인수로 받아 내가 쓴 별 보기 
+	  * */
+	public static void myStar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
 	
+	
+
+	
+
 }

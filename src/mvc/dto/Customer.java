@@ -7,7 +7,7 @@ public class Customer {
 	private String phoneNum;
 	private String email;
 	private String regDate;
-	private String pinNum; //주민번호+1
+	private String pinNum; //주민번호+1 디비에서 char인데 들어가는 값이 220909 이런식으로 들어감 ''없이 일단 int로 바꿔보자 
 	private int stamp;
 	
 	
@@ -28,7 +28,8 @@ public class Customer {
 		this.stamp = stamp;
 	}
 
-	public String getUserId() {
+
+	public String getUserId() { //아이디 내놔라 
 		return userId;
 	}
 
