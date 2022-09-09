@@ -83,6 +83,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 	 */
 
 	public Goods goodsSelectBygoodsCode(int goodsCode) throws SQLException{
+		
 	      Connection con=null;
 		  PreparedStatement ps=null;
 		  ResultSet rs=null;

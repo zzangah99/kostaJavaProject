@@ -18,7 +18,6 @@ import mvc.util.DbUtil;
 
 public class OrdersDAOImpl implements OrdersDAO {
 	GoodsDAO goodsDao = new GoodsDAOImpl();
-	GiftConDAO giftConDao = new GiftConDAOImpl();
 	private Properties profile = DbUtil.getProfile();
 	
 	/**

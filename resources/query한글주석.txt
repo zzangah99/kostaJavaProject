@@ -45,6 +45,8 @@ notice.selectAllByDate=select * from notice where notice_date = ? order by notic
 
 notice.selectAllByTitle=select * from notice where notice_title like ? order by notice_num desc
 notice.selectAllByContent=select * from notice where notice_content like ? order by notice_num desc
+notice.selectLatestContent =select * from (select notice_content from notice order by notice_num desc) where rownum=1
+
 
 
 #user_info
@@ -276,6 +278,7 @@ tongye.selectByDate=select sum(detail_price) as 매출금액, sum(detail_quan) a
 //한달 조회시 코딩-> ? 2개는 서로 동일 월, 09 형식으로 입력
 //날짜지정 조회시 코딩-> ?(왼쪽)이 시작월 ?(오른쪽)이 조회마지막 달, 09 형식으로 입력
 tongye.selectByMonth=select sum(detail_price) as 매출금액, sum(detail_quan) as 매출수량 from order_detail full join order_order using (detail_code) where where order_time >=to_date(?, 'yymm') and order_time<to_date(?+1, 'yymm')
+
 
 //베스트 상품 조회
 //일별 조회-매출금액 많은순서

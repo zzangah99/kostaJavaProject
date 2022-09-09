@@ -9,9 +9,9 @@ import mvc.dao.AdminDAOImpl;
 import mvc.exception.NotFoundException;
 import mvc.dao.AdminDAO;
 import mvc.dto.Admin;
-import mvc.dto.Customer;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
+import mvc.dto.OrderDetail;
 import mvc.dto.Orders;
 import mvc.session.AdminSession;
 import mvc.session.AdminSessionSet;
@@ -112,7 +112,7 @@ public class AdminService {
 	
 	
 		public void goodsDelete(int goodCode) throws SQLException, NotFoundException {
-			int result = adminDao.goodsDelete();
+			int result = adminDao.GoodsDelete();
 		
 			if(result==0) {
 				throw new NotFoundException("상품이 삭제되지 않았습니다");
@@ -127,25 +127,46 @@ public class AdminService {
 		 *통계보기 
 		 */
 		//일
-		public static List<Orders> tongySelectByDate(String orderTime)throws SQLException, NotFoundException {
-			// TODO Auto-generated method stub
-			return null;
+		public OrderDetail getTodaysTotalOrderDetail() throws SQLException {
+			OrderDetail orderDetail= null;
+
+			try {
+			orderDetail = adminDao.getTodaysTotalOrderDetail();
+		
+			}catch (Exception e) {
+				return new OrderDetail();
+			
+			}
+		return orderDetail;
 		}
 		
+		//월
+		public OrderDetail getMonthTotalOrderDetail() throws SQLException {
+			OrderDetail orderDetail= null;
+
+			try {
+			orderDetail = adminDao.getTodaysTotalOrderDetail();
+		
+			}catch (Exception e) {
+				return new OrderDetail();
+			
+			}
+		return orderDetail;
+		}
 		
 		
 		/**
 		 * 공지 등록
          */
-			public static void NoticePrint(int noticeNum) throws SQLException, NotFoundException {
-				int result = adminDao.GoodsInsert(goods);
+			public Notice NoticePrint() throws SQLException, NotFoundException {
+				Notice notice = adminDao.noticeprint();
 			
-				if(result==0) {
-					throw new NotFoundException("상품등록에 실패하였습니다");
+				if(notice == null) {
+					throw new NotFoundException("공지등록에 실패하였습니다");
 				}else {
-					System.out.println("상품이 등록되었습니다");
+					System.out.println("공지이 등록되었습니다");
 				}
-			
+			return notice;
 			}
 			
 			

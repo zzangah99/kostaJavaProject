@@ -7,9 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
+
+import mvc.dao.GoodsDAO;
+import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
+import mvc.dto.OrderLine;
 import mvc.dto.Orders;
 import mvc.exception.NotFoundException;
 import mvc.service.AdminService;
@@ -20,13 +24,11 @@ import mvc.view.MenuView;
 
 
 public class AdminController {
-
-
+	GoodsDAO goodsDao = new GoodsDAOImpl();
 	static AdminService adminService = new AdminService();
 	
  /**
   * 로그인
- * @throws NotFoundException 
   * */
 	public static void login(String adminId, String adminPw) {
 		try {
@@ -62,7 +64,6 @@ public class AdminController {
 	public static void GoodsUpdateName(int goodsCode) {
 		try {
 			adminService.GoodsUpdateName(0);
-			EndView.printMessage("수정되었습니다.");
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -72,7 +73,6 @@ public class AdminController {
 	public static void GoodsUpdatePr(int goodsCode) {
 		try {
 			adminService.GoodsUpdatePr(0);
-			EndView.printMessage("수정되었습니다.");
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -83,7 +83,6 @@ public class AdminController {
 	public static void GoodsUpdateSo(int goodsCode) {
 		try {
 			adminService.GoodsUpdateSo(0);
-			EndView.printMessage("수정되었습니다.");
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -94,7 +93,6 @@ public class AdminController {
 	public static void GoodsUpdateSt(int goodsCode) {
 		try {
 			adminService.GoodsUpdateSt(0);
-			EndView.printMessage("수정되었습니다.");
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -106,7 +104,6 @@ public class AdminController {
    public static  void Goodsdelete(int goodsCode) {
     try {
     	adminService.goodsDelete(0);
-			EndView.printMessage("삭제되었습니다.");
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -115,37 +112,46 @@ public class AdminController {
 	
   
    //일통계보기
-   
-
-   public static void DayStatistic(String orderTime) {   
-	    // 총주문내역보기
-		//public static void TotalOrders(String userId) {
-			try {
-				 List<Orders> orderList = AdminService.tongySelectByDate(orderTime);
-	             EndView.printOrderByDaySt(orderList);
-			}catch (Exception e) {
-				FailView.errorMessage(e.getMessage());
-				
-			}
+	  
+		public static void getTodaysTotalOrderDetail() {
+			 try {
+			    	adminService.getTodaysTotalOrderDetail();
+					} catch (Exception e) {
+						//e.printStackTrace();
+						FailView.errorMessage(e.getMessage());
+					}
+			
 		}
+		
+	   
+	   
 
    
    //월통계보기
-   public static void MonStatistic() {
-	   
-   }
+		public static void getMonthTotalOrderDetail() {
+			 try {
+			    	adminService.getMonthTotalOrderDetail();
+					} catch (Exception e) {
+						//e.printStackTrace();
+						FailView.errorMessage(e.getMessage());
+					}
+			
+		}
    
 		
    //공지띄우기
 
-		public void NoticePrint(int noticeNum) {
+		public static Notice NoticePrint() {
+			Notice notice = null;
 			try {
-				adminService.NoticePrint(noticeNum);
-				EndView.printMessage("공지가 등록되었습니다.");
+				notice = adminService.NoticePrint();
+				EndView.printMessage("");
 			}catch (Exception e) {
 			    FailView.errorMessage(e.getMessage());
 			}
+			return notice;
 		}
+		
    
 }
 
