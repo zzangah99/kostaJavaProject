@@ -7,7 +7,11 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
+
+import mvc.dto.Customer;
+
 import mvc.dto.Category;
+
 import mvc.dto.Goods;
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
@@ -189,5 +193,84 @@ public class EndView {
 			System.out.println();
 		}
 	}
+
+
+
+	/**
+	  * 마이페이지->개인정보 보여주기 
+	  * */
+	public static void userInfoChange(Customer customer) {
+		System.out.println("개인정보 변경");
+		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
+		for() {
+		System.out.println("변경할 내용을 선택해주세요.");
+		
+		
+	}
+
+
+	/**
+	  * 마이페이지  
+	  * 아이디 인수로 받아 스탬프 조회 
+	  * */
+	public static void myStamp(int myStamp) {
+		System.out.println("보유한 스탬프는" +myStamp+ "개입니다.");
+		
+		Customer customer = new Customer();
+		customer.getStamp();
+		for(int i=1; i>=5; i++) {
+			System.out.println("*");
+		}
+		
+	}
+
+
+	/** 
+	 *  마이페이지 
+	  * 아이디 인수로 받아 최근주문내역 조회 
+	  * */
+	public static void selectOrderRecent(Customer customer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/** 
+	  * 마이페이지 
+	  * 아이디 인수로 받아 나만의 메뉴 
+	  * */
+	public static void myMenu(Customer customer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	/**
+	  * 마이페이지->쿠폰코드 조회
+	  * */
+	public static void UserCoupon(String userId, String UserCoupon) {
+		System.out.println(userId+ "님의 쿠폰 보유 현황");
+		System.out.println("======보유한 쿠폰 List=====");
+		System.out.println("[쿠폰코드] " +UserCoupon+ " | [쿠폰이름] " + "| [할인금액] " + "| [기한] " );
+		
+		
+		
+	}
+
+
+	/**
+	  * 아이디 인수로 받아 내가 쓴 별 보기 
+	  * */
+	public static void myStar() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	
+	
+
+	
 
 }

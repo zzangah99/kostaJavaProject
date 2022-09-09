@@ -4,7 +4,7 @@ import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
-import mvc.controller.CategoryController;
+import mvc.controller.CouponController;
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.controller.CustomerController;
@@ -143,8 +143,8 @@ public class MenuView {//메인 메뉴
 		System.out.print("생년월일을 입력해 주세요 >");
 		String pinNum = sc.nextLine();
 		
-		int stamp=0;//여기 이렇게 하면 되나...? 사용자한테는 stamp 값 안받을 건데 
-		CustomerController.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
+		int stamp=0;
+		CustomerController.register(userId, userPw, userName, phoneNum, pinNum, email, stamp);
 	}//회원가입 메소드 끝
 	
 	/**
@@ -161,7 +161,6 @@ public class MenuView {//메인 메뉴
 				int mymenu =Integer.parseInt( sc.nextLine());
 				switch(mymenu) {
 					case 1: 
-						//CustomerController.userInfoChange(userPw);
 						MenuView.userInfoChange(userId);
 						break;
 					case 2: 
@@ -174,7 +173,7 @@ public class MenuView {//메인 메뉴
 						CustomerController.myStamp(userId);
 						break;
 					case 5: 
-						CustomerController.myCp(userId);
+						CouponController.UserCoupon(userId);
 						break;
 					case 6: 
 						CustomerController.myStar(userId);
@@ -198,14 +197,21 @@ public class MenuView {//메인 메뉴
 	
 	/**
 	 * 마이페이지 switch 사용 메소드
-	 * 개인정보변경=userInfoChange(), 아이디찾기=findId(), 비번찾기=findPw(), 회원가입=register()
+	 * 개인정보변경=userInfoChange()
+	 * 개인정보 보여주기 
 	 */
 		private static void userInfoChange(String userId) {//개인정보변경 
-			System.out.print("개인정보 보호를 위해 비밀번호를 한번 더 입력해 주세요 >"); 
+			System.out.println("개인정보 보호를 위해 아이디를 한번 더 입력해 주세요 >"); 
 			String userPw = sc.nextLine();
+			CustomerController.userInfoChange(userId, userPw); //개인정보 보여주기 
 			
-			CustomerController.userInfoChange(userId);
-	}//개인정보변경 메소드 끝 
+			System.out.println("==========" +userId+ "님의 개인정보 변경==========");
+			CustomerController.userInfoChangeName();     //닉네임 변경 
+			CustomerController.userInfoChangePhoneNum(); //폰번호 변경 
+			CustomerController.userInfoChangePw();       //비번 변경 
+			CustomerController.userInfoChangeEmail();    //이메일 변경 
+		}//개인정보변경 메소드 끝 
+
 		/**
 		 * 주문 메뉴
 		 * 초기메뉴 (회원주문->회원메뉴//비회원주문) ->  "주문메뉴(회원/비회원상태)"
@@ -221,7 +227,7 @@ public class MenuView {//메인 메뉴
 				int menu = Integer.parseInt(sc.nextLine());
 				switch (menu) {
 				case 1 : //카테고리 메뉴들 출력
-					CategoryController.selectCategory();
+					//CategoryController.selectCategory();
 					int num = Integer.parseInt(sc.nextLine());
 					GoodsController.selectBever(num, userId);
 					
@@ -232,8 +238,8 @@ public class MenuView {//메인 메뉴
 				case 3: // 기프티콘으로 구매하기
 					
 				case 4:
-					CustomerController.myPage(userId);
-					//MenuView.printUserMyPage(userId);//마이페이지가기 
+					//CustomerController.myPage(userId);
+					MenuView.printUserMyPage(userId);//마이페이지가기 
 					break;
 				case 0:
 					System.exit(0);				

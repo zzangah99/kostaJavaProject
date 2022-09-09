@@ -1,7 +1,11 @@
 package mvc.controller;
 
+import mvc.view.EndView;
 import mvc.view.FailView;
 import mvc.view.MenuView;
+
+import java.sql.SQLException;
+
 import mvc.dto.Customer;
 import mvc.service.CustomerService;
 
@@ -17,7 +21,7 @@ public class CustomerController {
 		try {
 		Customer customer = customerService.login(userId, userPw);
 		
-		MenuView.printUserMenu(userId);//로그인 되면 userId 가지고 메뉴 띄워줌 
+		MenuView.printUserMenu(userId);//성공 로그인 메뉴고르러 가기  
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -32,7 +36,7 @@ public class CustomerController {
 		try {
 			String catchUserId = customerService.findId(phonNum);
 			
-	    MenuView.printMenuForMember(); //로그인하러 가기 
+	    MenuView.printMenuForMember(); //성공 로그인하러 가기  
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -47,7 +51,7 @@ public class CustomerController {
 		try {
 		String catchUserPw = customerService.findPw(userId, phonNum);
 		
-		MenuView.printMenuForMember(); //로그인하러 가기
+		MenuView.printMenuForMember(); //성공 로그인하러 가기  
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -61,41 +65,50 @@ public class CustomerController {
 	public static void register(String userId, String userPw, String userName, String phoneNum, String pinNum, String email,
 			int stamp) {
 		try {
-		int customer = customerService.register(userId, userPw, userName, phoneNum, email, pinNum, 0);
+		int customer = customerService.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
 		
-		MenuView.printMenuForMember(); //로그인하러 가기 
+		
+		MenuView.printMenuForMember(); //성공 로그인하러 가기 
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
-			FailView.errorMessage(e.getMessage());
+			
+			//FailView.errorMessage(e.getMessage());
+			System.out.println("--이미 등록된 회원입니다.--");  
+
 		}
 	}
 
 	
 	/**
+	  * 마이페이지  
 	  * 비번 인수로 받아 개인정보 변경 
 	  * */
-	public static void userInfoChange(String userId) {
+	public static void userInfoChange(String userPw) {
 		try {
-		int customer = customerService.userInfoChange(userId);
+		int customer = customerService.userInfoChange(userPw);
 		
-		MenuView.printMenuForMember();
+		EndView.userInfoChange(customer);
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
+		
 			FailView.errorMessage(e.getMessage());
+			//System.out.println("--비밀번호 오류입니다.--");
+			
 		}
 
 	}
 
-	/**
+	/** 
+	 *  마이페이지 
 	  * 아이디 인수로 받아 최근주문내역 조회 
 	  * */
 	public static void selectOrderRecent(String userId) {
 		try {
 			Customer customer = customerService.selectOrderRecent(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.selectOrderRecent(customer);
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -104,14 +117,15 @@ public class CustomerController {
 		
 	}
 
-	/**
+	/** 
+	  * 마이페이지 
 	  * 아이디 인수로 받아 나만의 메뉴 
 	  * */
 	public static void myMenu(String userId) {
 		try {
 			Customer customer = customerService.myMenu(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.myMenu(customer);
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -120,13 +134,14 @@ public class CustomerController {
 	}
 
 	/**
+	  * 마이페이지  
 	  * 아이디 인수로 받아 스탬프 조회 
 	  * */
 	public static void myStamp(String userId) {
 		try {
-			String myStamp = customerService.myStamp(userId);
+			int myStamp = customerService.myStamp(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.myStamp(myStamp);
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -134,29 +149,15 @@ public class CustomerController {
 			}
 	}
 
-	/**
-	  * 아이디 인수로 받아 쿠폰 조회 
-	  * */
-	public static void myCp(String userId) {
-		try {
-			Customer customer = customerService.myCp(userId);
-			
-			MenuView.printMenuForMember();
-			
-			}catch(Exception e) {
-				//e.printStackTrace();
-				FailView.errorMessage(e.getMessage());
-			}
-	}
 	
 	/**
 	  * 아이디 인수로 받아 내가 쓴 별 보기 
 	  * */
 	public static void myStar(String userId) {
 		try {
-			Customer customer = customerService.myStar(userId);
+			int myStar = customerService.myStar(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.myStar();
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -180,6 +181,7 @@ public class CustomerController {
 			}
 		
 	}
+	
 }
 	
 	
