@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 package mvc.controller;
 
 import mvc.view.EndView;
@@ -185,11 +183,4 @@ public class CustomerController {
 	}
 	
 }
-	
-	
-	
-	
-	
-	
-	
->>>>>>> da39303894f84cf203d021d702f2bf752d5c6d83
+

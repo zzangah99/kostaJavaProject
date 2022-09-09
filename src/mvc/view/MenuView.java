@@ -28,9 +28,6 @@ public class MenuView {//메인 메뉴
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(ss.getSet());
 			System.out.println("=============================== Cafe ================================");
-AdminController adminController = new AdminController();
-			adminController.NoticePrint(); 
-			
 			System.out.println("-------------------------접속 유형을 선택해주세요--------------------------");
 			System.out.println("| 1. 회원으로 주문하기 | 2. 비회원으로 주문하기 | 3.  관리자 접속   | 0.  종료   |");
 			try {
