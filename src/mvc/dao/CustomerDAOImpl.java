@@ -69,7 +69,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 //Customer customer=null;
 		 String catchUserId=null; 
 		 
-		 String sql=proFile.getProperty("userInfo.selectIdByPhone");
+		 //String sql=proFile.getProperty("userInfo.selectIdByPhone");
+		 String sql="select user_id FROM user_info where phone_num = ?";
 		 //폰번호를 입력하면 아이디 알려주는 쿼리 
 		 //select user_id FROM user_info where phone_num = ?
 		 //select user_id FROM user_info where phone_num = '01012345678';
@@ -109,9 +110,10 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 //Customer customer=null;
 		 String catchUserPw=null;
 		 
-		 String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
+		 //String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
+		 String sql="SELECT USER_PW  FROM user_info where phone_num = ? AND USER_ID=?";
 		 //폰번호, 아이디 입력하면 비밀번호 알려주는 쿼리 
-		 //select user_pw where user_id = ? and phone_num = ?
+		 //SELECT USER_PW  FROM user_info where phone_num = ? AND USER_ID= ?;
 		 //SELECT USER_PW  FROM user_info where phone_num = '01012345678' AND USER_ID='firstid';
 		 
 		 try {
@@ -145,18 +147,17 @@ public class CustomerDAOImpl implements CustomerDAO {
 	  * */
 	@Override
 	public int register(String userId, String userPw, String userName, String phoneNum, 
-			String email,String pinNum, int stamp) throws SQLException {
+			String email, String pinNum, int stamp) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 int chatchRegister=0;
 		 //Customer customer=null;
 		 
-		 String sql=proFile.getProperty("userInfo.insert");
+		 //String sql=proFile.getProperty("userInfo.insert");
+		 String sql="insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) \r\n"
+		 		+ "values (?, ?, ?, ?, ?, ?, ?)";
 		 //아이디, 비번, 폰번호 입력
-		 /*
-		  * insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) 
-		  * values (?, ?, ?, ?, ?, ?, 0)
-		 */
+		 
 		 
 		 try {
 			 con=DbUtil.getConnection();
@@ -169,7 +170,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			 ps.setString(4,phoneNum);
 			 ps.setString(5,email);
 			 ps.setString(6,pinNum);
-			 ps.setInt(7,0);
+			 ps.setInt(7,stamp);
 		
 			 //쿼리문 실행 
 			 chatchRegister=ps.executeUpdate();
@@ -193,7 +194,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 	
 	/**
-	  * 아이디 인수로 받아 개인정보 변경(update)
+	  * 비번 인수로 받아 개인정보 변경(update)
 	 * @throws SQLException 
 	  * */
 	@Override
@@ -205,15 +206,17 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 int result=0;
 		 
 		 //쿼리를 뭘 써야하나 
-		 String sql=proFile.getProperty("");
-		 //
+		 //String sql=proFile.getProperty("");
+		 String sql="";
+		 
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
 			 
-			 //아이디 받아와서 개인정보 변경을 해야되는데 엄.... 
+			 //비번받아서 폰번호, 닉네임, 비번, 이메일 변경 
 			 //쿼리문이 저렇게 들어가는데 인수가 비번 하나면 안되는건가...? ㅇㅅㅇ?
 			 //'?'있으니까 setXxx
+			 
 			 /*
 			 ps.setString(1, userPw.);
 			 ps.setString(2, userPw);
@@ -319,16 +322,16 @@ public class CustomerDAOImpl implements CustomerDAO {
 	 * @throws SQLException 
 	  * */
 	@Override
-	public String myStamp(String userId) throws SQLException {
+	public int myStamp(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 //Customer customer=null;
-		 String myStamp=null;
+		 int myStamp=0;
 		 
-		 String sql=proFile.getProperty("userInfo.selectStampById");
+		 //String sql=proFile.getProperty("userInfo.selectStampById");
+		 String sql="select stamp from user_info where user_id = ?";
 		 //아이디로 스탬프 조회 
-		 //select stamp from user_info where user_id = ?
 		 //select stamp from user_info where user_id = 'yuna';
 		 
 		 try {
@@ -343,7 +346,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			
 			 //이게 맞는지... 
 			 if(rs.next()) {
-				 myStamp=rs.getString(1);
+				 myStamp=rs.getInt(1);
 			 	}//if
 			
 		 }finally {
@@ -372,15 +375,16 @@ public class CustomerDAOImpl implements CustomerDAO {
 	 * @throws SQLException 
 	  * */
 	@Override
-	public Customer myStar(String userId) throws SQLException {
+	public int myStar(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
-		 Customer customer=null;
+		 int myStar=0;
 		 
-		 String sql=proFile.getProperty("review.selectAllById");
 		 //아이디로 리뷰보기 
-		 //select * from review where user_id = ? order by review_date
+		 //String sql=proFile.getProperty("");
+		 String sql="select * from REVIEW where user_id = ?";
+		 //select * from REVIEW where user_id = ?;
 		 
 		 try {
 			 con=DbUtil.getConnection();
@@ -394,19 +398,18 @@ public class CustomerDAOImpl implements CustomerDAO {
 			
 			 //이게 맞는지... 
 			 if(rs.next()) {
-				 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), 
-						 rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
+				 myStar=rs.getInt(1);
 			 	}//if
 			 
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
 		 }//try
 		 
-		return customer;
+		return myStar;
 
 	}
 
-
+	
 	
 	/**
 	  * 아이디 인수로 받아 내가 쓴 리뷰쓰기 
