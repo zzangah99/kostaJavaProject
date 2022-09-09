@@ -141,8 +141,8 @@ public class AdminController {
 		
    //공지띄우기
 
-		public static Notice NoticePrint() {
-			Notice notice = null;
+		public static String NoticePrint() {
+			String notice = null;
 			try {
 				notice = adminService.NoticePrint();
 				EndView.printMessage("");

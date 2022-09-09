@@ -158,8 +158,8 @@ public class AdminService {
 		/**
 		 * 공지 등록
          */
-			public Notice NoticePrint() throws SQLException, NotFoundException {
-				Notice notice = adminDao.noticeprint();
+			public String NoticePrint() throws SQLException, NotFoundException {
+				String notice = adminDao.noticeprint();
 			
 				if(notice == null) {
 					throw new NotFoundException("공지등록에 실패하였습니다");

@@ -38,7 +38,7 @@ public class AdminDAOImpl implements AdminDAO {
 		  Admin admin=null;
 		 try {
 		   con = DbUtil.getConnection();
-		   ps= con.prepareStatement("select * from Customer where user_id=? and user_pwd=?");
+		   ps= con.prepareStatement("select * from admin where admin_id = ? and admin_pw = ?");
 		   ps.setString(1, adminId);
 		   ps.setString(2, adminPw);
 		   
@@ -222,7 +222,7 @@ public class AdminDAOImpl implements AdminDAO {
 
 	//공지
 	@Override
-	public Notice noticeprint() throws SQLException {
+	public String noticeprint() throws SQLException {
 		  Connection con=null;
 		  PreparedStatement ps=null;
 		  ResultSet rs=null;
@@ -281,7 +281,7 @@ public class AdminDAOImpl implements AdminDAO {
 		
 	}
 	
-	======
+	//======
 	   //월 통계보기
 
 	public OrderDetail getMonthTotalOrderDetail() throws SQLException {

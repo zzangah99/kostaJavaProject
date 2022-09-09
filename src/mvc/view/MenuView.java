@@ -5,11 +5,10 @@ import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
-import mvc.controller.CustomerController;
-import mvc.session.UserSession;
+
 import mvc.controller.CustomerController;
 import mvc.session.UserSessionSet;
-import mvc.session.UserSession;
+
 import mvc.controller.GoodsController;
 import mvc.dto.Goods;
 import mvc.dto.Notice;

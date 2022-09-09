@@ -66,19 +66,11 @@ public interface AdminDAO {
 	 insert into notice(notice_num, adminId, noticeDate, noticeTitel,noticeContent) "
 					+ "values(?,?,sysdate,?,?,)
 	 */
-	Notice noticeprint() throws SQLException;
+	String noticeprint() throws SQLException;
 
 
 
 
-	
-	
-
-
-
-
-
-	
 
 
 
