@@ -119,7 +119,17 @@ public class EndView {
 			System.out.println("어디야");
 			break;
 		case 2: // 장바구니 담기
-
+			
+			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
+			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
+			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+			
+			cartOrder.getOrderLineList().add(cartOrderline);
+			cartOrderline.getOptionList().add(cartOption);
+			
+			CartController.putCart(cartOrder, cartOrderline);
+			System.out.println("11");
+			break;
 		}
 
 		System.out.println();

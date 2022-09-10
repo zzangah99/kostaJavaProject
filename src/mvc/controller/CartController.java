@@ -21,11 +21,13 @@ import mvc.view.MenuView;
 
 public class CartController {
 
+	private static GoodsService goodsService = new GoodsService();
 	private static GoodsDAOImpl goodsDAO = new GoodsDAOImpl(); 
 			
 	/**
 	 * 장바구니에 담기
 	 */
+	/*
 	public static void putCart(String userId, int goodsId, int quantity) {
 
 		try {
@@ -73,7 +75,50 @@ public class CartController {
 			FailView.errorMessage(e.getMessage());
 		}
 	}
+	*/
 
+	   public static void putCart(Orders order,OrderLine orderline) {
+			
+			try {
+				//주문하기 → 상품고르기 → 옵션선택 → Goods goods 생성 → 결제하기 or 장바구니 담기  → 장바구니 세션확인 
+				//장바구니에 같은 goods가 있다면 재고 늘리기.  → 장바구이가 없으면 수량저장
+				String userId =order.getUserId();
+				String goodsId = orderline.getGoodsName();
+				int quantity= order.getOrderQuan();
+				
+				Goods goods = (Goods) goodsService.goodsSelectBygoodsName(goodsId);
+		
+				if(goods.getStock() < quantity) {
+					throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
+				}
+				
+				//id에 해당하는 세션찾기
+				UserSessionSet ss = UserSessionSet.getInstance();
+				UserSession usersession = ss.get(userId);	
+				
+				//세션에서 장바구니 찾기
+				Map<Goods, Integer> cart = (Map<Goods,Integer>)usersession.getAttribute("cart"); //상품 , 수량 저장 
+				
+				//장바구니가 없으면 장바구니 생성
+				if(cart == null) { 
+					cart = new HashMap<>(); 
+					usersession.setAttribute("cart", cart);
+				}
+			
+				//장바구니에서 상품찾기
+				Integer oldQuantity = cart.get(goods);
+				if(oldQuantity != null) { //장바구니에 이미 상품이 있다면
+					quantity += oldQuantity; //수량을 누적
+				}
+				
+				cart.put(goods, quantity); //장바구니에 상품 넣기
+				
+				EndView.printMessage("장바구니에 담았습니다");
+			}catch(Exception e) {
+				FailView.errorMessage(e.getMessage());
+			}
+		}
+	
 	/**
 	 * 장바구니 보기
 	 */
