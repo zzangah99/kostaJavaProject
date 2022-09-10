@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import mvc.dto.Customer;
 import mvc.dto.MyStar;
 import mvc.service.CustomerService;
+import mvc.service.OrderService;
 
 public class CustomerController {
 	static CustomerService customerService = new CustomerService();
@@ -98,23 +99,12 @@ public class CustomerController {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * 마이페이지->개인정보 변경->닉네임 
 	 */
 	public static void userInfoChangeName(String userId, String userName) {
 		try {
 			customerService.userInfoChangeName(userId, userName);
 			EndView.printMessage("닉네임 변경에 성공했습니다.");//성공 
-=======
-	  * 비번 인수로 받아 개인정보 변경 
-	  * */
-	public static void userInfoChange(String userPw) {
-		try {
-		int customer = customerService.userInfoChange(userPw);
-		
-		MenuView.printMenuForMember();
-		
->>>>>>> main
 		}catch(Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -152,23 +142,12 @@ public class CustomerController {
 	 */
 	public static void userInfoChangeEmail(String userId, String email) {
 		try {
-<<<<<<< HEAD
 			customerService.userInfoChangeEmail(userId, email);
 			EndView.printMessage("이메일 변경에 성공했습니다.");//성공 
 		}catch(Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 		}
-=======
-			int myStamp = customerService.myStamp(userId);
-			
-			//MenuView.printMenuForMember();
-			
-			}catch(Exception e) {
-				//e.printStackTrace();
-				FailView.errorMessage(e.getMessage());
-			}
->>>>>>> main
 	}
 	
 	/** 아직 못함 
@@ -202,19 +181,9 @@ public class CustomerController {
 	  * */
 	public static void myStamp(String userId) {
 		try {
-<<<<<<< HEAD
 			int myStamp = customerService.myStamp(userId);
 			EndView.myStamp(myStamp);
 			}catch(Exception e) {
-=======
-			Customer customer = customerService.myPage(userId);
-			
-			if(userId!=null) {
-			MenuView.printUserMyPage(userId);
-			}
-			
-			}catch (Exception e) {
->>>>>>> main
 				//e.printStackTrace();
 				FailView.errorMessage(e.getMessage());
 			}

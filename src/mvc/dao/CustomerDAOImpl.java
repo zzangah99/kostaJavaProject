@@ -61,17 +61,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 String catchUserId=null; 
-<<<<<<< HEAD
 		 String sql=proFile.getProperty("userInfo.selectIdByPhone");
 		 //select user_id from user_info where phone_num = ?
-=======
-		 
-		 //String sql=proFile.getProperty("userInfo.selectIdByPhone");
-		 String sql="select user_id FROM user_info where phone_num = ?";
-		 //폰번호를 입력하면 아이디 알려주는 쿼리 
-		 //select user_id FROM user_info where phone_num = ?
-		 //select user_id FROM user_info where phone_num = '01012345678';
->>>>>>> main
 		 
 		 try {
 			 con=DbUtil.getConnection();
@@ -98,28 +89,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 String catchUserPw=null;
-<<<<<<< HEAD
 		 String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
 
-=======
-		 
-		 //String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
-		 String sql="select user_pw from user_info where user_id=? and phone_num=?";
-		 //폰번호, 아이디 입력하면 비밀번호 알려주는 쿼리 
-		 //select user_pw where user_id = ? and phone_num = ?
-		 //SELECT USER_PW  FROM user_info where phone_num = '01012345678' AND USER_ID='firstid';
-		 
->>>>>>> main
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
 			 ps.setString(1, userId);
 			 ps.setString(2, phoneNum);
-<<<<<<< HEAD
-=======
-			 
-			 //쿼리문 실행 
->>>>>>> main
 			 rs=ps.executeQuery();
 			
 			 //중복값으로 폰번호가 들어가서 2명의 사용자 비번이 나와야할 경우에는 여길 어떻게 처리해야할까 
@@ -145,19 +121,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 int chatchRegister=0;
 		 
 		 //String sql=proFile.getProperty("userInfo.insert");
-<<<<<<< HEAD
 		 String sql="insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) \r\n"
 		 		+ "values (?, ?, ?, ?, ?, ?, ?)";
-=======
-		   String sql="insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) \r\n"
-		   		+ "		  * values (?, ?, ?, ?, ?, ?, 0)";
-		 
-		 //아이디, 비번, 폰번호 입력
-		 /*
-		  * insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) 
-		  * values (?, ?, ?, ?, ?, ?, 0)
-		 */
->>>>>>> main
 		 
 		 try {
 			 con=DbUtil.getConnection();
@@ -211,32 +176,16 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 	
 	/**
-<<<<<<< HEAD
 	 * 개인정보 변경->닉네임 
-=======
-	  * 비밀번호 인수로 받아 개인정보 변경(update)
->>>>>>> main
 	 * @throws SQLException 
 	 */
 	public int userInfoChangeName(String userId, String userName) throws SQLException {
 		 Connection con=null;
-<<<<<<< HEAD
 		 PreparedStatement ps=null; 
 		 Customer customer=null;
 		 int userInfoChangeName=0;
 		 String sql=proFile.getProperty("userInfo.updateName");
 		 //update user_info set user_name = ? where user_id = ?
-=======
-		 PreparedStatement ps=null;
-		 //ResultSet rs=null;
-		 //Customer customer=null;
-		 int result=0;
-		 
-		 //쿼리를 뭘 써야하나 
-		 String sql=proFile.getProperty("");
-		 //
-		 
->>>>>>> main
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
@@ -331,7 +280,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 Customer customer=null;
-		 String sql=proFile.getProperty("orderOrder.selectAllById");
+		 String sql=proFile.getProperty("");
 		 //select * from order_order where user_id = ?
 		 
 		 try {
@@ -358,17 +307,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 Customer customer=null;
-<<<<<<< HEAD
 		 //String sql=proFile.getProperty("myMenu.selectAl");
 		 String sql="select * from my_menu";
-=======
-		 
-		 //String sql=proFile.getProperty("myMenu.selectAl");
-		 String sql="select * from my_menu";
-		 
-		 //select * from my_menu
-		 
->>>>>>> main
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
@@ -393,43 +333,21 @@ public class CustomerDAOImpl implements CustomerDAO {
 	/**
 	  * 마이페이지->스탬프 조회 
 	  * */
-<<<<<<< HEAD
-=======
-	@Override
->>>>>>> main
 	public int myStamp(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
-<<<<<<< HEAD
 		 int myStamp=0;
 		 String sql=proFile.getProperty("userInfo.selectStampById");
 		 //String sql="select stamp from user_info where user_id = ?";
-=======
-		 //Customer customer=null;
-		 int myStamp=0;
-		 
-		 //String sql=proFile.getProperty("userInfo.selectStampById");
-		 String sql="select stamp from user_info where user_id = ?";
-		 //아이디로 스탬프 조회 
-		 //select stamp from user_info where user_id = ?
-		 //select stamp from user_info where user_id = 'yuna';
-		 
->>>>>>> main
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
 			 ps.setString(1, userId);
 			 rs=ps.executeQuery();
 			 if(rs.next()) {
-<<<<<<< HEAD
 				 myStamp=rs.getInt(1);
 			 }
-=======
-				 myStamp=rs.getint(1);
-			 	}//if
-			
->>>>>>> main
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
 		 }
