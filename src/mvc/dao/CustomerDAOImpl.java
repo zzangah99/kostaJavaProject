@@ -9,15 +9,16 @@ import java.util.List;
 import java.util.Properties;
 
 import mvc.dto.Customer;
+import mvc.dto.MyStar;
 import mvc.util.DbUtil;
 
 public class CustomerDAOImpl implements CustomerDAO {
 	
 	private Properties proFile = DbUtil.getProfile();
+	//int customer = new Customer();
 
 	/**
-	 * 아이디, 비번 인수로 받아 로그인  
-	 * @throws SQLException  
+	 * 로그인  
 	 */
 	@Override
 	public Customer login(String userId, String userPw) throws SQLException {
@@ -25,11 +26,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 Customer customer=null;
-		 
 		 String sql=proFile.getProperty("userInfo.selectLogin");
-		 //아이디, 비번으로 로그인 
 		 //select * from user_info where user_id = ? and user_pw = ?
-		 //select * from user_info where user_id = 'firstid' and user_pw = 'first';
 		 
 		 try {
 			 con=DbUtil.getConnection();
@@ -40,130 +38,95 @@ public class CustomerDAOImpl implements CustomerDAO {
 			 ps.setString(2, userPw);
 			 
 			 //쿼리문 실행 
-			 rs=ps.executeQuery();
+			 rs=ps.executeQuery();//이게 결과임 
 			
 			 if(rs.next()) {
 				 //이 부분은 customer에서 생성한 생성자 순서와 같아야함 
 				 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), 
 						 rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
-			 	}//if
-			 
+			 	}
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
-		 }//try
-		 
+		 }
 		return customer;
 	}
-
 	
 	/**
-	 * 폰번호 인수로 받아 아이디 찾기 
-	 * @throws SQLException 
-	 * catchUserId -> 찾은 아이디 
+	 * 아이디 찾기 
+	 * catchUserId : 찾은 아이디 
 	 */
 	@Override
 	public String findId(String phonNum) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
-		 //Customer customer=null;
 		 String catchUserId=null; 
-		 
-		 //String sql=proFile.getProperty("userInfo.selectIdByPhone");
-		 String sql="select user_id FROM user_info where phone_num = ?";
-		 //폰번호를 입력하면 아이디 알려주는 쿼리 
-		 //select user_id FROM user_info where phone_num = ?
-		 //select user_id FROM user_info where phone_num = '01012345678';
+		 String sql=proFile.getProperty("userInfo.selectIdByPhone");
+		 //select user_id from user_info where phone_num = ?
 		 
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //'?'있으니까 setXxx
 			 ps.setString(1, phonNum);
-			 
-			//쿼리문 실행 
 			 rs=ps.executeQuery();
 			
 			 if(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 아이디컬럼 하나만 결과임 
-				 catchUserId=rs.getString(1); //이게 결과임 
-			 	}//if
-			 
+				 catchUserId=rs.getString(1); 
+			 	}
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
 		 }
-		 
 		 return catchUserId;//쿼리결과가 여기에 저장 
 	}
 
-
 	/**
-	  * 아이디, 폰번호 인수로 받아 비밀번호 찾기 
-	  * @throws SQLException 
-	  * catchUserPw -> 찾은 비번 
+	  * 비밀번호 찾기 
+	  * catchUserPw : 찾은 비밀번호 
 	  * */
 	@Override
-	public String findPw(String userId, String phonNum) throws SQLException {
+	public String findPw(String userId, String phoneNum) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
-		 //Customer customer=null;
 		 String catchUserPw=null;
-		 
-		 //String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
-		 String sql="SELECT USER_PW  FROM user_info where phone_num = ? AND USER_ID=?";
-		 //폰번호, 아이디 입력하면 비밀번호 알려주는 쿼리 
-		 //SELECT USER_PW  FROM user_info where phone_num = ? AND USER_ID= ?;
-		 //SELECT USER_PW  FROM user_info where phone_num = '01012345678' AND USER_ID='firstid';
-		 
+		 String sql=proFile.getProperty("userInfo.selectPwPhoneByPhone");
+
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //'?'있으니까 setXxx
 			 ps.setString(1, userId);
-			 ps.setString(2, phonNum);
-			 
-			 //쿼리문 실행 
+			 ps.setString(2, phoneNum);
 			 rs=ps.executeQuery();
 			
-			 if(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 버번컬럼 하나만 결과임 
+			 //중복값으로 폰번호가 들어가서 2명의 사용자 비번이 나와야할 경우에는 여길 어떻게 처리해야할까 
+			 while(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 버번컬럼 하나만 결과임 
 				 catchUserPw=rs.getString(1); //이게 결과임 
 			 	}//if
-			 
 			 
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
 		 }
-		 
 		 return catchUserPw;
-		
 	}
 
-
 	/**
-	  * 아이디, 비번, 폰번호 인수로 받아 회원가입
-	  * @throws SQLException  
+	  * 회원가입
+	  * chatchRegister : 회원가입한 정보 
 	  * */
 	@Override
 	public int register(String userId, String userPw, String userName, String phoneNum, 
-			String email, String pinNum, int stamp) throws SQLException {
+		 String email, String pinNum, int stamp) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 int chatchRegister=0;
-		 //Customer customer=null;
 		 
 		 //String sql=proFile.getProperty("userInfo.insert");
 		 String sql="insert into user_info (user_id, user_pw, user_name, phone_num, email, pin_num, stamp) \r\n"
 		 		+ "values (?, ?, ?, ?, ?, ?, ?)";
-		 //아이디, 비번, 폰번호 입력
-		 
 		 
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //'?'있으니까 setXxx
 			 ps.setString(1,userId);
 			 ps.setString(2,userPw);
 			 ps.setString(3,userName);
@@ -171,145 +134,195 @@ public class CustomerDAOImpl implements CustomerDAO {
 			 ps.setString(5,email);
 			 ps.setString(6,pinNum);
 			 ps.setInt(7,stamp);
-		
-			 //쿼리문 실행 
+			 
 			 chatchRegister=ps.executeUpdate();
 			 
 		 }finally {
 			DbUtil.dbClose(con, ps);
 		 }
-		 
 		 return chatchRegister;
 	}
 
 	/*
-	 * 아이디 인수로 받아 마이페이지 가기 
-	 * 쿼리 어트케...?
-	@Override
+	 * 마이페이지
 	 */
+	@Override
 	public Customer myPage(String userId) throws SQLException {
-		 
-		 
+		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	/**
-	  * 비번 인수로 받아 개인정보 변경(update)
-	 * @throws SQLException 
-	  * */
-	@Override
-	public int userInfoChange(String userPw) throws SQLException {
+	/*
+	 * 마이페이지->개인정보 보여주기 
+	 * 닉네임, 비번, 폰번호, 이메일, 가입일, 생년월일 
+	 */
+	public Customer userInfoChange(String userId, String userPw) throws SQLException {
 		 Connection con=null;
-		 PreparedStatement ps=null;
-		 //ResultSet rs=null;
-		 //Customer customer=null;
-		 int result=0;
+		 PreparedStatement ps=null; 
+		 ResultSet rs=null;
+		 Customer customer=null;
+		 String sql=proFile.getProperty("userInfo.selectAllById2");
+		 //select user_name, user_pw, phone_num, email, pin_num, reg_date from user_info where user_id = ?
+		 con=DbUtil.getConnection();
+		 ps=con.prepareStatement(sql);
+		 ps.setString(1, userId);
+		 rs=ps.executeQuery();
 		 
-		 //쿼리를 뭘 써야하나 
-		 //String sql=proFile.getProperty("");
-		 String sql="";
-		 
+		 if(rs.next()) {
+			 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4),
+					 rs.getString(5), rs.getString(6));
+		 	}
+		 return customer;
+	}
+	
+	/**
+	 * 개인정보 변경->닉네임 
+	 * @throws SQLException 
+	 */
+	public int userInfoChangeName(String userId, String userName) throws SQLException {
+		 Connection con=null;
+		 PreparedStatement ps=null; 
+		 Customer customer=null;
+		 int userInfoChangeName=0;
+		 String sql=proFile.getProperty("userInfo.updateName");
+		 //update user_info set user_name = ? where user_id = ?
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //비번받아서 폰번호, 닉네임, 비번, 이메일 변경 
-			 //쿼리문이 저렇게 들어가는데 인수가 비번 하나면 안되는건가...? ㅇㅅㅇ?
-			 //'?'있으니까 setXxx
-			 
-			 /*
-			 ps.setString(1, userPw.);
-			 ps.setString(2, userPw);
-			 ps.setString(3, userPw);
-			 ps.setString(4, userPw);
-			 ps.setString(5, userPw);
-			 ps.setString(6, userPw);
-			 ps.setInt(6, 0);
-			 */
-			 //쿼리문 실행 
-			 result=ps.executeUpdate();
-			
-		 }finally {
-			DbUtil.dbClose(con, ps);
-		 }//try
-		 
-		return result;
+			 ps.setString(1, userName);//이렇게 쓰고 싶으면 인수로 닉네임도 같이 들고 들어와야하는지 
+			 ps.setString(2, userId);
+			 userInfoChangeName=ps.executeUpdate(); //결과가 int 
+		 }	 
+		 finally {
+				DbUtil.dbClose(con, ps);
+		 }
+		 return userInfoChangeName;
+		 //성공 유무면 결과를 가지고 간다 
 	}
-
 	
 	/**
-	  * 아이디 인수로 받아 최근주문내역 조회 
+	 * 개인정보 변경->폰번호(not null)  
 	 * @throws SQLException 
+	 */
+	public int userInfoChangePhoneNum(String userId, String phoneNum) throws SQLException{
+		 Connection con=null;
+		 PreparedStatement ps=null; 
+		 Customer customer=null;
+		 int userInfoChangePhoneNum=0;
+		 String sql=proFile.getProperty("userInfo.updatePhone");
+		 //update user_info set phone_num = ? where user_id = ?
+		 try {
+			 con=DbUtil.getConnection();
+			 ps=con.prepareStatement(sql);
+			 ps.setString(1, phoneNum);
+			 ps.setString(2, userId);
+			 userInfoChangePhoneNum=ps.executeUpdate();
+		 }
+		 finally {
+			 DbUtil.dbClose(con, ps);
+		 }
+		 return userInfoChangePhoneNum;
+	}
+	
+	/**
+	 * 개인정보 변경->비번  
+	 * @throws SQLException 
+	 */
+	public int userInfoChangePw(String userId, String userPw) throws SQLException {
+		 Connection con=null;
+		 PreparedStatement ps=null; 
+		 Customer customer=null;
+		 int userInfoChangePw=0;
+		 String sql=proFile.getProperty("userInfo.updatePw");
+		 //update user_info set user_pw = ? where user_id = ?
+		 try {
+			 con=DbUtil.getConnection();
+			 ps=con.prepareStatement(sql);
+			 ps.setString(1, userPw);
+			 ps.setString(2, userId);
+			 userInfoChangePw=ps.executeUpdate();
+		 }
+		 finally {
+			 DbUtil.dbClose(con, ps);
+		 }
+		 return userInfoChangePw;
+	}
+	
+	/**
+	 * 개인정보 변경->이메일  
+	 * @throws SQLException 
+	 */
+	public int userInfoChangeEmail(String userId, String email) throws SQLException {
+		 Connection con=null;
+		 PreparedStatement ps=null; 
+		 Customer customer=null;
+		 int userInfoChangeEmail=0;
+		 String sql=proFile.getProperty("userInfo.updateEmail");
+		 //update user_info set email = ? where user_id = ?
+		 try {
+			 con=DbUtil.getConnection();
+			 ps=con.prepareStatement(sql);
+			 ps.setString(1, email);
+			 ps.setString(2, userId);
+			 userInfoChangeEmail=ps.executeUpdate();
+		 }
+		 finally {
+			 DbUtil.dbClose(con, ps);
+		 }
+		 return userInfoChangeEmail;
+	}
+	
+	/**
+	  * 마이페이지->최근주문내역 조회 
 	  * */
-	@Override
 	public Customer selectOrderRecent(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 Customer customer=null;
-		 
 		 String sql=proFile.getProperty("orderOrder.selectAllById");
-		 //아이디로 최근주문 내역 조회 
 		 //select * from order_order where user_id = ?
 		 
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //'?'있으니까 setXxx
 			 ps.setString(1, userId);
-			 
-			 //쿼리문 실행 
 			 rs=ps.executeQuery();
 			
-			 //이게 맞는지... 
 			 if(rs.next()) {
 				 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), 
 						 rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
-			 	}//if
-			 
+			 	}
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
-		 }//try
-		 
+		 }
 		return customer;
-
 	}
 
-	
 	/**
-	  * 아이디 인수로 받아 나만의 메뉴 조회 
-	 * @throws SQLException 
+	  * 마이페이지->나만의 메뉴 조회 
 	  * */
-	@Override
 	public Customer myMenu(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 Customer customer=null;
-		 
-		 String sql=proFile.getProperty("myMenu.selectAl");
-		 //select * from my_menu
-		 
+		 //String sql=proFile.getProperty("myMenu.selectAl");
+		 String sql="select * from my_menu";
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //쿼리문 실행 
 			 rs=ps.executeQuery();
 			 
 			 if(rs.next()) {
 				 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), 
 						 rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
-			 	}//if
-			
+			 	}
 		 }finally {
 			DbUtil.dbClose(con, ps);
-		 }//try
-		 
+		 }
 		return customer;
 	}
-	
 	
 	/**
 	  * 아이디 인수로 받아 나만의 메뉴 만들기  
@@ -318,51 +331,32 @@ public class CustomerDAOImpl implements CustomerDAO {
 	
 	
 	/**
-	  * 아이디 인수로 받아 스탬프 조회 
-	 * @throws SQLException 
+	  * 마이페이지->스탬프 조회 
 	  * */
-	@Override
 	public int myStamp(String userId) throws SQLException {
 		 Connection con=null;
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
-		 //Customer customer=null;
 		 int myStamp=0;
-		 
-		 //String sql=proFile.getProperty("userInfo.selectStampById");
-		 String sql="select stamp from user_info where user_id = ?";
-		 //아이디로 스탬프 조회 
-		 //select stamp from user_info where user_id = 'yuna';
-		 
+		 String sql=proFile.getProperty("userInfo.selectStampById");
+		 //String sql="select stamp from user_info where user_id = ?";
 		 try {
 			 con=DbUtil.getConnection();
 			 ps=con.prepareStatement(sql);
-			 
-			 //'?'있으니까 setXxx
 			 ps.setString(1, userId);
-			 
-			 //쿼리문 실행 
 			 rs=ps.executeQuery();
-			
-			 //이게 맞는지... 
 			 if(rs.next()) {
 				 myStamp=rs.getInt(1);
-			 	}//if
-			
+			 }
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
-		 }//try
-		 
+		 }
 		return myStamp;
-
 	}
 
 	
 	/**
-	  * 아이디 인수로 받아 쿠폰 조회 
-	 * @throws SQLException 
-	@Override
-	@Override
+	  * 마이페이지->쿠폰 조회 
 	*/
 	public Customer myCp(String userId) throws SQLException {
 		// TODO Auto-generated method stub
@@ -370,44 +364,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 	}
 
 	
-	/**
-	  * 아이디 인수로 받아 내가 쓴 리뷰보기 
-	 * @throws SQLException 
-	  * */
-	@Override
-	public int myStar(String userId) throws SQLException {
-		 Connection con=null;
-		 PreparedStatement ps=null;
-		 ResultSet rs=null;
-		 int myStar=0;
-		 
-		 //아이디로 리뷰보기 
-		 //String sql=proFile.getProperty("");
-		 String sql="select * from REVIEW where user_id = ?";
-		 //select * from REVIEW where user_id = ?;
-		 
-		 try {
-			 con=DbUtil.getConnection();
-			 ps=con.prepareStatement(sql);
-			 
-			 //'?'있으니까 setXxx
-			 ps.setString(1, userId);
-			 
-			 //쿼리문 실행 
-			 rs=ps.executeQuery();
-			
-			 //이게 맞는지... 
-			 if(rs.next()) {
-				 myStar=rs.getInt(1);
-			 	}//if
-			 
-		 }finally {
-			DbUtil.dbClose(con, ps, rs);
-		 }//try
-		 
-		return myStar;
-
-	}
+	
 
 	
 	

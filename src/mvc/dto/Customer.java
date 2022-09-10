@@ -6,13 +6,12 @@ public class Customer {
 	private String userName;
 	private String phoneNum;
 	private String email;
-	private String regDate;
-	private String pinNum; //주민번호+1 디비에서 char인데 들어가는 값이 220909 이런식으로 들어감 ''없이 일단 int로 바꿔보자 
+	private String regDate; //가입일 
+	private String pinNum;  //생년월일 
 	private int stamp;
 	
 	
 	public Customer() {
-		
 	}
 
 	public Customer(String userId, String userPw, String userName, String phoneNum, String email, String regDate,
@@ -28,7 +27,20 @@ public class Customer {
 		this.stamp = stamp;
 	}
 
-
+	/**
+	 * 개인정보 보여주기
+	 */
+	               //user_name, user_pw, phone_num, email, reg_date, pin_num
+	public Customer(String userName, String userPw, String phomeNum, String email, String pinNum, String regDate) {
+		super();
+		this.userName = userName;
+		this.userPw = userPw;
+		this.phoneNum = phoneNum;
+		this.email = email;
+		this.regDate = regDate;
+		this.pinNum = pinNum;
+	}
+	
 	public String getUserId() { //아이디 내놔라 
 		return userId;
 	}
