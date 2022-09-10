@@ -121,7 +121,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 			  con = DbUtil.getConnection();
 			  ps= con.prepareStatement(sql);
 			  
-			  ps.setInt(1, goods.getGoodsCode());
+			  ps.setInt(1, goodsCode);
 		      rs = ps.executeQuery(); 
 		 
 		  if(rs.next()) {

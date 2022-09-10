@@ -4,14 +4,30 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import mvc.controller.AdminController;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
+import mvc.dto.OrderDetail;
+import mvc.dto.OrderLine;
+import mvc.dto.Orders;
 import mvc.util.DbUtil;
+import java.util.Properties;
+import mvc.exception.NotFoundException;
+import mvc.dao.AdminDAO;
+import mvc.dto.Customer;
+import mvc.session.AdminSession;
+import mvc.session.AdminSessionSet;
 
 public class AdminDAOImpl implements AdminDAO {
+	GoodsDAO goodsDao = new GoodsDAOImpl();
+
+
+	private Properties proFile = DbUtil.getProfile();
+
 
 	@Override
 	public Admin login(String adminId, String adminPw) throws SQLException {
@@ -22,7 +38,7 @@ public class AdminDAOImpl implements AdminDAO {
 		  Admin admin=null;
 		 try {
 		   con = DbUtil.getConnection();
-		   ps= con.prepareStatement("select * from Customer where user_id=? and user_pwd=?");
+		   ps= con.prepareStatement("select * from admin where admin_id = ? and admin_pw = ?");
 		   ps.setString(1, adminId);
 		   ps.setString(2, adminPw);
 		   
@@ -44,8 +60,7 @@ public class AdminDAOImpl implements AdminDAO {
 		
         Connection con=null;
 		PreparedStatement ps =null;
-		String sql="insert into goods(goodsCode, goodsName, goodsPrice, soldOut, stock,categoryCode) "
-				+ "values(?,?,?,?,?,)";
+		String sql = proFile.getProperty("goods.insertMd=insert into goods");
 		int result =0;
 		
 		try {
@@ -54,20 +69,18 @@ public class AdminDAOImpl implements AdminDAO {
 		   
 		   ps = con.prepareStatement(sql);
 		  
-		   ps.setString(1, Goods.getGoodsCode());
-		   ps.setString(2, Goods.getGoodsName());
-		   ps.setInt(3, Goods.getGoodsPrice());
-		   ps.setString(4, Goods.getSoldOut());
-		   ps.setInt(5, Goods.getStock());
-		   ps.setString(6, Goods.getCategoryCode());
+		   ps.setInt(1, goods.getGoodsCode());
+		   ps.setString(2, goods.getGoodsName());
+		   ps.setInt(3, goods.getGoodsPrice());
+		   ps.setString(4, goods.getSoldOut());
+		   ps.setInt(5, goods.getStock());
+		   ps.setInt(6, goods.getCategoryCode());
 		   ps.addBatch(); //일괄처리할 작업에 추가
 		   ps.clearParameters();
 		   
 
 		   result = ps.executeUpdate();
-		  
-		}catch (Exception e) {
-			System.err.println("상품등록 실패하였습니다");
+
 	
 		}finally {
 			DbUtil.dbClose(con, ps);
@@ -77,99 +90,228 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	//수정
 	@Override
-	public int GoodsUpdate(Goods goods) throws SQLException {
-		
-		AdminController adminController = new AdminController() ;
-		
+	public int GoodsUpdateName(Goods goods) throws SQLException {
+
         Connection con=null;
 		PreparedStatement ps =null;
-		String sql="update * from goods where goodsCode = gcode";
-	 
+		int result = 0;
+		String sql= proFile.getProperty("goods.updateNameByCode");//update goods set goods_name = ? where goods_code = ?
+	    
 		try {
 			 con = DbUtil.getConnection();
 			 ps = con.prepareStatement(sql);
 			 
-	//??????????????????????????????????????????????????????????
+				ps.setString(1,goods.getGoodsName() );
+				ps.setInt(2,goods.getGoodsCode() );
 			 
-			int result = ps.executeUpdate();
+		result = ps.executeUpdate();
 			System.out.println("상품 수정완료");
 
-		}catch (Exception e) {
-			//e.printStackTrace();
-			System.err.println("상품수정 실패하였습니다");
 		}finally {
 			DbUtil.dbClose(con, ps);
 		}
 		
-		return 0;
-		
-		
-		
-		
+		return result;
 	}
+	
+	//수정
+	@Override
+		public int GoodsUpdatePr(Goods goodsCode) throws SQLException {
+
+	        Connection con=null;
+			PreparedStatement ps =null;
+			int result = 0;
+			String sql= proFile.getProperty("goods.updatePriceByCode");
+			try {
+				 con = DbUtil.getConnection();
+				 ps = con.prepareStatement(sql);
+				 
+					ps.setInt(1,goodsCode.getGoodsPrice() );
+					ps.setInt(2,goodsCode.getGoodsCode() );
+				 
+			result = ps.executeUpdate();
+				System.out.println("상품 수정완료");
+
+			}finally {
+				DbUtil.dbClose(con, ps);
+			}
+			
+			return result;
+		}
+		//수정
+		@Override
+		public int GoodsUpdateSo(Goods goodsCode) throws SQLException {
+
+	        Connection con=null;
+			PreparedStatement ps =null;
+			int result = 0;
+			String sql= proFile.getProperty("goods.updateSoldOutByCode");
+		    
+			try {
+				 con = DbUtil.getConnection();
+				 ps = con.prepareStatement(sql);
+				 
+					ps.setString(1,goodsCode.getSoldOut() );
+					ps.setInt(2,goodsCode.getGoodsCode() );
+				 
+			result = ps.executeUpdate();
+				System.out.println("상품 수정완료");
+
+			}finally {
+				DbUtil.dbClose(con, ps);
+			}
+			
+			return result;
+		}
+		
+		//수정
+		@Override
+		public int GoodsUpdateSt(Goods goodsCode) throws SQLException {
+
+	        Connection con=null;
+			PreparedStatement ps =null;
+			int result = 0;
+			String sql= proFile.getProperty("goods.updateStockByCode");
+		    
+			try {
+				 con = DbUtil.getConnection();
+				 ps = con.prepareStatement(sql);
+				 
+					ps.setInt(1,goodsCode.getStock() );
+					ps.setInt(2,goodsCode.getGoodsCode() );
+				 
+			result = ps.executeUpdate();
+				System.out.println("상품 수정완료");
+
+			}finally {
+				DbUtil.dbClose(con, ps);
+			}
+			
+			return result;
+		}
+
+	
+	
+	
+		
+
     //삭제
 	@Override
-	public int GoodsDelete(int goodsNo) throws SQLException {
+	public int GoodsDelete() throws SQLException {
 	AdminController adminController = new AdminController() ;	   
-			   Connection con=null;
-				
-				PreparedStatement ps =null;
-				String sql="delete from goods where goodsCode=(gcode)";
-				
-			 
-				try	 {
-				
-					int result = ps.executeUpdate(); 
-					System.out.println("상품이 삭제되었습니다." );
-					
-				} catch (Exception e) {
-					System.err.println("상품삭제 실패하였습니다");
-				}finally {
-					DbUtil.dbClose(con, ps);
-				}
-				return 0;
+	   Connection con=null;
+		
+		PreparedStatement ps =null;
+		String sql="delete from goods where goodsCode=(gcode)";
+		
+	 
+		try	 {
+		
+			int result = ps.executeUpdate(); 
+			System.out.println("상품이 삭제되었습니다." );
 			
+		} catch (Exception e) {
+			System.err.println("상품삭제 실패하였습니다");
+		}finally {
+			DbUtil.dbClose(con, ps);
+		}
+		return 0;
+	
  	}
 
 
 	//공지
 	@Override
-	public int NoticePrint(Notice notice) throws SQLException {
-		
-		Connection con=null;
-		
-		PreparedStatement ps =null;
-		String sql="insert into notice(notice_num, adminId, noticeDate, noticeTitel,noticeContent) "
-				+ "values(?,?,sysdate,?,?,)";
-		try {
-		   con = DbUtil.getConnection();
-		   ps = con.prepareStatement(sql);
-		   
-		   ps.setInt(1, Notice.getNoticeNum());
-		   ps.setString(2, Notice.getAdminId());
-		   ps.setString(3, Notice.getNoticeDate());
-		   ps.setString(4, Notice.getNoticeTitel());
-		   ps.setString(5, Notice.getNoticeContent());
+	public String noticeprint() throws SQLException {
+		  Connection con=null;
+		  PreparedStatement ps=null;
+		  ResultSet rs=null;
+		  String notice = "";
 
-		   con.commit();
-		   System.out.println("공지가 등록되었습니다.");
-		   
-		   //쿼리실행 - DB쪽으로 쿼리 전송!!
+		  String sql = proFile.getProperty("notice.selectLatestContent");	  
+		  try {
+			  con = DbUtil.getConnection();
+			  ps= con.prepareStatement(sql);
 
-		  int result = ps.executeUpdate();
-		}catch (Exception e) {
-			System.err.println("공지등록에 실패하였습니다");
-
-		}finally {
-			DbUtil.dbClose(con, ps);
+		      rs = ps.executeQuery(); 
+		 
+		  if(rs.next()) {
+			  notice = rs.getString(1);
+		  }
+		  
+		  }finally {
+			  DbUtil.dbClose(con, ps, rs);
+		  }
+		  	return notice;
 		
+	}
 
+	/*
+	 통계보기
+	 */
+	   //일통계보기
+
+	public OrderDetail getTodaysTotalOrderDetail() throws SQLException {
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyyMMdd");
+		Date date = new Date(System.currentTimeMillis());
+		String curDate = formatter.format(date);
+		curDate = curDate.substring(2);
+
+		 Connection con=null;
+		  PreparedStatement ps=null;
+		  ResultSet rs=null;
+		  OrderDetail orderDetail = null;
+
+		  String sql = proFile.getProperty("tongye.selectByDate");	  
+		  try {
+			  con = DbUtil.getConnection();
+			  ps= con.prepareStatement(sql);
+			  
+			  ps.setString(1,curDate);
+		      rs = ps.executeQuery(); 
+		 
+		  if(rs.next()) {
+			  orderDetail = new OrderDetail(rs.getInt(1),rs.getInt(2));
+		  }
+		  
+		  }finally {
+			  DbUtil.dbClose(con, ps, rs);
+		  }
+		  	return orderDetail;
 		
-		return 0;
 	}
 	
-	
+	//======
+	   //월 통계보기
 
+	public OrderDetail getMonthTotalOrderDetail() throws SQLException {
+		SimpleDateFormat formatter= new SimpleDateFormat("yyyyMMdd");
+		Date date = new Date(System.currentTimeMillis());
+		String curDate = formatter.format(date);
+		curDate = curDate.substring(2);
+
+		 Connection con=null;
+		  PreparedStatement ps=null;
+		  ResultSet rs=null;
+		  OrderDetail orderDetail = null;
+
+		  String sql = proFile.getProperty("tongye.selectByDate");	  
+		  try {
+			  con = DbUtil.getConnection();
+			  ps= con.prepareStatement(sql);
+			  
+			  ps.setString(1,curDate);
+		      rs = ps.executeQuery(); 
+		 
+		  if(rs.next()) {
+			  orderDetail = new OrderDetail(rs.getInt(1),rs.getInt(2));
+		  }
+		  
+		  }finally {
+			  DbUtil.dbClose(con, ps, rs);
+		  }
+		  	return orderDetail;
+		
 	}
 
 
@@ -178,4 +320,11 @@ public class AdminDAOImpl implements AdminDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+
+
+
+
+
 }

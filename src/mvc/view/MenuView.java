@@ -1,17 +1,21 @@
 package mvc.view;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
 <<<<<<< HEAD
+<<<<<<< HEAD
 import mvc.controller.CouponController;
 =======
 import mvc.controller.CategoryController;
 >>>>>>> main
+=======
+import mvc.controller.CouponController;
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
-import mvc.controller.CustomerController;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
 import mvc.controller.GoodsController;
@@ -21,6 +25,7 @@ import mvc.controller.MyStarController;
 >>>>>>> main
 import mvc.dto.Category;
 import mvc.dto.Goods;
+import mvc.dto.Notice;
 import mvc.session.UserSessionSet;
 import mvc.controller.GoodsController;
 
@@ -35,6 +40,9 @@ public class MenuView {//메인 메뉴
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(ss.getSet());
 			System.out.println("=============================== Cafe ================================");
+AdminController adminController = new AdminController();
+			adminController.NoticePrint(); 
+			
 			System.out.println("-------------------------접속 유형을 선택해주세요--------------------------");
 			System.out.println("| 1. 회원으로 주문하기 | 2. 비회원으로 주문하기 | 3.  관리자 접속   | 0.  종료   |");
 			try {
@@ -180,6 +188,9 @@ public class MenuView {//메인 메뉴
 				switch(mymenu) {
 					case 1: 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 						MenuView.userInfoChange(userId);
 =======
 						//비밀번호받아서 정보변경하는건데 어트케...
@@ -222,6 +233,7 @@ public class MenuView {//메인 메뉴
 	
 	/**
 	 * 마이페이지 switch 사용 메소드
+<<<<<<< HEAD
 	 * 별점 평가  
 	 */
 	private static void myStar(String userId) {
@@ -279,6 +291,23 @@ public class MenuView {//메인 메뉴
 			CustomerController.userInfoChange(usePw);
 	}//개인정보변경 메소드 끝 
 >>>>>>> main
+=======
+	 * 개인정보변경=userInfoChange()
+	 * 개인정보 보여주기 
+	 */
+		private static void userInfoChange(String userId) {//개인정보변경 
+			System.out.println("개인정보 보호를 위해 아이디를 한번 더 입력해 주세요 >"); 
+			String userPw = sc.nextLine();
+			CustomerController.userInfoChange(userId, userPw); //개인정보 보여주기 
+			
+			System.out.println("==========" +userId+ "님의 개인정보 변경==========");
+			CustomerController.userInfoChangeName();     //닉네임 변경 
+			CustomerController.userInfoChangePhoneNum(); //폰번호 변경 
+			CustomerController.userInfoChangePw();       //비번 변경 
+			CustomerController.userInfoChangeEmail();    //이메일 변경 
+		}//개인정보변경 메소드 끝 
+
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 		/**
 		 * 주문 메뉴
 		 * 초기메뉴 (회원주문->회원메뉴//비회원주문) ->  "주문메뉴(회원/비회원상태)"
@@ -295,10 +324,14 @@ public class MenuView {//메인 메뉴
 				switch (menu) {
 				case 1 : //카테고리 메뉴들 출력
 <<<<<<< HEAD
+<<<<<<< HEAD
 					//CategoryController.selectCategory();
 =======
 					CategoryController.selectCategory();
 >>>>>>> main
+=======
+					//CategoryController.selectCategory();
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 					int num = Integer.parseInt(sc.nextLine());
 					GoodsController.selectBever(num, userId);
 					
@@ -342,8 +375,9 @@ public class MenuView {//메인 메뉴
 		/**
 		 * 관리자 로그인 메뉴
 		 * 초기메뉴(관리자주문) -> 관리자 로그인 메뉴(로그인) -> "관리자 메뉴"
+		 * @throws SQLException 
 		 */
-	public static void printMenuForAdmin(String adminId) {//관리자 메뉴
+	public static void printMenuForAdmin(String adminId) throws SQLException {//관리자 메뉴
 		while(true) {
 			//AdminSessionSet ss = AdminSessionSet.getInstance();
 			//System.out.println(ss.getSet()); //Set객체 [session]
@@ -353,16 +387,16 @@ public class MenuView {//메인 메뉴
 			int menu =Integer.parseInt( sc.nextLine());
 			switch(menu) {
 				case 1 : //상품 등록(새로운) 
-					MenuView.GoodsInsert(adminId);
+					MenuView.GoodsInsert();
 					break;	
 				case 2 : //상품 수정
-					MenuView.GoodsUpdate(adminId);
+					MenuView.GoodsUpdate();
 					break;
 				case 3 : //상품삭제
-					MenuView.Goodsdelete(adminId);
+					MenuView.Goodsdelete();
 					break;
 				case 4 : //판매통계보기
-					MenuView.Statistic1(adminId);
+					MenuView.Statistic();
 					break;
 				case 5 : //공지입력하기
 					MenuView.NoticePrint();
@@ -380,10 +414,10 @@ public class MenuView {//메인 메뉴
 		}//while 끝
 	}//관리자메뉴 메소드 끝
 	//상품등록하기
-	public static void GoodsInsert (String adminId) {
+	public static void GoodsInsert () {
 		System.out.println("--새로운 상품 등록하기 --");
 		System.out.print("상품코드를 입력해주세요 : ");
-		String goodsCode = sc.nextLine();
+		int goodsCode = Integer.parseInt(sc.nextLine());
 		
 		System.out.print("상품이름을 입력해주세요 : ");
 		String goodsName = sc.nextLine();
@@ -392,7 +426,7 @@ public class MenuView {//메인 메뉴
 		int goodsPrice = Integer.parseInt(sc.nextLine());
 		
 		System.out.print("상세설명을 입력해주세요 : ");
-		int goodsDetail = Integer.parseInt(sc.nextLine());
+		String goodsDetail = sc.nextLine();
 		
 		System.out.print("품절여부를 입력해주세요 : ");
 		String soldOut = sc.nextLine();
@@ -401,12 +435,15 @@ public class MenuView {//메인 메뉴
 		int stock = Integer.parseInt(sc.nextLine());
 		
 		System.out.print("카테고리코드를 입력해주세요 : ");
-		String categoryCode =sc.nextLine();
+		int categoryCode =Integer.parseInt(sc.nextLine());
 		
-		Goods goods =  new Goods(0, "goodsName", 0, "soldOut","stock",0,0);
+		Goods goods =  new Goods(0, goodsName, 0, goodsDetail,soldOut,0,0);		
+		AdminController adminController = new AdminController();
+		adminController.GoodsInsert(goods); 
+		
 	}
 	//상품 수정하기
-	private static void GoodsUpdate(String goodsCode) {
+	private static void GoodsUpdate() {
 		while(true) {
 			System.out.println("--------상품수정하기---------");
 			System.out.println(" 1) 상품이름 |  2) 상품가격  |  3) 품절여부 |  4 )재고수량 ");
@@ -431,17 +468,18 @@ public class MenuView {//메인 메뉴
 				}catch (NumberFormatException e){
 					//e.printStackTrace();
 					System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
-					MenuView.GoodsUpdate(goodsCode);
+					
+					MenuView.GoodsUpdate();
 				}
 			}//while끝
 		}//GoodsUpdate 메소드 끝
 	//상품 삭제하기
-	public static void Goodsdelete (String goodsCode) {
-		AdminController.Goodsdelete();
-		 int gcode = Integer.parseInt(sc.nextLine());
+	public static void Goodsdelete () {
+		AdminController.Goodsdelete(0);
+		int goodsCode = Integer.parseInt(sc.nextLine());
 	}  
 	//통계조회하기
-	public static void Statistic1(String message) {
+	public static void Statistic( ) throws SQLException {
 	   while(true) {
 		   System.out.println("--------상품수정하기---------");
 		   System.out.println(" 1) 일 통계 |  2) 월 통계 ");
@@ -449,10 +487,10 @@ public class MenuView {//메인 메뉴
 		   int menu =Integer.parseInt( sc.nextLine());
 		   switch(menu) {
 		   		case 1 : // 일
-		   			AdminController.DayStatistic();
+		   			AdminController.getTodaysTotalOrderDetail();
 					break;	
 				case 2 : // 월
-					AdminController.MonStatistic();
+					AdminController.getMonthTotalOrderDetail();
 					break;	
 				default:
 					System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
@@ -460,7 +498,7 @@ public class MenuView {//메인 메뉴
 			}catch (NumberFormatException e){
 				//e.printStackTrace();
 				System.out.println(">>>>>>잘못된 번호입니다. 숫자를 입력해 주세요");
-				MenuView.Statistic1(message);
+				MenuView.Statistic();
 			}
 		}//while끝
 	}//Statistic1 메소드 끝
@@ -486,25 +524,30 @@ public class MenuView {//메인 메뉴
 	  	 String noticeContent= sc.nextLine();
 	
 	  	 
-	  	 //Notice notice =  new Notice(0, "adminId", "noticeDate", "noticeTitel", "noticeContent");
+	  	 Notice notice =  new Notice(0, "adminId", "noticeDate", "noticeTitel", "noticeContent");
+	  	AdminController.NoticePrint(); 
 	   }
 	
 	//상세수정하기
 	public static void GoodsUpdateName() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String goodsCode = sc.nextLine();
+		int goodsCode = Integer.parseInt(sc.nextLine());
+		AdminController.GoodsUpdateName(goodsCode); 
 	}
 	public static void GoodsUpdatePr() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String goodsCode = sc.nextLine();
+		int goodsCode = Integer.parseInt(sc.nextLine());;
+		AdminController.GoodsUpdatePr(goodsCode); 
 	}     
 	public static void GoodsUpdateSo() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String goodsCode = sc.nextLine();
+		int goodsCode = Integer.parseInt(sc.nextLine());
+		AdminController.GoodsUpdateSo(goodsCode); 
 	} 
 	public static void GoodsUpdateSt() {
 		System.out.println("수정 할 상품의 상품코드는?");
-		String goodsCode = sc.nextLine();
+		int goodsCode = Integer.parseInt(sc.nextLine());
+		AdminController.GoodsUpdateSt(goodsCode); 
 	  
 	}
 
