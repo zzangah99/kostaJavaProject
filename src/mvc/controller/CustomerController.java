@@ -1,7 +1,249 @@
+<<<<<<< HEAD
 package mvc.controller;
 
+import mvc.view.EndView;
 import mvc.view.FailView;
 import mvc.view.MenuView;
+
+import java.sql.SQLException;
+
+import mvc.dto.Customer;
+import mvc.dto.MyStar;
+import mvc.service.CustomerService;
+
+public class CustomerController {
+	static CustomerService customerService = new CustomerService();
+//컨드롤러에서는 성공했을 때 어떻게 나와야하는지 여부 -> view로간다/failview로 간다 
+	
+	/**
+	 * 로그인 
+	 */
+	public static void login(String userId, String userPw) {
+		try {
+		Customer customer = customerService.login(userId, userPw);
+		MenuView.printUserMenu(userId);//성공 
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 아이디 찾기 
+	 */
+	public static void findId(String phonNum) {
+		try {
+			String catchUserId = customerService.findId(phonNum);
+	    MenuView.printMenuForMember();//성공
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+	
+	/**
+	  * 비밀번호 찾기 
+	  * */
+	public static void findPw(String userId, String phonNum) {
+		try {
+		String catchUserPw = customerService.findPw(userId, phonNum);
+		MenuView.printMenuForMember();//성공
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+
+	/**
+	  * 회원가입
+	  * */
+	public static void register(String userId, String userPw, String userName, String phoneNum, String pinNum, String email,
+			int stamp) {
+		try {
+			int customer = customerService.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
+			MenuView.printMenuForMember();//성공
+			}catch(Exception e) {
+				System.out.println("이미 등록된 회원입니다. 테스트1");  
+				//e.printStackTrace();
+				//FailView.errorMessage(e.getMessage());
+			}
+		}
+	
+	/**
+	  * 마이페이지가기 
+	  * */
+	public static void myPage(String userId) {
+		try {
+			Customer customer = customerService.myPage(userId);
+			if(userId==null) {
+			MenuView.printMenuForMember();
+			}
+			}catch (Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
+		}
+	
+	/**
+	  * 마이페이지->개인정보 보여주기 
+	  * */
+	public static void userInfoChange(String userId, String userPw) {
+		try {
+			Customer customer = customerService.userInfoChange(userId, userPw);
+			EndView.userInfoChange(customer);//성공
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+			//MenuView.printUserMyPage(userId);
+		}
+	}
+
+	/**
+<<<<<<< HEAD
+	 * 마이페이지->개인정보 변경->닉네임 
+	 */
+	public static void userInfoChangeName(String userId, String userName) {
+		try {
+			customerService.userInfoChangeName(userId, userName);
+			EndView.printMessage("닉네임 변경에 성공했습니다.");//성공 
+=======
+	  * 비번 인수로 받아 개인정보 변경 
+	  * */
+	public static void userInfoChange(String userPw) {
+		try {
+		int customer = customerService.userInfoChange(userPw);
+		
+		MenuView.printMenuForMember();
+		
+>>>>>>> main
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 마이페이지->개인정보 변경->폰번호(not null) 
+	 */
+	public static void userInfoChangePhoneNum(String userId, String phoneNum) {
+		try {
+			customerService.userInfoChangePhoneNum(userId, phoneNum);
+			EndView.printMessage("핸드폰번호 변경에 성공했습니다.");//성공 
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 마이페이지->개인정보 변경->비번 
+	 */
+	public static void userInfoChangePw(String userId, String userPw) {
+		try {
+			customerService.userInfoChangePw(userId, userPw);
+			EndView.printMessage("비밀번호 변경에 성공했습니다.");//성공 
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+	
+	/**
+	 * 마이페이지->개인정보 변경->이메일 
+	 */
+	public static void userInfoChangeEmail(String userId, String email) {
+		try {
+<<<<<<< HEAD
+			customerService.userInfoChangeEmail(userId, email);
+			EndView.printMessage("이메일 변경에 성공했습니다.");//성공 
+		}catch(Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+=======
+			int myStamp = customerService.myStamp(userId);
+			
+			//MenuView.printMenuForMember();
+			
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
+>>>>>>> main
+	}
+	
+	/** 아직 못함 
+	 *  마이페이지->최근주문내역 
+	  * */
+	public static void selectOrderRecent(String userId) {
+		try {
+			Customer customer = customerService.selectOrderRecent(userId);
+			EndView.selectOrderRecent(customer);
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
+		}
+	
+	/** 아직 못함 
+	  * 마이페이지->나만의 메뉴보기 
+	  * */
+	public static void myMenu(String userId) {
+		try {
+			Customer customer = customerService.myMenu(userId);
+			EndView.myMenu(customer);
+			}catch(Exception e) {
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
+		}
+
+	/** 아직 못함  
+	  * 마이페이지->스탬프 조회(not null)   
+	  * */
+	public static void myStamp(String userId) {
+		try {
+<<<<<<< HEAD
+			int myStamp = customerService.myStamp(userId);
+			EndView.myStamp(myStamp);
+			}catch(Exception e) {
+=======
+			Customer customer = customerService.myPage(userId);
+			
+			if(userId!=null) {
+			MenuView.printUserMyPage(userId);
+			}
+			
+			}catch (Exception e) {
+>>>>>>> main
+				//e.printStackTrace();
+				FailView.errorMessage(e.getMessage());
+			}
+		}
+	
+	
+	
+	
+	
+}
+	
+	
+	
+	
+	
+	
+	
+=======
+<<<<<<< HEAD
+=======
+package mvc.controller;
+
+import mvc.view.EndView;
+import mvc.view.FailView;
+import mvc.view.MenuView;
+
+import java.sql.SQLException;
+
 import mvc.dto.Customer;
 import mvc.service.CustomerService;
 
@@ -17,7 +259,7 @@ public class CustomerController {
 		try {
 		Customer customer = customerService.login(userId, userPw);
 		
-		MenuView.printUserMenu(userId);//로그인 되면 userId 가지고 메뉴 띄워줌 
+		MenuView.printUserMenu(userId);//성공 로그인 메뉴고르러 가기  
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -32,7 +274,7 @@ public class CustomerController {
 		try {
 			String catchUserId = customerService.findId(phonNum);
 			
-	    MenuView.printMenuForMember(); //로그인하러 가기 
+	    MenuView.printMenuForMember(); //성공 로그인하러 가기  
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -47,7 +289,7 @@ public class CustomerController {
 		try {
 		String catchUserPw = customerService.findPw(userId, phonNum);
 		
-		MenuView.printMenuForMember(); //로그인하러 가기
+		MenuView.printMenuForMember(); //성공 로그인하러 가기  
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
@@ -61,41 +303,50 @@ public class CustomerController {
 	public static void register(String userId, String userPw, String userName, String phoneNum, String pinNum, String email,
 			int stamp) {
 		try {
-		int customer = customerService.register(userId, userPw, userName, phoneNum, email, pinNum, 0);
+		int customer = customerService.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
 		
-		MenuView.printMenuForMember(); //로그인하러 가기 
+		
+		MenuView.printMenuForMember(); //성공 로그인하러 가기 
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
-			FailView.errorMessage(e.getMessage());
+			
+			//FailView.errorMessage(e.getMessage());
+			System.out.println("--이미 등록된 회원입니다.--");  
+
 		}
 	}
 
 	
 	/**
+	  * 마이페이지  
 	  * 비번 인수로 받아 개인정보 변경 
 	  * */
-	public static void userInfoChange(String userId) {
+	public static void userInfoChange(String userPw) {
 		try {
-		int customer = customerService.userInfoChange(userId);
+		int customer = customerService.userInfoChange(userPw);
 		
-		MenuView.printMenuForMember();
+		EndView.userInfoChange(customer);
 		
 		}catch(Exception e) {
 			//e.printStackTrace();
+		
 			FailView.errorMessage(e.getMessage());
+			//System.out.println("--비밀번호 오류입니다.--");
+			
 		}
 
 	}
 
-	/**
+	/** 
+	 *  마이페이지 
 	  * 아이디 인수로 받아 최근주문내역 조회 
 	  * */
 	public static void selectOrderRecent(String userId) {
 		try {
 			Customer customer = customerService.selectOrderRecent(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.selectOrderRecent(customer);
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -104,14 +355,15 @@ public class CustomerController {
 		
 	}
 
-	/**
+	/** 
+	  * 마이페이지 
 	  * 아이디 인수로 받아 나만의 메뉴 
 	  * */
 	public static void myMenu(String userId) {
 		try {
 			Customer customer = customerService.myMenu(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.myMenu(customer);
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -120,13 +372,14 @@ public class CustomerController {
 	}
 
 	/**
+	  * 마이페이지  
 	  * 아이디 인수로 받아 스탬프 조회 
 	  * */
 	public static void myStamp(String userId) {
 		try {
-			String myStamp = customerService.myStamp(userId);
+			int myStamp = customerService.myStamp(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.myStamp(myStamp);
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -134,29 +387,15 @@ public class CustomerController {
 			}
 	}
 
-	/**
-	  * 아이디 인수로 받아 쿠폰 조회 
-	  * */
-	public static void myCp(String userId) {
-		try {
-			Customer customer = customerService.myCp(userId);
-			
-			MenuView.printMenuForMember();
-			
-			}catch(Exception e) {
-				//e.printStackTrace();
-				FailView.errorMessage(e.getMessage());
-			}
-	}
 	
 	/**
 	  * 아이디 인수로 받아 내가 쓴 별 보기 
 	  * */
 	public static void myStar(String userId) {
 		try {
-			Customer customer = customerService.myStar(userId);
+			int myStar = customerService.myStar(userId);
 			
-			MenuView.printMenuForMember();
+			EndView.myStar();
 			
 			}catch(Exception e) {
 				//e.printStackTrace();
@@ -180,6 +419,7 @@ public class CustomerController {
 			}
 		
 	}
+	
 }
 	
 	
@@ -188,3 +428,5 @@ public class CustomerController {
 	
 	
 	
+>>>>>>> da39303894f84cf203d021d702f2bf752d5c6d83
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6

@@ -6,6 +6,9 @@ import java.util.List;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
+import mvc.dto.OrderDetail;
+import mvc.dto.OrderLine;
+import mvc.dto.Orders;
 
 
 public interface AdminDAO {
@@ -29,19 +32,33 @@ public interface AdminDAO {
 	 * GoodsCode에 해당하는 게시물 내용 수정하기
 	 * update goods set content = ? where goosdCode = ?
 	 */
-	int GoodsUpdate(Goods goods) throws SQLException;
+
+	int GoodsUpdateName(Goods goods) throws SQLException;
+	int GoodsUpdateSo(Goods goodsCode) throws SQLException;
+	int GoodsUpdateSt(Goods goodsCode) throws SQLException;
+	int GoodsUpdatePr(Goods goodsCode) throws SQLException;
+	
 	
 	/**
 	 * GoodsCode에 해당하는 레코드 삭제
-	 * delete from goods where goosdCode = ?
+	 *
 	 */
 
-	int GoodsDelete(int goodsNo) throws SQLException;
+	int GoodsDelete() throws SQLException;
+
+
+	
+	
 	
 	/* 
 	 통계보기
 	 */
+	   //일통계보기
+	OrderDetail getTodaysTotalOrderDetail() throws SQLException;
 	
+	
+
+
 	
 	
 	/**
@@ -49,9 +66,7 @@ public interface AdminDAO {
 	 insert into notice(notice_num, adminId, noticeDate, noticeTitel,noticeContent) "
 					+ "values(?,?,sysdate,?,?,)
 	 */
-	int NoticePrint(Notice notice) throws SQLException;
-	
-
+	String noticeprint() throws SQLException;
 	
 }
 
