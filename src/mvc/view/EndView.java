@@ -7,12 +7,14 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
-
+import mvc.dao.NutritionDAO;
+import mvc.dao.NutritionDAOImpl;
 import mvc.dto.Customer;
 
 import mvc.dto.Category;
 
 import mvc.dto.Goods;
+import mvc.dto.Nutrition;
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
@@ -21,6 +23,7 @@ import mvc.session.UserSessionSet;
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
+	
 
 	/**
 	 * 대분류 출력
@@ -45,23 +48,34 @@ public class EndView {
 		int cup = 0;
 		String tem = null;
 		String userId = null;
+		NutritionDAO nutrition = new NutritionDAOImpl();
 
 		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
 		int goodsNo = 0;
 		for (Goods goods : coffeeList) {
-			System.out.print((++goodsNo) + "." + goods.getGoodsName() + "\t");
+			System.out.print((++goodsNo) + "." + goods.getGoodsName()+"\t");
+			System.out.println(String.format("%-20s", goods.getGoodsPrice()+"\t"+goods.getGoodsDetail())); //살짝부족 수정 필요!!! 정렬 다시!
 			goodsCodeList.add(goods.getGoodsCode());
 			userId = goods.getUserId();
+		
 		}
 
 		// 용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
 
 		//
-		System.out.print("\n주문할 상품 번호를 고르세요> ");
+		System.out.print("주문할 상품 번호를 고르세요> ");
 		int orderNo = Integer.parseInt(sc.nextLine());
 		int orderCode = goodsCodeList.get(orderNo - 1);
 
 		if (orderNo != 6 && orderNo != 7) {// 디저트, md 상품이 아니면 옵션 선택
+			System.out.print("영양정보를 확인 하시겠습니까? (Y or N)");
+			String check = sc.nextLine();
+			if(check == "Y" || check == "y") {
+			List<Nutrition> nut= nutrition.goodsNutrition(int goodsCode);
+			
+		
+			}
+			
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
@@ -123,10 +137,11 @@ public class EndView {
 		case 2: // 장바구니 담기
 
 		}
-
-		System.out.println();
 	}
-
+			
+	}	
+	
+	
 	public static void printMessage(String message) {//
 		System.out.println(message);
 	}
