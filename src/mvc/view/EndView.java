@@ -7,11 +7,15 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
+<<<<<<< HEAD
 
 import mvc.dto.Customer;
 
 import mvc.dto.Category;
 
+=======
+import mvc.dto.Category;
+>>>>>>> main
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
 import mvc.dto.MyStar;
@@ -259,6 +263,7 @@ public class EndView {
 		// TODO Auto-generated method stub
 	}
 
+<<<<<<< HEAD
 	/** 아직못함 
 	  * 마이페이지->나만의 메뉴 보기 
 	  * */
@@ -327,3 +332,6 @@ public class EndView {
 	
 
 
+=======
+}
+>>>>>>> main

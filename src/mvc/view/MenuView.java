@@ -4,14 +4,21 @@ import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
+<<<<<<< HEAD
 import mvc.controller.CouponController;
+=======
+import mvc.controller.CategoryController;
+>>>>>>> main
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.controller.CustomerController;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
 import mvc.controller.GoodsController;
+<<<<<<< HEAD
 import mvc.controller.MyStarController;
+=======
+>>>>>>> main
 import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.session.UserSessionSet;
@@ -145,7 +152,11 @@ public class MenuView {//메인 메뉴
 		String pinNum = sc.nextLine();
 		
 		int stamp=0;
+<<<<<<< HEAD
 		CustomerController.register(userId, userPw, userName, phoneNum, pinNum, email, stamp);
+=======
+		CustomerController.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
+>>>>>>> main
 	}//회원가입 메소드 끝
 	
 	/**
@@ -168,7 +179,13 @@ public class MenuView {//메인 메뉴
 				int mymenu =Integer.parseInt( sc.nextLine());
 				switch(mymenu) {
 					case 1: 
+<<<<<<< HEAD
 						MenuView.userInfoChange(userId);
+=======
+						//비밀번호받아서 정보변경하는건데 어트케...
+						//CustomerController.userInfoChange(userPw);
+						MenuView.userInfoChange();
+>>>>>>> main
 						break;
 					case 2: 
 						CustomerController.selectOrderRecent(userId);//문제 
@@ -221,7 +238,7 @@ public class MenuView {//메인 메뉴
 	 * 마이페이지 switch 사용 메소드
 	 * 개인정보 변경  
 	 */
-		private static void userInfoChange(String userId) {//개인정보변경 
+		private static void userInfoChange() {//개인정보변경 
 			System.out.print("개인정보 보호를 위해 비밀번호를 한번 더 입력해 주세요 >"); 
 			String userPw = sc.nextLine();
 			CustomerController.userInfoChange(userId, userPw); //개인정보 보여주기 
@@ -230,6 +247,7 @@ public class MenuView {//메인 메뉴
 			System.out.println("| 1. 닉네임 변경 | 2. 핸드폰 번호 변경 | 3. 비밀번호 변경 | 4. 이메일 변경  | 0. 돌아가기 |");
 			int menu=Integer.parseInt(sc.nextLine());
 			
+<<<<<<< HEAD
 			switch(menu) {
 			case 1: 
 				System.out.print("변경하실 닉네임을 입력해주세요 >");
@@ -257,6 +275,10 @@ public class MenuView {//메인 메뉴
 			}
 		}//개인정보변경 메소드 끝 
 
+=======
+			CustomerController.userInfoChange(usePw);
+	}//개인정보변경 메소드 끝 
+>>>>>>> main
 		/**
 		 * 주문 메뉴
 		 * 초기메뉴 (회원주문->회원메뉴//비회원주문) ->  "주문메뉴(회원/비회원상태)"
@@ -272,7 +294,11 @@ public class MenuView {//메인 메뉴
 				int menu = Integer.parseInt(sc.nextLine());
 				switch (menu) {
 				case 1 : //카테고리 메뉴들 출력
+<<<<<<< HEAD
 					//CategoryController.selectCategory();
+=======
+					CategoryController.selectCategory();
+>>>>>>> main
 					int num = Integer.parseInt(sc.nextLine());
 					GoodsController.selectBever(num, userId);
 					

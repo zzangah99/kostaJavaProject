@@ -79,6 +79,12 @@ public class CustomerService {
 		if(customer==null) {//null이면 바꾸하게 할라했는데 왜 회원도 로그인 후 사용하래... 
 			throw new NotFoundException("회원만 사용가능합니다. 로그인 후 이용해주세요. 테스트2");
 		}
+<<<<<<< HEAD
+=======
+		
+		//MenuView.printUserMyPage(userId);
+		
+>>>>>>> main
 		return customer;
 	}
 
@@ -169,11 +175,28 @@ public class CustomerService {
 	  * */
 	public int myStamp(String userId) throws NotFoundException, SQLException {
 		int myStamp=customerDao.myStamp(userId);
+<<<<<<< HEAD
 		/*
 		if(myStamp==0) {
 			throw new NotFoundException("회원만 사용가능합니다. 로그인 후 이용해주세요.");
 		}
 		*/
+=======
+		
+		if(userId==null) {
+			throw new NotFoundException("회원만 사용가능합니다. 로그인 후 이용해주세요.");
+		}
+		
+		//서비스는 성공했을 때 어떻네 나와야하는지 처리 그럼 여기서 이게 맞음? --> 여기서 말고 앤드뷰로
+		System.out.println("보유하신 스탬프 "+myStamp+ "개 입니다.");
+		
+		
+		UserSession userSession = new UserSession(userId); 
+		
+		UserSessionSet userSessionSet = UserSessionSet.getInstance();		
+		userSessionSet.add(userSession);	
+		
+>>>>>>> main
 		return myStamp;
 	}
 	
