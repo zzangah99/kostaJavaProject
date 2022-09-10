@@ -3,7 +3,7 @@ package mvc.service;
 
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.UUID;
 
 import mvc.dao.AdminDAOImpl;
 import mvc.exception.NotFoundException;
@@ -26,14 +26,19 @@ public class AdminService {
   /**
    * 로그인
    * */
-	public Admin login(String adminId, String adminPw)throws NotFoundException , SQLException{
+	public Admin login(String adminId, String adminPw)throws NotFoundException , SQLException{ 
+		 System.out.println(adminId);
+		  System.out.println(adminPw);
+		  
 		Admin admin = adminDao.login(adminId, adminPw);
 		if(admin==null) {
 			throw new NotFoundException("정보를 다시 확안해주세요.");
 		}
 		
 		//로그인 된 정보 저장하기
-		AdminSession adminsession = new AdminSession(adminId);
+		AdminSession adminsession = new AdminSession();
+		adminsession.setAdminSessionId(UUID.randomUUID().toString());
+		System.out.println("adminservice adminsession111");
 		
 		AdminSessionSet adminsessionSet = AdminSessionSet.getInstance();
 		adminsessionSet.add(adminsession);
@@ -145,7 +150,7 @@ public class AdminService {
 			OrderDetail orderDetail= null;
 
 			try {
-			orderDetail = adminDao.getTodaysTotalOrderDetail();
+			orderDetail = adminDao.getMonthTotalOrderDetail();
 		
 			}catch (Exception e) {
 				return new OrderDetail();
@@ -159,8 +164,9 @@ public class AdminService {
 		 * 공지 등록
          */
 			public String NoticePrint() throws SQLException, NotFoundException {
+				//System.out.println("asdfgh");
 				String notice = adminDao.noticeprint();
-			
+			//System.out.println("qwerty");
 				if(notice == null) {
 					throw new NotFoundException("공지등록에 실패하였습니다");
 				}else {

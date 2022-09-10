@@ -7,21 +7,10 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
-
 import mvc.dto.Customer;
 
 import mvc.dto.Category;
-
-<<<<<<< HEAD
-=======
 import mvc.dto.Category;
->>>>>>> main
-=======
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
 import mvc.dto.MyStar;
@@ -30,6 +19,7 @@ import mvc.dto.OrderLine;
 import mvc.dto.Orders;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
+import mvc.view.MenuView;
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
@@ -133,7 +123,17 @@ public class EndView {
 			OrdersController.insertOrders(order);
 			break;
 		case 2: // 장바구니 담기
-
+			
+			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
+			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
+			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+			
+			cartOrder.getOrderLineList().add(cartOrderline);
+			cartOrderline.getOptionList().add(cartOption);
+			
+			CartController.putCart(cartOrder, cartOrderline);
+			System.out.println("11");
+			break;
 		}
 
 		System.out.println();
@@ -205,18 +205,10 @@ public class EndView {
 			System.out.println();
 		}
 	}
-<<<<<<< HEAD
-	
-=======
-
-
-
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 	/**
 	  * 마이페이지->개인정보 보여주기 
 	  * */
 	public static void userInfoChange(Customer customer) {
-<<<<<<< HEAD
 		//System.out.println(customer);//이렇게하면 어떻게 출력되는지 궁금쓰 -> 주소가 찍히는 군 흠...
 		System.out.println("============================== 개인정보 =================================");
 		String userName=customer.getUserName();
@@ -225,13 +217,10 @@ public class EndView {
 		String email=customer.getEmail();
 		String pinNum=customer.getPinNum();
 		String regDate=customer.getRegDate();
-=======
 		System.out.println("개인정보 변경");
 		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
-		for() {
-		System.out.println("변경할 내용을 선택해주세요.");
 		
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+		System.out.println("변경할 내용을 선택해주세요.");
 		
 		System.out.println(" | 닉네임 : " +userName+ " | 비밀번호 : " +userPw +" | 휴대폰 : " 
 		+phoneNum+ " | 이메일 : " +email+ " | 생년월일 : " +pinNum + " | 가입일 : " + regDate+ " | ");
@@ -282,10 +271,6 @@ public class EndView {
 		// TODO Auto-generated method stub
 	}
 
-<<<<<<< HEAD
-	/** 아직못함 
-	  * 마이페이지->나만의 메뉴 보기 
-	  * */
 	public static void myMenu(Customer customer) {
 		System.out.println("============================== 나만의 메뉴 =================================");
 		MyMenu myMenu = new MyMenu();
@@ -333,28 +318,5 @@ public class EndView {
 		System.out.println("등록해 주셔서 감사합니다.");
 	}
 
-	
-
-	
-	
-	
-	
-	
-	
-	}
-
-	
-
-	
-	
-
-	
-
-<<<<<<< HEAD
-
-=======
 }
->>>>>>> main
-=======
-}
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+
