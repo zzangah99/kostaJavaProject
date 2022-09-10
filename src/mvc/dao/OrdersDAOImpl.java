@@ -156,8 +156,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 	 * */
 	public int[] decrementStock(Connection con , List<OrderLine> orderLineList)throws SQLException {
 		PreparedStatement ps = null;
-		String sql = profile.getProperty("goods.updateStockByCode");
-		//update goods set stock = ? where goods_code = ?
+		String sql = profile.getProperty("goods.updateStockCountByCode");
+		//update goods set stock = stock-? where goods_code = ?
 		int result[] = null;
 		
 		try {
