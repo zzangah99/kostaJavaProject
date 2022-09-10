@@ -5,12 +5,24 @@ import java.util.Scanner;
 import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
+<<<<<<< HEAD
+<<<<<<< HEAD
 import mvc.controller.CouponController;
+=======
+import mvc.controller.CategoryController;
+>>>>>>> main
+=======
+import mvc.controller.CouponController;
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 import mvc.controller.CustomerController;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
 import mvc.controller.GoodsController;
+<<<<<<< HEAD
+import mvc.controller.MyStarController;
+=======
+>>>>>>> main
 import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
@@ -148,7 +160,11 @@ AdminController adminController = new AdminController();
 		String pinNum = sc.nextLine();
 		
 		int stamp=0;
+<<<<<<< HEAD
 		CustomerController.register(userId, userPw, userName, phoneNum, pinNum, email, stamp);
+=======
+		CustomerController.register(userId, userPw, userName, phoneNum, email, pinNum, stamp);
+>>>>>>> main
 	}//회원가입 메소드 끝
 	
 	/**
@@ -156,33 +172,49 @@ AdminController adminController = new AdminController();
 	 * 초기메뉴 -> 회원메뉴 -> 로그인후 "마이페이지"
 	 */
 	public static void printUserMyPage(String userId) {//회원마이페이지
-		while (true) {
+		/*
+		if(userId==null) {
+			System.out.println("회원만 사용가능합니다. 로그인 후 이용해주세요. 테스트1");  
+		}
+		*/
+		//while (userId!=null) {
+		while(true) {
 			System.out.println("============================== 마이페이지 =================================");
-			System.out.println("-------------------반갑습니다." +userId+ "님 !----------------------");
+			System.out.println("------------------------- 안녕하세요! " +userId+ "님! ---------------------------");
 			System.out.println("| 1. 개인정보 변경 | 2. 최근 주문내역조회 | 3. 나만의 메뉴 | 4. 스탬프 조회  |"
-						   + "\n|  5. 쿠폰조회    | 6. 등록한 리뷰보기  |  9. 주문하기   | 0.  종료하기   |");
+						   + "\n|  5. 쿠폰조회    | 6. 등록한 별점보기  |  7. 주문하기   | 0.  종료하기   |");
 			try {
 				int mymenu =Integer.parseInt( sc.nextLine());
 				switch(mymenu) {
 					case 1: 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 						MenuView.userInfoChange(userId);
+=======
+						//비밀번호받아서 정보변경하는건데 어트케...
+						//CustomerController.userInfoChange(userPw);
+						MenuView.userInfoChange();
+>>>>>>> main
 						break;
 					case 2: 
-						CustomerController.selectOrderRecent(userId);
+						CustomerController.selectOrderRecent(userId);//문제 
 						break;
 					case 3: 
-						CustomerController.myMenu(userId);
+						CustomerController.myMenu(userId);//문제 
 						break;
 					case 4: 
-						CustomerController.myStamp(userId);
+						CustomerController.myStamp(userId);//문제 
 						break;
 					case 5: 
-						CouponController.UserCoupon(userId);
+						CouponController.UserCoupon(userId);//문제 
 						break;
 					case 6: 
-						CustomerController.myStar(userId);
+						//MyStarController.myStar(userId);//문제 
+						MenuView.myStar(userId);
 						break;
-					case 9:
+					case 7:
 						MenuView.printUserMenu(userId);
 						break;
 					case 0:
@@ -201,6 +233,65 @@ AdminController adminController = new AdminController();
 	
 	/**
 	 * 마이페이지 switch 사용 메소드
+<<<<<<< HEAD
+	 * 별점 평가  
+	 */
+	private static void myStar(String userId) {
+		//주문내역을 쭉 보여주고 해당 상품 번호를 클릭해서 별점을 먹인다??
+		System.out.println("====== " +userId+ "님의 주문내역 =====");
+		System.out.println("별점 등록하실 상품코드를 선택해주세요.");
+		int menu=Integer.parseInt(sc.nextLine());
+		System.out.print("별점을 등록해주세요.(최대 5점)");
+		String myStar=sc.nextLine();
+		MyStarController.myStar(userId);
+	}
+
+	/**
+	 * 마이페이지 switch 사용 메소드
+	 * 개인정보 변경  
+	 */
+		private static void userInfoChange() {//개인정보변경 
+			System.out.print("개인정보 보호를 위해 비밀번호를 한번 더 입력해 주세요 >"); 
+			String userPw = sc.nextLine();
+			CustomerController.userInfoChange(userId, userPw); //개인정보 보여주기 
+			
+			System.out.println("============================== 개인정보 변경 =================================");
+			System.out.println("| 1. 닉네임 변경 | 2. 핸드폰 번호 변경 | 3. 비밀번호 변경 | 4. 이메일 변경  | 0. 돌아가기 |");
+			int menu=Integer.parseInt(sc.nextLine());
+			
+<<<<<<< HEAD
+			switch(menu) {
+			case 1: 
+				System.out.print("변경하실 닉네임을 입력해주세요 >");
+				String userName=sc.nextLine();
+				CustomerController.userInfoChangeName(userId, userName);     //닉네임 변경 
+				break;
+			case 2: 
+				System.out.print("변경하실 핸드폰 번호를 입력해주세요 >");
+				String phoneNum=sc.nextLine();
+				CustomerController.userInfoChangePhoneNum(userId, phoneNum); //폰번호 변경 
+				break;
+			case 3:
+				System.out.print("변경하실 비밀번호를 입력해주세요 >");
+				userPw=sc.nextLine();
+				CustomerController.userInfoChangePw(userId, userPw);       //비번 변경 
+				break;
+			case 4:
+				System.out.print("변경하실 이메일을 입력해주세요 >");
+				String email=sc.nextLine();
+				CustomerController.userInfoChangeEmail(userId, email);    //이메일 변경 
+				break;
+			case 0:
+				MenuView.printUserMenu(userId);
+				break;
+			}
+		}//개인정보변경 메소드 끝 
+
+=======
+			CustomerController.userInfoChange(usePw);
+	}//개인정보변경 메소드 끝 
+>>>>>>> main
+=======
 	 * 개인정보변경=userInfoChange()
 	 * 개인정보 보여주기 
 	 */
@@ -216,6 +307,7 @@ AdminController adminController = new AdminController();
 			CustomerController.userInfoChangeEmail();    //이메일 변경 
 		}//개인정보변경 메소드 끝 
 
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 		/**
 		 * 주문 메뉴
 		 * 초기메뉴 (회원주문->회원메뉴//비회원주문) ->  "주문메뉴(회원/비회원상태)"
@@ -231,7 +323,15 @@ AdminController adminController = new AdminController();
 				int menu = Integer.parseInt(sc.nextLine());
 				switch (menu) {
 				case 1 : //카테고리 메뉴들 출력
+<<<<<<< HEAD
+<<<<<<< HEAD
 					//CategoryController.selectCategory();
+=======
+					CategoryController.selectCategory();
+>>>>>>> main
+=======
+					//CategoryController.selectCategory();
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 					int num = Integer.parseInt(sc.nextLine());
 					GoodsController.selectBever(num, userId);
 					
