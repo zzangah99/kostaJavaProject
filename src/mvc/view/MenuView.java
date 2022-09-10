@@ -14,6 +14,7 @@ import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
 import mvc.controller.GoodsController;
 import mvc.controller.MyStarController;
+import mvc.controller.OrdersController;
 import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
@@ -31,8 +32,8 @@ public class MenuView {// 메인 메뉴
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(ss.getSet());
 			System.out.println("=============================== Cafe ================================");
-			AdminController adminController = new AdminController();
-			adminController.NoticePrint(); 
+			//AdminController adminController = new AdminController();
+			//adminController.NoticePrint(); 
 			System.out.println("-------------------------접속 유형을 선택해주세요--------------------------");
 			System.out.println("| 1. 회원으로 주문하기 | 2. 비회원으로 주문하기 | 3.  관리자 접속   | 0.  종료   |");
 			try {
@@ -175,7 +176,8 @@ public class MenuView {// 메인 메뉴
 						MenuView.userInfoChange(userId);
 						break;
 					case 2: 
-						CustomerController.selectOrderRecent(userId);//문제 
+						//CustomerController.selectOrderRecent(userId);//문제 
+						OrdersController.selectOrdersByUserId(userId);
 						break;
 					case 3: 
 						CustomerController.myMenu(userId);//문제 
@@ -503,7 +505,5 @@ public class MenuView {// 메인 메뉴
 		System.out.println("변경할 재고량");
 		int goodsReSt = Integer.parseInt(sc.nextLine());;
 		AdminController.GoodsUpdateSt(goodsCode,goodsReSt); 
-	  
 	}
-
 }//클래스 끝

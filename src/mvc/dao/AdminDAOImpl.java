@@ -325,34 +325,6 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 
-	@Override
-	public int GoodsUpdateName(String goods) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public int GoodsUpdateSo(int goodsCode) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public int GoodsUpdateSt(int goodsCode) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
-	@Override
-	public int GoodsUpdatePr(int goodsCode) throws SQLException {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
 
 
 

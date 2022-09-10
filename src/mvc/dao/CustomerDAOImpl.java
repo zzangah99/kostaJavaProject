@@ -280,7 +280,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 PreparedStatement ps=null;
 		 ResultSet rs=null;
 		 Customer customer=null;
-		 String sql=proFile.getProperty("orderOrder.selectAllById");
+		 String sql=proFile.getProperty("");
 		 //select * from order_order where user_id = ?
 		 
 		 try {

@@ -174,6 +174,10 @@ public class CustomerService {
 			throw new NotFoundException("회원만 사용가능합니다. 로그인 후 이용해주세요.");
 		}
 		*/
+		//스탬프 0개 가진 회원 조회하니까 에러나서 잠시 꺼둠 
+		if(myStamp==-1) {
+			throw new NotFoundException("실패했습니다.");
+		}
 		return myStamp;
 	}
 	
