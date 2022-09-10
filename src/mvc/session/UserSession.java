@@ -12,16 +12,13 @@ public class UserSession {
 		private String email;     //로그인된 사용자 이메일 
 		private String pinNum;    //로그인된 사용자 생년월일 
 		private int stamp;        //로그인된 사용자 스탬프 
-		
-		
-		
 		private String phonNum; //로그인된 사용자 폰번호 
 	
 	public UserSession(String userSessionId) {
 		this.userSessionId = userSessionId;
 		attributes = new HashMap<>();
 	}
-	
+
 	
 	//회원가입 
 	//여기서 userid는 userSessionId이걸로 바꿔줘야하는지 
