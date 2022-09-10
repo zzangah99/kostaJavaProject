@@ -33,10 +33,10 @@ public interface AdminDAO {
 	 * update goods set content = ? where goosdCode = ?
 	 */
 
-	int GoodsUpdateName(Goods goods) throws SQLException;
-	int GoodsUpdateSo(Goods goodsCode) throws SQLException;
-	int GoodsUpdateSt(Goods goodsCode) throws SQLException;
-	int GoodsUpdatePr(Goods goodsCode) throws SQLException;
+	int GoodsUpdateName(String goods) throws SQLException;
+	int GoodsUpdateSo(int goodsCode) throws SQLException;
+	int GoodsUpdateSt(int goodsCode) throws SQLException;
+	int GoodsUpdatePr(int goodsCode) throws SQLException;
 	
 	
 	/**
@@ -55,8 +55,8 @@ public interface AdminDAO {
 	 */
 	   //일통계보기
 	OrderDetail getTodaysTotalOrderDetail() throws SQLException;
-	
-	
+	//월통계
+	OrderDetail getMonthTotalOrderDetail() throws SQLException;
 
 
 	
