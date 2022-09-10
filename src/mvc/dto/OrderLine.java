@@ -72,6 +72,15 @@ public class OrderLine {
 	public void setOptionList(List<Option> optionList) {
 		this.optionList = optionList;
 	}
+	
+
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
+	}
 
 	@Override
 	public String toString() {
