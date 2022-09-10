@@ -218,9 +218,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 			ps = con.prepareStatement(sql);
 			ps.setString(1, userId);
 			rs = ps.executeQuery();
-
 			while (rs.next()) {
-				Orders orders = new Orders();
+				Orders orders = new Orders(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
 
 				// 주문번호에 해당하는 상세정보 가져오기
 				List<OrderLine> orderLineList = selectOrderLine(con, orders.getOrderCode());// 메소드 호출
@@ -251,7 +250,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				OrderLine orderLine = new OrderLine();
+				OrderLine orderLine = new OrderLine(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
 				List<Option> opList = selectOption(con, orderLine.getDetailCode());
 				orderLine.setOptionList(opList);
 				

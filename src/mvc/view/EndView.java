@@ -1,6 +1,7 @@
 package mvc.view;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -35,13 +36,13 @@ public class EndView {
 		}
 		System.out.println();
 		System.out.println();
-		System.out.print("주문하실 종류의 번호를 입력해주세요 > ");
+		System.out.print("주문하실 종류의 번호를 입력해주세요 > "); 
 	}
 
 	/**
 	 * 메뉴 출력 후 주문
 	 */
-	public static void printGoodsList(List<Goods> coffeeList) {// 수정 필요
+	public static void printGoodsList(List<Goods> coffeeList) {//그래서 여기 온 순간 이미 카테고리 정해진 굿즈 리스트가 나오는거고
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
 		String op[] = new String[3];
 		int cup = 0;
@@ -62,8 +63,8 @@ public class EndView {
 		System.out.print("\n주문할 상품 번호를 고르세요 > ");
 		int orderNo = Integer.parseInt(sc.nextLine());
 		int orderCode = goodsCodeList.get(orderNo - 1);
-
-		if (orderNo < 6) {// 디저트, md 상품이 아니면 옵션 선택
+		
+		if (coffeeList.get(orderNo - 1).getNum() < 6) {// 디저트, md 상품이 아니면 옵션
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
@@ -83,7 +84,7 @@ public class EndView {
 			for (int i = 0; i < op.length; i++) {
 				op[i] = op[i].replace("1", "Y");
 				op[i] = op[i].replace("2", "N");
-			}			
+			}
 		}
 		System.out.print("수량을 입력하세요 >");
 		int quan = Integer.parseInt(sc.nextLine());
@@ -108,24 +109,24 @@ public class EndView {
 			payment = payment.replace("2", "카드");
 
 			System.out.println("\n테이크 아웃 여부를 선택해주세요");
-			System.out.println("1.먹고가기\t 2.가져가기");
+			System.out.println("1.매장\t 2.포장");
 			String takeOut = sc.nextLine();
 			takeOut = takeOut.replace("1", "N");
 			takeOut = takeOut.replace("2", "Y");
 
-			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
+			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);// userId 받아야함
 			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
 			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
-			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
-
 			order.getOrderLineList().add(orderline);
-			orderline.getOptionList().add(option);
-
-			OrdersController.insertOrders(order);
+			if(orderNo < 6) {
+				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				orderline.getOptionList().add(option);
+			}
+			
+			OrdersController.insertOrders(order);//이후 스탬프 적립 컨트롤러 추가
 			break;
 		case 2: // 장바구니 담기
-			
-			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
+			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);// userId 받아야함
 			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
 			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 			
@@ -192,7 +193,7 @@ public class EndView {
 	 */
 	public static void printOrderByUserId(List<Orders> orderList) {
 		System.out.println("주문 내역");
-		System.out.println("주문 코드\t | \t주문 날짜\t | \t주문 수량\t | \t주문 금액\t | \t결제 수단\t");
+		System.out.println("주문 코드 | 주문 날짜 | 주문 수량 | 주문 금액 | 결제 수단");
 		for (Orders order : orderList) {
 			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
 					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
@@ -320,4 +321,3 @@ public class EndView {
 	}
 
 }
-
