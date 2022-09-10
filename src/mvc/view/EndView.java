@@ -7,14 +7,34 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
+<<<<<<< HEAD
 import mvc.dao.NutritionDAO;
 import mvc.dao.NutritionDAOImpl;
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+
+>>>>>>> main
 import mvc.dto.Customer;
 
 import mvc.dto.Category;
 
+<<<<<<< HEAD
 import mvc.dto.Goods;
 import mvc.dto.Nutrition;
+=======
+<<<<<<< HEAD
+=======
+import mvc.dto.Category;
+>>>>>>> main
+=======
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+import mvc.dto.Goods;
+import mvc.dto.MyMenu;
+import mvc.dto.MyStar;
+>>>>>>> main
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
@@ -219,12 +239,24 @@ public class EndView {
 			System.out.println();
 		}
 	}
+<<<<<<< HEAD
+	
+=======
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+>>>>>>> main
 	/**
 	  * 마이페이지->개인정보 보여주기 
 	  * */
 	public static void userInfoChange(Customer customer) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> main
 		//System.out.println(customer);//이렇게하면 어떻게 출력되는지 궁금쓰 -> 주소가 찍히는 군 흠...
 		System.out.println("============================== 개인정보 =================================");
 		String userName=customer.getUserName();
@@ -233,6 +265,16 @@ public class EndView {
 		String email=customer.getEmail();
 		String pinNum=customer.getPinNum();
 		String regDate=customer.getRegDate();
+<<<<<<< HEAD
+=======
+=======
+		System.out.println("개인정보 변경");
+		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
+		for() {
+		System.out.println("변경할 내용을 선택해주세요.");
+		
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+>>>>>>> main
 		
 		System.out.println(" | 닉네임 : " +userName+ " | 비밀번호 : " +userPw +" | 휴대폰 : " 
 		+phoneNum+ " | 이메일 : " +email+ " | 생년월일 : " +pinNum + " | 가입일 : " + regDate+ " | ");
@@ -283,7 +325,11 @@ public class EndView {
 		// TODO Auto-generated method stub
 	}
 
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> main
 	/** 아직못함 
 	  * 마이페이지->나만의 메뉴 보기 
 	  * */
@@ -333,4 +379,33 @@ public class EndView {
 		System.out.println("등록하신 별점은 " +myStar.getReviewStar()+ " 점 입니다.");
 		System.out.println("등록해 주셔서 감사합니다.");
 	}
+<<<<<<< HEAD
 }
+=======
+
+	
+
+	
+	
+	
+	
+	
+	
+	}
+
+	
+
+	
+	
+
+	
+
+<<<<<<< HEAD
+
+=======
+}
+>>>>>>> main
+=======
+}
+>>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+>>>>>>> main
