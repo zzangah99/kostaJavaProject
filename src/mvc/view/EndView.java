@@ -7,12 +7,13 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
-
 import mvc.dto.Customer;
 
 import mvc.dto.Category;
-
+import mvc.dto.Category;
 import mvc.dto.Goods;
+import mvc.dto.MyMenu;
+import mvc.dto.MyStar;
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
@@ -203,10 +204,10 @@ public class EndView {
 			}
 			System.out.println();
 		}
-		}
+	}
 	/**
-	 * 마이페이지->개인정보 보여주기 
-	 * */
+	  * 마이페이지->개인정보 보여주기 
+	  * */
 	public static void userInfoChange(Customer customer) {
 		//System.out.println(customer);//이렇게하면 어떻게 출력되는지 궁금쓰 -> 주소가 찍히는 군 흠...
 		System.out.println("============================== 개인정보 =================================");
@@ -216,58 +217,60 @@ public class EndView {
 		String email=customer.getEmail();
 		String pinNum=customer.getPinNum();
 		String regDate=customer.getRegDate();
+		System.out.println("개인정보 변경");
+		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
+		
+		System.out.println("변경할 내용을 선택해주세요.");
 		
 		System.out.println(" | 닉네임 : " +userName+ " | 비밀번호 : " +userPw +" | 휴대폰 : " 
 		+phoneNum+ " | 이메일 : " +email+ " | 생년월일 : " +pinNum + " | 가입일 : " + regDate+ " | ");
 	}
 	
 	/**
-	 * 마이페이지->개인정보 변경->닉네임 
-	 * */
+	  * 마이페이지->개인정보 변경->닉네임 
+	  * */
 	public static void userInfoChangeName(Customer customer) {
 		System.out.println("변경하신 닉네임은 " +customer.getUserName()+ "입니다.");
 	}
-	
+
 	/**
-	 * 마이페이지->개인정보 변경->폰번호 
-	 * */
+	  * 마이페이지->개인정보 변경->폰번호 
+	  * */
 	public static void userInfoChangePhoneNum(Customer customer) {
 		System.out.println("변경하신 휴대폰 번호은 " +customer.getPhoneNum()+ "입니다.");
 	}
 	
 	/**
-	 * 마이페이지->개인정보 변경->비번 
-	 * */
+	  * 마이페이지->개인정보 변경->비번 
+	  * */
 	public static void userInfoChangePw(Customer customer) {
 		System.out.println("변경하신 비밀번호는 " +customer.getUserPw()+ "입니다.");
 	}
 	
 	/**
-	 * 마이페이지->개인정보 변경->이메일 
-	 * */
+	  * 마이페이지->개인정보 변경->이메일 
+	  * */
 	public static void userInfoChangeEmail(Customer customer) {
 		System.out.println("변경하신 이메일은 " +customer.getEmail()+ "입니다.");
 	}
-	
+
 	/** 아직못함 
-	 * 마이페이지->스탬프 조회 
-	 * */
+	  * 마이페이지->스탬프 조회 
+	  * */
 	public static void myStamp(int myStamp) {
 		Customer customer = new Customer();
 		System.out.println("============================== 스탬프 =================================");
 		System.out.println("스탬프 현황 : " +customer.getStamp()+ "개");
 		System.out.println("앗!메리카노 쿠폰 발행까지 " +(10-customer.getStamp())+ "개가 남았습니다.");
 	}
-	
+
 	/** 아직못함 
-	*  마이페이지->최근주문내역 조회 
-	 * */
+	 *  마이페이지->최근주문내역 조회 
+	  * */
 	public static void selectOrderRecent(Customer customer) {
 		// TODO Auto-generated method stub
 	}
-	/** 아직못함 
-	 * 마이페이지->나만의 메뉴 보기 
-	 * */
+
 	public static void myMenu(Customer customer) {
 		System.out.println("============================== 나만의 메뉴 =================================");
 		MyMenu myMenu = new MyMenu();
@@ -281,19 +284,19 @@ public class EndView {
 		System.out.println(" | 메뉴 이름 : " +mmName+ " | 온도 : " +tem +" | 시럽 : " 
 		+syrup+ " | 디카페인 : " +def+ " | 휘핑크림 : " +whip + " | 사이즈 : " + sizeSize+ " | ");
 	}
-	
+
 	/** 아직못함 
-	 * 마이페이지->쿠폰코드 조회
-	 * */
+	  * 마이페이지->쿠폰코드 조회
+	  * */
 	public static void UserCoupon(String userId, String UserCoupon) {
 		System.out.println(userId+ "님의 쿠폰 보유 현황");
 		System.out.println("======보유한 쿠폰 List=====");
 		System.out.println("[쿠폰코드] " +UserCoupon+ " | [쿠폰이름] " + "| [할인금액] " + "| [기한] " );
 	}
-	
+
 	/**
-	 * 마이페이지->내가 쓴 별점평가 보기 
-	 * */
+	  * 마이페이지->내가 쓴 별점평가 보기 
+	  * */
 	public static void myStar(MyStar myStar) {
 		Orders order = new Orders();
 		Goods goods = new Goods();
@@ -308,11 +311,12 @@ public class EndView {
 			}
 	
 	/**
-	 * 마이페이지->별점평가 
-	 * */
+	  * 마이페이지->별점평가 
+	  * */
 	public static void myStarAssess(MyStar myStar) {
 		System.out.println("등록하신 별점은 " +myStar.getReviewStar()+ " 점 입니다.");
 		System.out.println("등록해 주셔서 감사합니다.");
 	}
 
 }
+

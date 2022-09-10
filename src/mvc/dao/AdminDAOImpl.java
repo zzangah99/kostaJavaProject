@@ -12,15 +12,8 @@ import mvc.dto.Admin;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
 import mvc.dto.OrderDetail;
-import mvc.dto.OrderLine;
-import mvc.dto.Orders;
 import mvc.util.DbUtil;
 import java.util.Properties;
-import mvc.exception.NotFoundException;
-import mvc.dao.AdminDAO;
-import mvc.dto.Customer;
-import mvc.session.AdminSession;
-import mvc.session.AdminSessionSet;
 
 public class AdminDAOImpl implements AdminDAO {
 	GoodsDAO goodsDao = new GoodsDAOImpl();
@@ -37,14 +30,24 @@ public class AdminDAOImpl implements AdminDAO {
 		  ResultSet rs=null;
 		  Admin admin=null;
 		 try {
+			// System.out.println("admindaoimpl login111");
 		   con = DbUtil.getConnection();
+		   //System.out.println("admindaoimpl login222");
 		   ps= con.prepareStatement("select * from admin where admin_id = ? and admin_pw = ?");
+		   //System.out.println("admindaoimpl login333");
+		  System.out.println(adminId);
+		  System.out.println(adminPw);
+		  
 		   ps.setString(1, adminId);
 		   ps.setString(2, adminPw);
-		   
+		   //System.out.println("admindaoimpl login444");
 	        rs = ps.executeQuery(); 
+	        //System.out.println("admindaoimpl login555");
 	        
 	        if(rs.next()) {
+	        	//System.out.println("admindaoimpl login6666");
+	        	//System.out.println(rs.getString(2));
+	        	//System.out.println(rs.getString(1));
 	        	admin = new Admin(rs.getString(1), rs.getString(2));
 	        }
         }finally {
@@ -90,7 +93,7 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	//수정
 	@Override
-	public int GoodsUpdateName(Goods goods) throws SQLException {
+	public int GoodsUpdateName(Goods goodsName) throws SQLException {
 
         Connection con=null;
 		PreparedStatement ps =null;
@@ -101,8 +104,8 @@ public class AdminDAOImpl implements AdminDAO {
 			 con = DbUtil.getConnection();
 			 ps = con.prepareStatement(sql);
 			 
-				ps.setString(1,goods.getGoodsName() );
-				ps.setInt(2,goods.getGoodsCode() );
+				ps.setString(1,goodsName.getGoodsName() );
+				ps.setInt(2,goodsName.getGoodsCode() );
 			 
 		result = ps.executeUpdate();
 			System.out.println("상품 수정완료");
@@ -295,7 +298,7 @@ public class AdminDAOImpl implements AdminDAO {
 		  ResultSet rs=null;
 		  OrderDetail orderDetail = null;
 
-		  String sql = proFile.getProperty("tongye.selectByDate");	  
+		  String sql = proFile.getProperty("tongye.selectByMonth");	  
 		  try {
 			  con = DbUtil.getConnection();
 			  ps= con.prepareStatement(sql);
