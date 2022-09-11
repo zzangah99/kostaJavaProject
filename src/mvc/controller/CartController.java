@@ -32,16 +32,10 @@ public class CartController {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(orderLine.getGoodsCode());
 			int quantity = orderLine.getDetailQuan();
 
-			if (goods.getStock() < quantity) {
-				throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
-			}
+			if ((goods.getStock()>=0 )&& (goods.getStock() < quantity)) {
+	            throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
+	         }
 
-			// Guest일떄 userId 생성
-			if (userId.equalsIgnoreCase("Guest")) {
-				UserSession userSession = new UserSession(userId); // 회원 하나하나에 대한 목록
-				UserSessionSet userSessionSet = UserSessionSet.getInstance();// 로그인한 사람 모음
-				userSessionSet.add(userSession);
-			}
 
 			// id에 해당하는 세션찾기
 			UserSessionSet ss = UserSessionSet.getInstance();

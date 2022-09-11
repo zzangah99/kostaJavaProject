@@ -267,6 +267,14 @@ public class MenuView {// 메인 메뉴
 		 * 초기메뉴 (회원주문->회원메뉴//비회원주문) ->  "주문메뉴(회원/비회원상태)"
 		 */
 	public static void printUserMenu(String userId) {//주문메뉴
+		
+		// Guest일떄 userId 생성
+		if (userId.equalsIgnoreCase("Guest")) {
+			UserSession userSession = new UserSession(userId); // 회원 하나하나에 대한 목록
+			UserSessionSet userSessionSet = UserSessionSet.getInstance();// 로그인한 사람 모음
+			userSessionSet.add(userSession);
+		}
+		
 		while (true) {
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(us.getSet()); //Set객체
