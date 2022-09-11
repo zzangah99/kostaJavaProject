@@ -66,7 +66,7 @@ public class Option {
 	}
 	@Override
 	public String toString() {
-		return "사이즈: " + sizeName + " | " + tem + " | " + "시럽: " + syrup + " | " + "디카페인: " + def + " | " + "휘핑크림: " + whip;
+		return "사이즈: " + sizeName + " | " +"온도: " + tem + " | " + "시럽: " + syrup + " | " + "디카페인: " + def + " | " + "휘핑크림: " + whip;
 	}
 	
 	
