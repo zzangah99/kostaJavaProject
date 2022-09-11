@@ -322,6 +322,4 @@ public class OrdersDAOImpl implements OrdersDAO {
 		
 		return size;
 	}
-	
-	
 }

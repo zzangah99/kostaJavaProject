@@ -4,14 +4,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-
 import mvc.dao.GoodsDAOImpl;
-import mvc.dto.GiftCon;
 import mvc.dto.Goods;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
-import mvc.service.GoodsService;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
 import mvc.view.EndView;
@@ -36,12 +32,6 @@ public class CartController {
 	            throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
 	         }
 
-			// Guest일떄 userId 생성
-			if (userId.equalsIgnoreCase("Guest")) {
-				UserSession userSession = new UserSession(userId); // 회원 하나하나에 대한 목록
-				UserSessionSet userSessionSet = UserSessionSet.getInstance();// 로그인한 사람 모음
-				userSessionSet.add(userSession);
-			}
 
 			// id에 해당하는 세션찾기
 			UserSessionSet ss = UserSessionSet.getInstance();
@@ -109,20 +99,25 @@ public class CartController {
 	}
 	
 	/**
-	 * 장바구니 수정하기
+	 * 장바구니 전체 비우기
 	 */
 	public static void modifyingCart(String userId, Map<OrderLine, Integer> cart) {
+		/*
 		Scanner sc = new Scanner(System.in);
+		System.out.println("삭제할 제품의 주문번호을 입력해주십시오 > ");
+		int modifyingGoods = sc.nextInt();
 		
-		System.out.println("수정할 제품의 이름을 입력해주십시오 > ");
-		String modifyingGoods = sc.nextLine();
-		
-
-		if (cart.get(modifyingGoods) != null) { // 장바구니에 이미 상품이 있다면
-
+		if (modifyingGoods == cart.hashCode()) { // 장바구니에 이미 상품이 있다면
+			cart.clear();
 		} else {
 			FailView.errorMessage("장바구니에 존재하지 않는 상품입니다.");
 		}
+		*/
+		
+		// 장바구니 전체 비우기
+		UserSessionSet ss = UserSessionSet.getInstance();
+		UserSession userSession = ss.get(userId);
+		userSession.removeAttribute("cart");
 	}
 
 	/**
@@ -130,23 +125,22 @@ public class CartController {
 	 */
 	public static void gifticonCart(String userId, Map<OrderLine, Integer> cart) {
 
-		GiftCon gifticon = new GiftCon();
-		
-		List<OrderLine>  gifticonList = gifticon.getOrderLine();
+		Orders orders = new Orders(0, userId, null, 0, 0, null, null, null, null);
+		List<OrderLine> orderLineList = orders.getOrderLineList();
 
-		for (Goods goodsKey : cart.keySet()) {
-			int qty = cart.get(goodsKey);
-			OrderLine orderLine = new OrderLine(0,0,goodsKey.getGoodsCode(),goodsKey.getGoodsPrice(),qty);
-			gifticonList.add(orderLine);
+		for (OrderLine orderLineKey : cart.keySet()) {
+			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0);
+			orderLineList.add(orderLine);
 		}
 
-		System.out.println("----- 총 " +  gifticonList.size() + "개의 상품이 기프티콘으로 생성중입니다..------ ");
-		//order 
+		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
+		OrdersController.insertOrders(orders);
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();
 		UserSession userSession = ss.get(userId);
 		userSession.removeAttribute("cart");
+
 	}
 
 }
