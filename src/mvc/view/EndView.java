@@ -168,7 +168,7 @@ public class EndView {
 				int goodsPrice = goods.getGoodsPrice();// 상품가격
 				int quantity = cart.get(orderLine);//
 				
-				System.out.print(" [ 상품코드:" + goodsCode + " | 상품이름: " + goodsName +" | 상품개수:" + quantity + " | 상품가격:" + goodsPrice);
+				System.out.print(" [ 주문코드:" + orderLine.getDetailCode() +" | 상품코드: " + goodsCode + " | 상품이름: " + goodsName +" | 상품개수:" + quantity + " | 상품가격:" + goodsPrice);
 				
 				for (Option option : orderLine.getOptionList()) {
 					System.out.println(" | " +option+" ] ");
@@ -185,7 +185,7 @@ public class EndView {
 
 		// 장바구니 메뉴로 이동하기.
 		Scanner sc = new Scanner(System.in);
-		System.out.println(" 1.결제하기  | 2.수정하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
+		System.out.println(" 1.결제하기  | 2.삭제하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
 		switch (Integer.parseInt(sc.nextLine())) {
 		case 1:
 			CartController.payingCart(userId, cart);

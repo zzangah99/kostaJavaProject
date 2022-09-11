@@ -36,17 +36,5 @@ public class OrdersController {
 		}
 	}
 	
-	/**
-	 * 기프티콘 만들기
-	 * */
-	public static int insertGiftConCode(Orders order) {
-		try {
-		  int orderCode = orderService.insertGiftConCode(order);
-		  return orderCode;
-		}catch (Exception e) {
-			FailView.errorMessage(e.getMessage());
-			
-		}
-		return orderCode;
-	}
+
 }

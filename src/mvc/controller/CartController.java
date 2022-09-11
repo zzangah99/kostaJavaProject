@@ -103,17 +103,17 @@ public class CartController {
 	}
 	
 	/**
-	 * 장바구니 수정하기
+	 * 장바구니 삭제하기
 	 */
 	public static void modifyingCart(String userId, Map<OrderLine, Integer> cart) {
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.println("수정할 제품의 이름을 입력해주십시오 > ");
-		String modifyingGoods = sc.nextLine();
 		
-
-		if (cart.get(modifyingGoods) != null) { // 장바구니에 이미 상품이 있다면
-
+		System.out.println("삭제할 제품의 주문번호을 입력해주십시오 > ");
+		int modifyingGoods = sc.nextInt();
+		
+		if (modifyingGoods == cart.hashCode()) { // 장바구니에 이미 상품이 있다면
+			cart.clear();
 		} else {
 			FailView.errorMessage("장바구니에 존재하지 않는 상품입니다.");
 		}

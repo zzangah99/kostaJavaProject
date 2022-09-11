@@ -27,9 +27,4 @@ public class OrderService {
 		 return list;
 	 }
 
-	public int insertGiftConCode(Orders order) {
-		int orderCode =  orderDao.GiftConCodeInsert(orders);
-		if(orderCode==0)throw new SQLException("주문이 실패하였습니다.");
-		return orderCode;
-	}
 }
