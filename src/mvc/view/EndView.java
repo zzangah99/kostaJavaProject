@@ -1,5 +1,6 @@
 package mvc.view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -8,9 +9,10 @@ import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
+import mvc.dao.GoodsDAO;
+import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Customer;
 
-import mvc.dto.Category;
 import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
@@ -129,13 +131,16 @@ public class EndView {
 		case 2: // 장바구니 담기
 			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);// userId 받아야함
 			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
-			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+			
+			if(orderNo < 6) {
+				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				cartOrderline.getOptionList().add(option);
+			}
 			
 			cartOrder.getOrderLineList().add(cartOrderline);
-			cartOrderline.getOptionList().add(cartOption);
 			
-			CartController.putCart(cartOrder, cartOrderline);
-			System.out.println("11");
+			CartController.putCart(cartOrderline,userId);
+			
 			break;
 		}
 
@@ -149,24 +154,39 @@ public class EndView {
 	/**
 	 * 장바구니 보기
 	 **/
-	public static void printViewCart(String userId, Map<Goods, Integer> cart) {
-		System.out.println("----------------장바구니------------------");
-		// 장바구니 목록
-		for (Goods goods : cart.keySet()) {
-			int goodsCode = goods.getGoodsCode();// 상품번호
-			String goodsName = goods.getGoodsName();// 상품번호
-			// 상품옵션
-			int goodsPrice = goods.getGoodsPrice();// 상품번호
-			int quantity = cart.get(goods);//
+	public static void printViewCart(String userId, Map<OrderLine, Integer> cart) {
+		GoodsDAOImpl goodsDao = new GoodsDAOImpl();
 
-			System.out.println(" [ 상품코드:" + goodsCode + "\t | 상품이름: " + goodsName + "\t | 상품옵션: " + goodsName
-					+ "\t | 상품개수:" + quantity + "\t | 상품가격:" + goodsPrice + " ]");
+		System.out.println("-------------------------------------------장바구니--------------------------------------------------");
+
+		// 장바구니 목록
+		for (OrderLine orderLine : cart.keySet()) {
+			try {
+				Goods goods = goodsDao.goodsSelectBygoodsCode(orderLine.getGoodsCode());
+				int goodsCode = goods.getGoodsCode();// 상품코드
+				String goodsName = goods.getGoodsName();// 상품이름		
+				int goodsPrice = goods.getGoodsPrice();// 상품가격
+				int quantity = cart.get(orderLine);//
+				
+				System.out.print(" [ 상품코드:" + goodsCode + " | 상품이름: " + goodsName +" | 상품개수:" + quantity + " | 상품가격:" + goodsPrice);
+				
+				for (Option option : orderLine.getOptionList()) {
+					System.out.println(" | " +option+" ] ");
+				}
+				
+				System.out.println("--------------------------------------------------------------------------------------------------");
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println();
 
 		}
 
 		// 장바구니 메뉴로 이동하기.
 		Scanner sc = new Scanner(System.in);
-		System.out.println("1.결제하기  | 2.수정하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
+		System.out.println(" 1.결제하기  | 2.수정하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
 		switch (Integer.parseInt(sc.nextLine())) {
 		case 1:
 			CartController.payingCart(userId, cart);
@@ -175,9 +195,7 @@ public class EndView {
 			CartController.modifyingCart(userId, cart);
 			break;
 		case 3:
-			System.out.println("수정할 제품의 이름을 입력해주십시오 > ");
-			String modifyingGoods = sc.nextLine();
-			CartController.gifticonCart(modifyingGoods, cart);
+			CartController.gifticonCart(userId, cart);
 			break;
 
 		case 4:

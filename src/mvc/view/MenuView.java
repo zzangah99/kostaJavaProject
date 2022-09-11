@@ -44,8 +44,8 @@ public class MenuView {// 메인 메뉴
 					break;
 				case 2:
 					// 회원이면 printUserMenu(회원ID)
-					// 비회원이면 printUserMenu(null)
-					MenuView.printUserMenu(null);// 비회원은 바로 메인 메뉴 선택으로
+					// 비회원이면 printUserMenu("Guest")
+					MenuView.printUserMenu("Guest");// 비회원은 바로 메인 메뉴 선택으로
 					break;
 				case 3:
 					MenuView.AdminLogin();

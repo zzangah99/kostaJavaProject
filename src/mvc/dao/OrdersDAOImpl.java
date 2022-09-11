@@ -103,7 +103,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 				ps.setInt(3, orderline.getDetailQuan());// 상품별 구매 수량
 				ps.addBatch(); // 일괄처리할 작업에 추가
 				ps.clearParameters();
-				ps.executeBatch();//공부.................................
+				ps.executeBatch();//Batch 공부.................................
+				
 				//옵션
 				int re = optionListInsert(con, orderline);
 				if(re != 1) {
