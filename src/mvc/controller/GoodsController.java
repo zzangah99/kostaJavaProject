@@ -30,7 +30,7 @@ public class GoodsController {
 	public static void goodsSelectByName(String word) { //이름 검색
 		try {
 			List<Goods> list = goodsService.goodsSelectBygoodsName(word);
-			EndView.printGoodsList(list);
+			EndView.printGoodsSelectByName(list);
 		
 		}catch (SQLException e) {
 			FailView.errorMessage(e.getMessage());

@@ -3,16 +3,13 @@ package mvc.service;
 
 
 import java.sql.SQLException;
-import java.util.List;
 
-import mvc.dao.AdminDAOImpl;
-import mvc.exception.NotFoundException;
 import mvc.dao.AdminDAO;
+import mvc.dao.AdminDAOImpl;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
-import mvc.dto.Notice;
 import mvc.dto.OrderDetail;
-import mvc.dto.Orders;
+import mvc.exception.NotFoundException;
 import mvc.session.AdminSession;
 import mvc.session.AdminSessionSet;
 
@@ -26,14 +23,17 @@ public class AdminService {
   /**
    * 로그인
    * */
-	public Admin login(String adminId, String adminPw)throws NotFoundException , SQLException{
+	public Admin login(String adminId, String adminPw)throws NotFoundException , SQLException{ 
+		  
 		Admin admin = adminDao.login(adminId, adminPw);
 		if(admin==null) {
 			throw new NotFoundException("정보를 다시 확안해주세요.");
 		}
 		
 		//로그인 된 정보 저장하기
-		AdminSession adminsession = new AdminSession(adminId);
+		AdminSession adminsession = new AdminSession();
+		adminsession.setAdminSessionId(Admin admin);////UUID.randomUUID().toString()
+		System.out.println("adminservice adminsession111");
 		
 		AdminSessionSet adminsessionSet = AdminSessionSet.getInstance();
 		adminsessionSet.add(adminsession);
@@ -71,7 +71,7 @@ public class AdminService {
 		    }
 		}
 		
-		public void GoodsUpdatePr(int goodsCode) throws SQLException, NotFoundException {
+		public void GoodsUpdatePr(int goodsCode, int goodsReprice) throws SQLException, NotFoundException {
 			int result = adminDao.GoodsUpdatePr(goods);
 				
 			if(result==0) {
@@ -82,7 +82,7 @@ public class AdminService {
 		    }
 		}
 		
-		public void GoodsUpdateSo(int goodsCode) throws SQLException, NotFoundException {
+		public void GoodsUpdateSo(int goodsCode, String goodsReSo) throws SQLException, NotFoundException {
 			int result = adminDao.GoodsUpdateSo(goods);
 				
 			if(result==0) {
@@ -93,7 +93,7 @@ public class AdminService {
 		    }
 		}
 		
-		public void GoodsUpdateSt(int goodsCode) throws SQLException, NotFoundException {
+		public void GoodsUpdateSt(int goodsCode, String goodsReSo) throws SQLException, NotFoundException {
 			int result = adminDao.GoodsUpdateSt(goods);
 				
 			if(result==0) {
@@ -145,7 +145,7 @@ public class AdminService {
 			OrderDetail orderDetail= null;
 
 			try {
-			orderDetail = adminDao.getTodaysTotalOrderDetail();
+			orderDetail = adminDao.getMonthTotalOrderDetail();
 		
 			}catch (Exception e) {
 				return new OrderDetail();
@@ -160,13 +160,9 @@ public class AdminService {
          */
 			public String NoticePrint() throws SQLException, NotFoundException {
 				String notice = adminDao.noticeprint();
-			
-				if(notice == null) {
-					throw new NotFoundException("공지등록에 실패하였습니다");
-				}else {
-					System.out.println("공지이 등록되었습니다");
-				}
-			return notice;
+				if(notice == null) throw new NotFoundException("공지등록에 실패하였습니다");
+				
+				return notice;
 			}
 			
 			

@@ -211,7 +211,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		ResultSet rs = null;
 		String sql = profile.getProperty("orderOrder.selectAllById");
 		//select * from order_order where user_id = ?
-		List<Orders> list = new ArrayList<>();
+		List<Orders> list = new ArrayList<Orders>();
 		
 		try {
 			con = DbUtil.getConnection();
@@ -220,7 +220,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Orders orders = new Orders();
+				Orders orders = new Orders(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4),
+						rs.getInt(5),rs.getInt(6),rs.getString(7),rs.getString(8),rs.getString(9));
 
 				// 주문번호에 해당하는 상세정보 가져오기
 				List<OrderLine> orderLineList = selectOrderLine(con, orders.getOrderCode());// 메소드 호출

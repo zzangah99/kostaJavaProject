@@ -6,45 +6,20 @@ import java.util.Map;
 import java.util.Scanner;
 
 import mvc.controller.CartController;
+import mvc.controller.GoodsController;
 import mvc.controller.OrdersController;
-<<<<<<< HEAD
-import mvc.dao.NutritionDAO;
-import mvc.dao.NutritionDAOImpl;
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
-
->>>>>>> main
+import mvc.dto.Category;
 import mvc.dto.Customer;
-
-import mvc.dto.Category;
-
-<<<<<<< HEAD
-import mvc.dto.Goods;
-import mvc.dto.Nutrition;
-=======
-<<<<<<< HEAD
-=======
-import mvc.dto.Category;
->>>>>>> main
-=======
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
 import mvc.dto.MyStar;
->>>>>>> main
+import mvc.dto.Nutrition;
 import mvc.dto.Option;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
-import mvc.session.UserSession;
-import mvc.session.UserSessionSet;
-
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
-	
 
 	/**
 	 * 대분류 출력
@@ -55,11 +30,16 @@ public class EndView {
 			System.out.print("  " + list.getCategoryCode() + "." + list.getCategoryName() + "   ");
 
 		}
-		System.out.println();
+		System.out.print("  "+"8.상품 이름으로 검색하기  ");
+		System.out.println("  "+"9.돌아가기");
 		System.out.println();
 		System.out.print("주문하실 종류의 번호를 입력해주세요 > ");
+		//int num = Integer.parseInt(sc.nextLine());
+		//GoodsController.selectBever(num, userId);
 	}
-
+	public static void printGoodsSelectByName(List<Goods> list) {
+		EndView.printGoodsList(list);
+	}
 	/**
 	 * 메뉴 출력 후 주문
 	 */
@@ -69,34 +49,31 @@ public class EndView {
 		int cup = 0;
 		String tem = null;
 		String userId = null;
-		NutritionDAO nutrition = new NutritionDAOImpl();
+		
 
 		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
 		int goodsNo = 0;
 		for (Goods goods : coffeeList) {
-			System.out.print((++goodsNo) + "." + goods.getGoodsName()+"\t");
-			System.out.println(String.format("%-20s", goods.getGoodsPrice()+"\t"+goods.getGoodsDetail())); //살짝부족 수정 필요!!! 정렬 다시!
+			System.out.print((++goodsNo) + "." + goods.getGoodsName() + "\t");
+			System.out.println(String.format("%-20s", goods.getGoodsPrice()+"\t"+goods.getGoodsDetail()));
 			goodsCodeList.add(goods.getGoodsCode());
 			userId = goods.getUserId();
-		
 		}
 
 		// 용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
 
 		//
-		System.out.print("주문할 상품 번호를 고르세요> ");
+		System.out.print("\n주문할 상품 번호를 고르세요> ");
 		int orderNo = Integer.parseInt(sc.nextLine());
 		int orderCode = goodsCodeList.get(orderNo - 1);
 
-		if (orderNo != 6 && orderNo != 7) {// 디저트, md 상품이 아니면 옵션 선택
-			System.out.print("영양정보를 확인 하시겠습니까? (Y or N)");
-			String check = sc.nextLine();
-			//if(check == "Y" || check == "y") {
-			//List<Nutrition> nut= nutrition.goodsNutrition(int goodsCode);
-			
-		
-			//}
-			
+		if (orderNo != 6 || orderNo != 7) {// 디저트, md 상품이 아니면 옵션 선택
+		//	System.out.print("영양정보를 확인 하시겠습니까?(Y or N)");
+		//	String check = sc.nextLine();
+		//	if(check == "Y" || check =="y") {
+				//EndView.nutrition()
+				
+		//	}
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
@@ -113,6 +90,8 @@ public class EndView {
 			System.out.println("1.휘핑 추가\t 2.추가 없음");
 			op[2] = sc.nextLine();
 		}
+		
+		
 		System.out.println("수량을 입력하세요");
 		int quan = Integer.parseInt(sc.nextLine());
 
@@ -168,13 +147,16 @@ public class EndView {
 			System.out.println("11");
 			break;
 		}
+
+		System.out.println();
 	}
-			
-		
+
 	
-	
-	public static void printMessage(String message) {//
-		System.out.println(message);
+	/**
+	 * 공지
+	 */
+	public static void printMessage(String notice) {//
+		System.out.println(notice);
 	}
 
 	/**
@@ -239,24 +221,10 @@ public class EndView {
 			System.out.println();
 		}
 	}
-<<<<<<< HEAD
-	
-=======
-
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
->>>>>>> main
 	/**
 	  * 마이페이지->개인정보 보여주기 
 	  * */
 	public static void userInfoChange(Customer customer) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> main
 		//System.out.println(customer);//이렇게하면 어떻게 출력되는지 궁금쓰 -> 주소가 찍히는 군 흠...
 		System.out.println("============================== 개인정보 =================================");
 		String userName=customer.getUserName();
@@ -265,16 +233,9 @@ public class EndView {
 		String email=customer.getEmail();
 		String pinNum=customer.getPinNum();
 		String regDate=customer.getRegDate();
-<<<<<<< HEAD
-=======
-=======
 		System.out.println("개인정보 변경");
 		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
-		for() {
 		System.out.println("변경할 내용을 선택해주세요.");
-		
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
->>>>>>> main
 		
 		System.out.println(" | 닉네임 : " +userName+ " | 비밀번호 : " +userPw +" | 휴대폰 : " 
 		+phoneNum+ " | 이메일 : " +email+ " | 생년월일 : " +pinNum + " | 가입일 : " + regDate+ " | ");
@@ -325,14 +286,6 @@ public class EndView {
 		// TODO Auto-generated method stub
 	}
 
-<<<<<<< HEAD
-
-=======
-<<<<<<< HEAD
->>>>>>> main
-	/** 아직못함 
-	  * 마이페이지->나만의 메뉴 보기 
-	  * */
 	public static void myMenu(Customer customer) {
 		System.out.println("============================== 나만의 메뉴 =================================");
 		MyMenu myMenu = new MyMenu();
@@ -379,33 +332,7 @@ public class EndView {
 		System.out.println("등록하신 별점은 " +myStar.getReviewStar()+ " 점 입니다.");
 		System.out.println("등록해 주셔서 감사합니다.");
 	}
-<<<<<<< HEAD
+	
+
 }
-=======
 
-	
-
-	
-	
-	
-	
-	
-	
-	}
-
-	
-
-	
-	
-
-	
-
-<<<<<<< HEAD
-
-=======
-}
->>>>>>> main
-=======
-}
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
->>>>>>> main

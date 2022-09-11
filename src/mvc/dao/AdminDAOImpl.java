@@ -7,20 +7,13 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
 import mvc.controller.AdminController;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
-import mvc.dto.Notice;
 import mvc.dto.OrderDetail;
-import mvc.dto.OrderLine;
-import mvc.dto.Orders;
 import mvc.util.DbUtil;
-import java.util.Properties;
-import mvc.exception.NotFoundException;
-import mvc.dao.AdminDAO;
-import mvc.dto.Customer;
-import mvc.session.AdminSession;
-import mvc.session.AdminSessionSet;
 
 public class AdminDAOImpl implements AdminDAO {
 	GoodsDAO goodsDao = new GoodsDAOImpl();
@@ -38,11 +31,11 @@ public class AdminDAOImpl implements AdminDAO {
 		  Admin admin=null;
 		 try {
 		   con = DbUtil.getConnection();
-		   ps= con.prepareStatement("select * from admin where admin_id = ? and admin_pw = ?");
+		   ps= con.prepareStatement("admin.selectLogin");//select * from admin where admin_id = ? and admin_pw = ?
+		  
 		   ps.setString(1, adminId);
 		   ps.setString(2, adminPw);
-		   
-	        rs = ps.executeQuery(); 
+	       rs = ps.executeQuery(); 
 	        
 	        if(rs.next()) {
 	        	admin = new Admin(rs.getString(1), rs.getString(2));
@@ -90,7 +83,7 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	//수정
 	@Override
-	public int GoodsUpdateName(Goods goods) throws SQLException {
+	public int GoodsUpdateName(int goodsCode) throws SQLException {
 
         Connection con=null;
 		PreparedStatement ps =null;
@@ -101,8 +94,8 @@ public class AdminDAOImpl implements AdminDAO {
 			 con = DbUtil.getConnection();
 			 ps = con.prepareStatement(sql);
 			 
-				ps.setString(1,goods.getGoodsName() );
-				ps.setInt(2,goods.getGoodsCode() );
+				ps.setString(1,goodsName.getGoodsName() );
+				ps.setInt(2,goodsName.getGoodsCode() );
 			 
 		result = ps.executeUpdate();
 			System.out.println("상품 수정완료");
@@ -116,7 +109,7 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	//수정
 	@Override
-		public int GoodsUpdatePr(Goods goodsCode) throws SQLException {
+		public int GoodsUpdatePr(int goodsCode, int goodsReprice) throws SQLException {
 
 	        Connection con=null;
 			PreparedStatement ps =null;
@@ -140,7 +133,7 @@ public class AdminDAOImpl implements AdminDAO {
 		}
 		//수정
 		@Override
-		public int GoodsUpdateSo(Goods goodsCode) throws SQLException {
+		public int GoodsUpdateSo(int goodsCode, String goodsReSo) throws SQLException {
 
 	        Connection con=null;
 			PreparedStatement ps =null;
@@ -166,7 +159,7 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		//수정
 		@Override
-		public int GoodsUpdateSt(Goods goodsCode) throws SQLException {
+		public int GoodsUpdateSt(int goodsCode, String goodsReSo) throws SQLException {
 
 	        Connection con=null;
 			PreparedStatement ps =null;
@@ -226,9 +219,9 @@ public class AdminDAOImpl implements AdminDAO {
 		  Connection con=null;
 		  PreparedStatement ps=null;
 		  ResultSet rs=null;
-		  String notice = "";
+		  String notice = null;
 
-		  String sql = proFile.getProperty("notice.selectLatestContent");	  
+		  String sql = proFile.getProperty("notice.selectContent"); //select notice_content from notice
 		  try {
 			  con = DbUtil.getConnection();
 			  ps= con.prepareStatement(sql);
@@ -236,7 +229,7 @@ public class AdminDAOImpl implements AdminDAO {
 		      rs = ps.executeQuery(); 
 		 
 		  if(rs.next()) {
-			  notice = rs.getString(1);
+			notice = rs.getString(1);
 		  }
 		  
 		  }finally {
@@ -295,7 +288,7 @@ public class AdminDAOImpl implements AdminDAO {
 		  ResultSet rs=null;
 		  OrderDetail orderDetail = null;
 
-		  String sql = proFile.getProperty("tongye.selectByDate");	  
+		  String sql = proFile.getProperty("tongye.selectByMonth");	  
 		  try {
 			  con = DbUtil.getConnection();
 			  ps= con.prepareStatement(sql);
