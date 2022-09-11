@@ -55,14 +55,16 @@ public class EndView {
 			System.out.print((++goodsNo) + "." + goods.getGoodsName() + "\t");
 			goodsCodeList.add(goods.getGoodsCode());
 			userId = goods.getUserId();
+			if(userId==null) userId = "Guest";
 		}
 
 		// 용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
 
 		//
-		System.out.print("\n주문할 상품 번호를 고르세요> ");
+		System.out.print("\n주문할 상품 번호를 고르세요 > ");
 		int orderNo = Integer.parseInt(sc.nextLine());
-		int orderCode = goodsCodeList.get(orderNo - 1);
+		int orderGoodsCode = goodsCodeList.get(orderNo - 1);
+		
 		if (coffeeList.get(orderNo - 1).getNum() < 6) {// 디저트, md 상품이 아니면 옵션
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
@@ -85,7 +87,7 @@ public class EndView {
 				op[i] = op[i].replace("2", "N");
 			}
 		}
-		System.out.println("수량을 입력하세요");
+		System.out.print("수량을 입력하세요 >");
 		int quan = Integer.parseInt(sc.nextLine());
 
 		System.out.println("1.주문하기\t 2.장바구니에 담기");
@@ -113,8 +115,8 @@ public class EndView {
 			takeOut = takeOut.replace("1", "N");
 			takeOut = takeOut.replace("2", "Y");
 
-			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
-			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
+			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);// userId 받아야함
+			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
 			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
 			order.getOrderLineList().add(orderline);
 			if(orderNo < 6) {
@@ -125,8 +127,8 @@ public class EndView {
 			OrdersController.insertOrders(order);//이후 스탬프 적립 컨트롤러 추가
 			break;
 		case 2: // 장바구니 담기
-			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
-			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
+			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);// userId 받아야함
+			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
 			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 			
 			cartOrder.getOrderLineList().add(cartOrderline);
