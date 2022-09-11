@@ -4,14 +4,10 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-
 import mvc.dao.GoodsDAOImpl;
-import mvc.dto.GiftCon;
 import mvc.dto.Goods;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
-import mvc.service.GoodsService;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
 import mvc.view.EndView;
@@ -103,12 +99,11 @@ public class CartController {
 	}
 	
 	/**
-	 * 장바구니 삭제하기
+	 * 장바구니 전체 비우기
 	 */
 	public static void modifyingCart(String userId, Map<OrderLine, Integer> cart) {
+		/*
 		Scanner sc = new Scanner(System.in);
-		
-		
 		System.out.println("삭제할 제품의 주문번호을 입력해주십시오 > ");
 		int modifyingGoods = sc.nextInt();
 		
@@ -117,6 +112,12 @@ public class CartController {
 		} else {
 			FailView.errorMessage("장바구니에 존재하지 않는 상품입니다.");
 		}
+		*/
+		
+		// 장바구니 전체 비우기
+		UserSessionSet ss = UserSessionSet.getInstance();
+		UserSession userSession = ss.get(userId);
+		userSession.removeAttribute("cart");
 	}
 
 	/**
