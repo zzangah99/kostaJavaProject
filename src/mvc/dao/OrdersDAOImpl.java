@@ -283,7 +283,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 			rs = ps.executeQuery();
 
 			while (rs.next()) {
-				Option option = new Option(rs.getInt(1), rs.getInt(2), getSizeName(con, rs.getInt(2)) ,rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
+				String[] size = getSizeName(con, rs.getInt(2));
+				Option option = new Option(rs.getInt(1), rs.getInt(2), size[0] ,rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6));
 				
 				opList.add(option);
 			}
@@ -295,30 +296,31 @@ public class OrdersDAOImpl implements OrdersDAO {
 	}
 	
 	/**
-	 * 사이즈 이름 가져오기
+	 * 사이즈 이름,가격 가져오기
 	 */
-	public String getSizeName(Connection con, int sizeCode) throws SQLException{
+	public String[] getSizeName(Connection con, int sizeCode) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		String sql = profile.getProperty("sizeOp.selectSizeName");
 		//select size_size from size_op where size_code = ?
-		String sizeName = null;
+		String size[] = new String[2];
 		
 		try {
-			ps = con.prepareStatement("select size_size from size_op where size_code = ?");
+			ps = con.prepareStatement("select size_size, size_price from size_op where size_code = ?");
 			ps.setInt(1, sizeCode);
 			rs = ps.executeQuery();
 			
 			while (rs.next()) {
-				if(rs.getString(1) == null) sizeName = "없음";
-				else sizeName = rs.getString(1);
+				if(rs.getString(1) == null) size[0] = "없음";
+				else size[0] = rs.getString(1);//사이즈이름
+				size[1] = Integer.toString(rs.getInt(2));//사이즈가격
 			}
 			
 		} finally {
 			DbUtil.dbClose(null, ps, rs);
 		}
 		
-		return sizeName;
+		return size;
 	}
 	
 	
