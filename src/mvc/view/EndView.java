@@ -194,10 +194,10 @@ public class EndView {
 	 */
 	public static void printOrderByUserId(List<Orders> orderList) {
 		System.out.println("주문 내역");
-		System.out.println("주문 코드 | 주문 날짜 | 주문 수량 | 주문 금액 | 결제 수단");
+		//System.out.println("주문 코드 | 주문 날짜 | 주문 수량 | 주문 금액 | 결제 수단");
 		for (Orders order : orderList) {
-			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
-					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
+			System.out.println("주문 코드: "+ order.getOrderCode() + " | " + "주문 날짜: "+ order.getOrderTime() + " | " + "주문 수량: "+ order.getOrderQuan()
+					+ " | " + "주문 금액: "+ order.getOrderPrice() + " | " + "결제 수단: "+ order.getOrderPayment());
 
 			for (OrderLine orderLine : order.getOrderLineList()) {
 				System.out.println("  ▶ " + orderLine);

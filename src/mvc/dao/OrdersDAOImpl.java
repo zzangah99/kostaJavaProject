@@ -39,6 +39,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		PreparedStatement ps = null;
 		String sql = profile.getProperty("orderOrder.insertAll");//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
 		int result = 0;
+		int orderTotal[] = getOrderTotal(order);
 		
 		try {
 		   con = DbUtil.getConnection();
@@ -46,8 +47,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 		   
 		   ps = con.prepareStatement(sql);
 		   ps.setString(1, order.getUserId());
-		   ps.setInt(2, order.getOrderQuan());
-		   ps.setInt(3, getOrderPrice(order));//총구매금액구하는 메소드 호출
+		   ps.setInt(2, orderTotal[1]);//총구매수량
+		   ps.setInt(3, orderTotal[0]);//총구매금액구하는 메소드 호출
 		   ps.setString(4, order.getUserCpCode());
 		   ps.setString(5, order.getOrderPayment());
 		   ps.setString(6, order.getGiftCode());
@@ -180,23 +181,25 @@ public class OrdersDAOImpl implements OrdersDAO {
 	
 	
 	/**
-	 * 상품 총구매금액 구하기
+	 * 상품 총구매금액,수량 구하기
 	 * */
-	public int getOrderPrice(Orders order) throws SQLException {
+	public int[] getOrderTotal(Orders order) throws SQLException {
 		List<OrderLine> orderLineList= order.getOrderLineList();
-	    int total=0;
+	    int total[]=new int[2];
 	   
 		for(OrderLine line : orderLineList) {
-			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());//오류 있음
+			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
-			else if(Integer.toString(goods.getStock()) == null) break;
-			else if(goods.getStock() <  line.getDetailQuan()) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
-			
-	    	total += line.getDetailQuan() * goods.getGoodsPrice() ;
-	    	if(order.getUserCpCode()==null) {
-	    		//쿠폰 사용해서 금액 할인
-	    	}
-	    }
+			/*else if(goods.getStock() < 0) {//수량 제한 없음
+				total[0] += line.getDetailQuan() * goods.getGoodsPrice();
+				if (order.getUserCpCode() == null) {
+					// 쿠폰 사용해서 금액 할인
+				}
+				*/
+			else if((goods.getStock() >= 0) && (goods.getStock() <  line.getDetailQuan())) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
+			total[0] += line.getDetailQuan() * goods.getGoodsPrice();//구매금액
+			total[1] += line.getDetailQuan();//구매수량
+		}
 		return total;
 	}
 	
@@ -301,17 +304,21 @@ public class OrdersDAOImpl implements OrdersDAO {
 		String sizeName = null;
 		
 		try {
-			ps = con.prepareStatement(sql);
+			ps = con.prepareStatement("select size_size from size_op where size_code = ?");
 			ps.setInt(1, sizeCode);
 			rs = ps.executeQuery();
 			
 			while (rs.next()) {
-				sizeName = rs.getString(1);
+				if(rs.getString(1) == null) sizeName = "없음";
+				else sizeName = rs.getString(1);
 			}
 			
 		} finally {
 			DbUtil.dbClose(null, ps, rs);
 		}
+		
 		return sizeName;
 	}
+	
+	
 }

@@ -281,7 +281,7 @@ public class MenuView {// 메인 메뉴
 					CategoryController.selectCategory();
 					int num = Integer.parseInt(sc.nextLine());
 					GoodsController.selectBever(num, userId);
-
+					break;
 				case 2:
 					CartController.viewCart(userId);
 					break;
