@@ -174,12 +174,11 @@ public class EndView {
 					System.out.println(" | " +option+" ] ");
 				}
 				
-				System.out.println("--------------------------------------------------------------------------------------------------");
-
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 			
+			System.out.println("--------------------------------------------------------------------------------------------------");
 			System.out.println();
 
 		}

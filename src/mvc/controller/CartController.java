@@ -124,23 +124,22 @@ public class CartController {
 	 */
 	public static void gifticonCart(String userId, Map<OrderLine, Integer> cart) {
 
-		GiftCon gifticon = new GiftCon();
-		
-		List<OrderLine>  gifticonList = gifticon.getOrderLine();
+		Orders orders = new Orders(0, userId, null, 0, 0, null, null, null, null);
+		List<OrderLine> orderLineList = orders.getOrderLineList();
 
-		for (Goods goodsKey : cart.keySet()) {
-			int qty = cart.get(goodsKey);
-			OrderLine orderLine = new OrderLine(0,0,goodsKey.getGoodsCode(),goodsKey.getGoodsPrice(),qty);
-			gifticonList.add(orderLine);
+		for (OrderLine orderLineKey : cart.keySet()) {
+			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0);
+			orderLineList.add(orderLine);
 		}
 
-		System.out.println("----- 총 " +  gifticonList.size() + "개의 상품이 기프티콘으로 생성중입니다..------ ");
-		//order 
+		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
+		OrdersController.insertOrders(orders);
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();
 		UserSession userSession = ss.get(userId);
 		userSession.removeAttribute("cart");
+
 	}
 
 }

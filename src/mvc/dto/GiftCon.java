@@ -2,13 +2,13 @@ package mvc.dto;
 
 public class GiftCon {
 	private int giftCode;//pk
-	private String orderCode;//fk
+	private int orderCode;//fk
 	private String giftLimitDate;
 	private String goodsName;
 	
 	public GiftCon() {}
 
-	public GiftCon(int giftCode, String orderCode, String giftLimitDate) {
+	public GiftCon(int giftCode, int orderCode, String giftLimitDate) {
 		super();
 		this.giftCode = giftCode;
 		this.orderCode = orderCode;
@@ -23,11 +23,11 @@ public class GiftCon {
 		this.giftCode = giftCode;
 	}
 
-	public String getOrderCode() {
+	public int getOrderCode() {
 		return orderCode;
 	}
 
-	public void setOrderCode(String orderCode) {
+	public void setOrderCode(int orderCode) {
 		this.orderCode = orderCode;
 	}
 
