@@ -7,7 +7,7 @@ public class OrderLine {
 	private int detailCode;// pk
 	private int orderCode;// fk
 	private int goodsCode;// fk
-	private String goodsName;
+	private String goodsName;//
 	private int detailPrice;
 	private int detailQuan;
 	private int optionCode;
@@ -71,6 +71,15 @@ public class OrderLine {
 
 	public void setOptionList(List<Option> optionList) {
 		this.optionList = optionList;
+	}
+	
+
+	public String getGoodsName() {
+		return goodsName;
+	}
+
+	public void setGoodsName(String goodsName) {
+		this.goodsName = goodsName;
 	}
 
 	@Override

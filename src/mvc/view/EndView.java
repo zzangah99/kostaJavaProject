@@ -1,27 +1,17 @@
 package mvc.view;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
-
 import mvc.dto.Customer;
 
 import mvc.dto.Category;
-
-<<<<<<< HEAD
-=======
 import mvc.dto.Category;
->>>>>>> main
-=======
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
 import mvc.dto.MyStar;
@@ -30,6 +20,7 @@ import mvc.dto.OrderLine;
 import mvc.dto.Orders;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
+import mvc.view.MenuView;
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
@@ -45,13 +36,13 @@ public class EndView {
 		}
 		System.out.println();
 		System.out.println();
-		System.out.print("주문하실 종류의 번호를 입력해주세요 > ");
+		System.out.print("주문하실 종류의 번호를 입력해주세요 > "); 
 	}
 
 	/**
 	 * 메뉴 출력 후 주문
 	 */
-	public static void printGoodsList(List<Goods> coffeeList) {// 수정 필요
+	public static void printGoodsList(List<Goods> coffeeList) {//그래서 여기 온 순간 이미 카테고리 정해진 굿즈 리스트가 나오는거고
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
 		String op[] = new String[3];
 		int cup = 0;
@@ -72,8 +63,7 @@ public class EndView {
 		System.out.print("\n주문할 상품 번호를 고르세요> ");
 		int orderNo = Integer.parseInt(sc.nextLine());
 		int orderCode = goodsCodeList.get(orderNo - 1);
-
-		if (orderNo != 6 && orderNo != 7) {// 디저트, md 상품이 아니면 옵션 선택
+		if (coffeeList.get(orderNo - 1).getNum() < 6) {// 디저트, md 상품이 아니면 옵션
 			System.out.println("선택해주세요");
 			System.out.println("1.Hot\t 2.Ice");
 			tem = sc.nextLine();
@@ -89,14 +79,14 @@ public class EndView {
 			op[1] = sc.nextLine();
 			System.out.println("1.휘핑 추가\t 2.추가 없음");
 			op[2] = sc.nextLine();
+			
+			for (int i = 0; i < op.length; i++) {
+				op[i] = op[i].replace("1", "Y");
+				op[i] = op[i].replace("2", "N");
+			}
 		}
 		System.out.println("수량을 입력하세요");
 		int quan = Integer.parseInt(sc.nextLine());
-
-		for (int i = 0; i < op.length; i++) {
-			op[i] = op[i].replace("1", "Y");
-			op[i] = op[i].replace("2", "N");
-		}
 
 		System.out.println("1.주문하기\t 2.장바구니에 담기");
 		int choice = sc.nextInt();
@@ -118,22 +108,33 @@ public class EndView {
 			payment = payment.replace("2", "카드");
 
 			System.out.println("\n테이크 아웃 여부를 선택해주세요");
-			System.out.println("1.먹고가기\t 2.가져가기");
+			System.out.println("1.매장\t 2.포장");
 			String takeOut = sc.nextLine();
 			takeOut = takeOut.replace("1", "N");
 			takeOut = takeOut.replace("2", "Y");
 
 			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
 			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
-			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
-
+			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
 			order.getOrderLineList().add(orderline);
-			orderline.getOptionList().add(option);
-
-			OrdersController.insertOrders(order);
+			if(orderNo < 6) {
+				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				orderline.getOptionList().add(option);
+			}
+			
+			OrdersController.insertOrders(order);//이후 스탬프 적립 컨트롤러 추가
 			break;
 		case 2: // 장바구니 담기
-
+			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
+			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
+			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+			
+			cartOrder.getOrderLineList().add(cartOrderline);
+			cartOrderline.getOptionList().add(cartOption);
+			
+			CartController.putCart(cartOrder, cartOrderline);
+			System.out.println("11");
+			break;
 		}
 
 		System.out.println();
@@ -191,7 +192,7 @@ public class EndView {
 	 */
 	public static void printOrderByUserId(List<Orders> orderList) {
 		System.out.println("주문 내역");
-		System.out.println("주문 코드\t | \t주문 날짜\t | \t주문 수량\t | \t주문 금액\t | \t결제 수단\t");
+		System.out.println("주문 코드 | 주문 날짜 | 주문 수량 | 주문 금액 | 결제 수단");
 		for (Orders order : orderList) {
 			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
 					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
@@ -205,18 +206,10 @@ public class EndView {
 			System.out.println();
 		}
 	}
-<<<<<<< HEAD
-	
-=======
-
-
-
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
 	/**
 	  * 마이페이지->개인정보 보여주기 
 	  * */
 	public static void userInfoChange(Customer customer) {
-<<<<<<< HEAD
 		//System.out.println(customer);//이렇게하면 어떻게 출력되는지 궁금쓰 -> 주소가 찍히는 군 흠...
 		System.out.println("============================== 개인정보 =================================");
 		String userName=customer.getUserName();
@@ -225,13 +218,10 @@ public class EndView {
 		String email=customer.getEmail();
 		String pinNum=customer.getPinNum();
 		String regDate=customer.getRegDate();
-=======
 		System.out.println("개인정보 변경");
 		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
-		for() {
-		System.out.println("변경할 내용을 선택해주세요.");
 		
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6
+		System.out.println("변경할 내용을 선택해주세요.");
 		
 		System.out.println(" | 닉네임 : " +userName+ " | 비밀번호 : " +userPw +" | 휴대폰 : " 
 		+phoneNum+ " | 이메일 : " +email+ " | 생년월일 : " +pinNum + " | 가입일 : " + regDate+ " | ");
@@ -282,10 +272,6 @@ public class EndView {
 		// TODO Auto-generated method stub
 	}
 
-<<<<<<< HEAD
-	/** 아직못함 
-	  * 마이페이지->나만의 메뉴 보기 
-	  * */
 	public static void myMenu(Customer customer) {
 		System.out.println("============================== 나만의 메뉴 =================================");
 		MyMenu myMenu = new MyMenu();
@@ -333,28 +319,4 @@ public class EndView {
 		System.out.println("등록해 주셔서 감사합니다.");
 	}
 
-	
-
-	
-	
-	
-	
-	
-	
-	}
-
-	
-
-	
-	
-
-	
-
-<<<<<<< HEAD
-
-=======
 }
->>>>>>> main
-=======
-}
->>>>>>> 65025e7d7839d243ef049936358ef77ac92f6cc6

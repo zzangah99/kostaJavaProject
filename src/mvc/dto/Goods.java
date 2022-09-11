@@ -1,7 +1,7 @@
 package mvc.dto;
 
 public class Goods {
-
+		private int num;//카테고리 선택 번호
 		private int goodsCode;
 		private String goodsName;
 		private int    goodsPrice;
@@ -87,6 +87,14 @@ public class Goods {
 
 		public void setCategoryCode(int categoryCode) {
 			this.categoryCode = categoryCode;
+		}
+		
+		public int getNum() {
+			return num;
+		}
+
+		public void setNum(int num) {
+			this.num = num;
 		}
 
 		@Override

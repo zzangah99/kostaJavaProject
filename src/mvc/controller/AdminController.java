@@ -1,23 +1,10 @@
 package mvc.controller;
 
-
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.List;
-import java.util.Scanner;
-
 import mvc.dao.GoodsDAO;
 import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
-import mvc.dto.Notice;
-import mvc.dto.OrderLine;
-import mvc.dto.Orders;
-import mvc.exception.NotFoundException;
 import mvc.service.AdminService;
-import mvc.util.DbUtil;
 import mvc.view.EndView;
 import mvc.view.FailView;
 import mvc.view.MenuView;
@@ -32,6 +19,9 @@ public class AdminController {
   * */
 	public static void login(String adminId, String adminPw) {
 		try {
+			 System.out.println(adminId);
+			  System.out.println(adminPw);
+			  
 			Admin admin = adminService.login(adminId, adminPw);
 		
 			MenuView.printMenuForAdmin(adminId);
@@ -61,16 +51,18 @@ public class AdminController {
      * 수정
      * */
 	
-	public static void GoodsUpdateName(int goodsCode) {
+	public static void GoodsUpdateName(int goodsCode,String goodsRename) {
+		
+		
 		try {
-			adminService.GoodsUpdateName(0);
+			adminService.GoodsUpdateName(goodsCode);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 		}
 	}
 	 //수정
-	public static void GoodsUpdatePr(int goodsCode) {
+	public static void GoodsUpdatePr(int goodsCode, int goodsReprice) {
 		try {
 			adminService.GoodsUpdatePr(0);
 		} catch (Exception e) {
@@ -80,7 +72,7 @@ public class AdminController {
 	}
 	
 	//수정
-	public static void GoodsUpdateSo(int goodsCode) {
+	public static void GoodsUpdateSo(int goodsCode, String goodsReSo) {
 		try {
 			adminService.GoodsUpdateSo(0);
 		} catch (Exception e) {
@@ -90,7 +82,7 @@ public class AdminController {
 	}
 	
 	 //수정
-	public static void GoodsUpdateSt(int goodsCode) {
+	public static void GoodsUpdateSt(int goodsCode, int goodsReSt) {
 		try {
 			adminService.GoodsUpdateSt(0);
 		} catch (Exception e) {
@@ -144,13 +136,20 @@ public class AdminController {
 		public static String NoticePrint() {
 			String notice = null;
 			try {
+				//System.out.println("1234567");
 				notice = adminService.NoticePrint();
-				EndView.printMessage("");
+				//System.out.println("567890");
+				EndView.printMessage("시작화면");
 			}catch (Exception e) {
 			    FailView.errorMessage(e.getMessage());
 			}
 			return notice;
 		}
+
+
+
+
+		
 		
    
 }
