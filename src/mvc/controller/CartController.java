@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Scanner;
 
 import mvc.dao.GoodsDAOImpl;
+import mvc.dto.GiftCon;
 import mvc.dto.Goods;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
@@ -129,16 +130,18 @@ public class CartController {
 	 */
 	public static void gifticonCart(String userId, Map<OrderLine, Integer> cart) {
 
-		Orders orders = new Orders(0, userId, null, 0, 0, null, null, null, null);
-		List<OrderLine> orderLineList = orders.getOrderLineList();
+		GiftCon gifticon = new GiftCon();
+		
+		List<OrderLine>  gifticonList = gifticon.getOrderLine();
 
-		for (OrderLine orderLineKey : cart.keySet()) {
-			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0);
-			orderLineList.add(orderLine);
+		for (Goods goodsKey : cart.keySet()) {
+			int qty = cart.get(goodsKey);
+			OrderLine orderLine = new OrderLine(0,0,goodsKey.getGoodsCode(),goodsKey.getGoodsPrice(),qty);
+			gifticonList.add(orderLine);
 		}
 
-		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
-		OrdersController.insertOrders(orders);
+		System.out.println("----- 총 " +  gifticonList.size() + "개의 상품이 기프티콘으로 생성중입니다..------ ");
+		//order 
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();
