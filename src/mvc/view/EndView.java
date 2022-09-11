@@ -55,6 +55,7 @@ public class EndView {
 			System.out.print((++goodsNo) + "." + goods.getGoodsName() + "\t");
 			goodsCodeList.add(goods.getGoodsCode());
 			userId = goods.getUserId();
+			if(userId==null) userId = "Guest";
 		}
 
 		// 용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
@@ -62,7 +63,7 @@ public class EndView {
 		//
 		System.out.print("\n주문할 상품 번호를 고르세요 > ");
 		int orderNo = Integer.parseInt(sc.nextLine());
-		int orderCode = goodsCodeList.get(orderNo - 1);
+		int orderGoodsCode = goodsCodeList.get(orderNo - 1);
 		
 		if (coffeeList.get(orderNo - 1).getNum() < 6) {// 디저트, md 상품이 아니면 옵션
 			System.out.println("선택해주세요");
@@ -115,7 +116,7 @@ public class EndView {
 			takeOut = takeOut.replace("2", "Y");
 
 			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);// userId 받아야함
-			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
+			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
 			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
 			order.getOrderLineList().add(orderline);
 			if(orderNo < 6) {
@@ -127,7 +128,7 @@ public class EndView {
 			break;
 		case 2: // 장바구니 담기
 			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);// userId 받아야함
-			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
+			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
 			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 			
 			cartOrder.getOrderLineList().add(cartOrderline);

@@ -73,7 +73,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		   }
 		   
     }finally {
-  	  con.commit();
+  	  	con.commit();
     	DbUtil.dbClose(con, ps , null);
     }
 		
@@ -88,7 +88,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public int[] orderLineInsert(Connection con, Orders order) throws SQLException{
 		PreparedStatement ps = null;
 		String sql = profile.getProperty("orderDetail.insert");
-		//insert into order_detail (order_code, goods_code, detail_price, detail_quan) values (?, ?, ?, ?)
+		//insert into order_detail (detail_code, order_code, goods_code, detail_price, detail_quan) values (detail_seq.nextval, order_seq.currval, ?, ?, ?)
 		int result[] = null;
 		
 		try {
@@ -96,13 +96,13 @@ public class OrdersDAOImpl implements OrdersDAO {
 			for (OrderLine orderline : order.getOrderLineList()) {
 				Goods goods = goodsDao.goodsSelectBygoodsCode(orderline.getGoodsCode());
 
-				ps.setInt(1, order.getOrderCode());
-				ps.setInt(2, orderline.getGoodsCode());//상품코드
-				ps.setInt(3, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
-				ps.setInt(4, orderline.getDetailQuan());// 상품별 구매 수량
+				//ps.setInt(1, order.getOrderCode());
+				ps.setInt(1, orderline.getGoodsCode());//상품코드
+				ps.setInt(2, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
+				ps.setInt(3, orderline.getDetailQuan());// 상품별 구매 수량
 				ps.addBatch(); // 일괄처리할 작업에 추가
 				ps.clearParameters();
-				
+				ps.executeBatch();//공부.................................
 				//옵션
 				int re = optionListInsert(con, orderline);
 				if(re != 1) {
@@ -131,14 +131,14 @@ public class OrdersDAOImpl implements OrdersDAO {
 		int result = 0;
 		
 		try {
-			ps = con.prepareStatement("sql");
+			ps = con.prepareStatement(sql);
 			for (Option option : orderline.getOptionList()) {
-				ps.setInt(1, orderline.getDetailCode());
-				ps.setInt(2, option.getSizeCode());
-				ps.setString(3, option.getTem());
-				ps.setString(4, option.getSyrup());
-				ps.setString(5, option.getDef());
-				ps.setString(6, option.getWhip());
+				//ps.setInt(1, orderline.getDetailCode());
+				ps.setInt(1, option.getSizeCode());
+				ps.setString(2, option.getTem());
+				ps.setString(3, option.getSyrup());
+				ps.setString(4, option.getDef());
+				ps.setString(5, option.getWhip());
 			}
 			result = ps.executeUpdate();
 
