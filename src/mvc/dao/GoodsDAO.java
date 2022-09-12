@@ -21,7 +21,7 @@ public interface GoodsDAO {
 	/**
 	 * goodsId에 해당하는 정보 검색
 	 */
-	//Goods goodsSelectBygoodsCode(int goodsCode, String userId) throws SQLException;
+	Goods goodsSelectBygoodsCode(int goodsCode, String userId) throws SQLException;
 
 
 	/**
