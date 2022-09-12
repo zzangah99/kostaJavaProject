@@ -30,7 +30,6 @@ public class AdminController {
 		}catch (Exception e) {
 			//e.printStackTrace();
 			System.err.println("로그인에 실패하였습니다");
-			
 		}
 	}
 	
@@ -101,9 +100,8 @@ public class AdminController {
 		
    //공지띄우기
    public static void NoticePrint () {
-	   
 	 System.out.println("공지등록하기");
-	  
+	 
   	 System.out.println("공지번호?");
   	 int noticeNum = Integer.parseInt(sc.nextLine());
   	 
@@ -119,42 +117,22 @@ public class AdminController {
   	 System.out.println("내용은?");
   	 String noticeContent= sc.nextLine();
 
-  	 
   	 Notice notice =  new Notice(0, "adminId", "noticeDate", "noticeTitel", "noticeContent");
    }
 	 
 	  
 	
-			Connection con=null;
 			
-			PreparedStatement ps =null;
-			String sql="insert into notice(notice_num, adminId, noticeDate, noticeTitel,noticeContent) "
-					+ "values(?,?,sysdate,?,?,)";
-			try {
-			   con = DbUtil.getConnection();
-			   ps = con.prepareStatement(sql);
-			   //만약, ?가 있다면 ?의 개수만큼 순서대로 setXxx 필요
-			   ps.setInt(1, Notice.noticeNum());
-			   ps.setString(2, Notice.adminId());
-			   ps.setString(3, Notice.noticeDate());
-			   ps.setString(4, Notice.noticeTitel());
-			   ps.setString(5, Notice.noticeContent());
+	public static void getTodaysTotalOrderDetail() {
+				
+	}
+
+
+
+
+	public static void getMonthTotalOrderDetail() {
 		
-			   con.commit();
-			   System.out.println("공지가 등록되었습니다.");
-			   
-			   //쿼리실행 - DB쪽으로 쿼리 전송!!
-		
-			  int result = ps.executeUpdate();
-			}catch (Exception e) {
-				System.err.println("공지등록에 실패하였습니다");
-		
-			}finally {
-				DbUtil.dbClose(con, ps);
-			
-		
-		   }
-   }
+	}
 	   
 	  
  }
