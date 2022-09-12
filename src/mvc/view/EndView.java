@@ -2,27 +2,21 @@ package mvc.view;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
 import mvc.controller.CartController;
 import mvc.controller.OrdersController;
-import mvc.dao.GoodsDAO;
 import mvc.dao.GoodsDAOImpl;
+import mvc.dto.Category;
 import mvc.dto.Customer;
 import mvc.dto.GiftCon;
-import mvc.dto.Category;
 import mvc.dto.Goods;
-import mvc.dto.MyMenu;
-import mvc.dto.MyStar;
 import mvc.dto.Option;
+import mvc.dto.OrderDetail;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
-import mvc.session.UserSession;
-import mvc.session.UserSessionSet;
-import mvc.view.MenuView;
 
 public class EndView {
 	static Scanner sc = new Scanner(System.in);
@@ -36,9 +30,22 @@ public class EndView {
 			System.out.print("  " + list.getCategoryCode() + "." + list.getCategoryName() + "   ");
 
 		}
+		System.out.print("  "+"8.상품 이름으로 검색하기  ");
+		System.out.println("  "+"9.돌아가기");
 		System.out.println();
-		System.out.println();
-		System.out.print("주문하실 종류의 번호를 입력해주세요 > "); 
+		System.out.print("주문하실 종류의 번호를 입력해주세요 > ");
+	}
+	
+	/**
+	 * 검색해서 상품 찾기
+	 */
+	
+	public static void printGoodsSelectByName(List<Goods> list) {
+		
+		for(Goods goods : list) {
+			System.out.println(goods);
+		}
+
 	}
 
 	/**
@@ -51,18 +58,18 @@ public class EndView {
 		String tem = null;
 		String userId = null;
 
-		System.out.println("------------- 상품 " + coffeeList.size() + "개 -------------");
-		int goodsNo = 0;
-		for (Goods goods : coffeeList) {
-			System.out.print((++goodsNo) + "." + goods.getGoodsName() + "\t");
-			goodsCodeList.add(goods.getGoodsCode());
-			userId = goods.getUserId();
-			if(userId==null) userId = "Guest";
-		}
+		System.out.println("\n-------------------------- 상품 " + coffeeList.size() + "개 --------------------------");
+	      int goodsNo = 0;
+	      for (Goods goods : coffeeList) {
+	         System.out.print((++goodsNo) + "." + goods.getGoodsName()+"\t");
+	         System.out.printf(String.format(goods.getGoodsPrice()+"\t"));
+	         System.out.printf(String.format(goods.getGoodsDetail())+"\n");
+	         goodsCodeList.add(goods.getGoodsCode());
+	         userId = goods.getUserId();
+	         if(userId==null) userId = "Guest";
+	      }
 
-		// 용식님 메뉴 상세정보 출력하실 위치(영양정보, 메뉴정보 나오는 화면 ...)
-
-		//
+		
 		System.out.print("\n주문할 상품 번호를 고르세요 > ");
 		int orderNo = Integer.parseInt(sc.nextLine());
 		int orderGoodsCode = goodsCodeList.get(orderNo - 1);
@@ -93,18 +100,11 @@ public class EndView {
 		int quan = Integer.parseInt(sc.nextLine());
 
 		System.out.println("1.주문하기\t 2.장바구니에 담기");
-		int choice = sc.nextInt();
+		int choice = Integer.parseInt(sc.nextLine());
 		System.out.println("- 주문 상품 : " + coffeeList.get(orderNo - 1).getGoodsName() + "\t주문 수량 : " + quan);
 
 		switch (choice) {
 		case 1:
-			System.out.println("쿠폰을 사용하시겠습니까?\n1.사용\t 2.사용 안 함");
-			String cpChoice = sc.nextLine();
-			if (cpChoice.equals("1")) {
-				System.out.println("사용 가능한 쿠폰 목록");
-
-			}
-
 			System.out.println("\n- 결제 수단 선택");
 			System.out.println("1.현금\t 2.카드\t");
 			String payment = sc.nextLine();
@@ -201,8 +201,6 @@ public class EndView {
 			break;
 		}
 
-		// System.out.println(id);
-
 	}
 
 	/**
@@ -224,26 +222,28 @@ public class EndView {
 			System.out.println();
 		}
 	}
+	
+	
 	/**
-	  * 마이페이지->개인정보 보여주기 
-	  * */
-	public static void userInfoChange(Customer customer) {
+	 * 마이페이지->개인정보 보여주기 
+	 */
+	public static void userInfoChange(String userId, Customer customer) {
 		//System.out.println(customer);//이렇게하면 어떻게 출력되는지 궁금쓰 -> 주소가 찍히는 군 흠...
-		System.out.println("============================== 개인정보 =================================");
+		System.out.println("========================== " +userId+ "님의 개인정보 내역입니다. =============================================================");
 		String userName=customer.getUserName();
 		String userPw=customer.getUserPw();
 		String phoneNum=customer.getPhoneNum();
 		String email=customer.getEmail();
 		String pinNum=customer.getPinNum();
 		String regDate=customer.getRegDate();
-		System.out.println("개인정보 변경");
-		System.out.println("개인정보\t | \t휴대폰\t | \t비밀번호\t | \t이메일 \t | \t가입일자\t | \t생년월일\t");
-		
-		System.out.println("변경할 내용을 선택해주세요.");
 		
 		System.out.println(" | 닉네임 : " +userName+ " | 비밀번호 : " +userPw +" | 휴대폰 : " 
 		+phoneNum+ " | 이메일 : " +email+ " | 생년월일 : " +pinNum + " | 가입일 : " + regDate+ " | ");
+		System.out.println();
+		System.out.println("변경할 개인정보를 선택해주세요 >");
 	}
+	
+	/**
 	
 	/**
 	  * 마이페이지->개인정보 변경->닉네임 
@@ -273,70 +273,6 @@ public class EndView {
 		System.out.println("변경하신 이메일은 " +customer.getEmail()+ "입니다.");
 	}
 
-	/** 아직못함 
-	  * 마이페이지->스탬프 조회 
-	  * */
-	public static void myStamp(int myStamp) {
-		Customer customer = new Customer();
-		System.out.println("============================== 스탬프 =================================");
-		System.out.println("스탬프 현황 : " +customer.getStamp()+ "개");
-		System.out.println("앗!메리카노 쿠폰 발행까지 " +(10-customer.getStamp())+ "개가 남았습니다.");
-	}
-
-	/** 아직못함 
-	 *  마이페이지->최근주문내역 조회 
-	  * */
-	public static void selectOrderRecent(Customer customer) {
-		// TODO Auto-generated method stub
-	}
-
-	public static void myMenu(Customer customer) {
-		System.out.println("============================== 나만의 메뉴 =================================");
-		MyMenu myMenu = new MyMenu();
-		String mmName=myMenu.getMmName();
-		String tem=myMenu.getTem();
-		String syrup=myMenu.getSyrup();
-		String def=myMenu.getDef();
-		String whip=myMenu.getWhip();
-		String sizeSize=myMenu.getSizeSize();
-		
-		System.out.println(" | 메뉴 이름 : " +mmName+ " | 온도 : " +tem +" | 시럽 : " 
-		+syrup+ " | 디카페인 : " +def+ " | 휘핑크림 : " +whip + " | 사이즈 : " + sizeSize+ " | ");
-	}
-
-	/** 아직못함 
-	  * 마이페이지->쿠폰코드 조회
-	  * */
-	public static void UserCoupon(String userId, String UserCoupon) {
-		System.out.println(userId+ "님의 쿠폰 보유 현황");
-		System.out.println("======보유한 쿠폰 List=====");
-		System.out.println("[쿠폰코드] " +UserCoupon+ " | [쿠폰이름] " + "| [할인금액] " + "| [기한] " );
-	}
-
-	/**
-	  * 마이페이지->내가 쓴 별점평가 보기 
-	  * */
-	public static void myStar(MyStar myStar) {
-		Orders order = new Orders();
-		Goods goods = new Goods();
-			System.out.println("============================== 별점 평가내역 =================================");
-			int oderCode=order.getOrderCode();
-			int goodsCode=goods.getGoodsCode();
-			int reviewStar=myStar.getReviewStar();
-			String reviewDate=myStar.getReviewDate();
-				
-			System.out.println(" | 주문코드 : " +oderCode+ " | 상품코드 : " +goodsCode + 
-					" | 별점 : " +reviewStar+ " | 별점작성 날짜 : " +reviewDate+ " | ");
-			}
-	
-	/**
-	  * 마이페이지->별점평가 
-	  * */
-	public static void myStarAssess(MyStar myStar) {
-		System.out.println("등록하신 별점은 " +myStar.getReviewStar()+ " 점 입니다.");
-		System.out.println("등록해 주셔서 감사합니다.");
-	}
-	
 	
 	/**
 	 * 기프티콘 출력
@@ -344,5 +280,22 @@ public class EndView {
 	public static void printGiftCon(GiftCon giftcon) {
 		System.out.println(giftcon);
 	}
+	
+	
+	/**
+	 * 통계 출력
+	 * @param orderDetail
+	 */
+		public static void PrintDayStatistic(OrderDetail orderDetail) {
+		System.out.println("금일 총 판매수량 : " + String.valueOf(orderDetail.getTotalQuantity())+"개");
+		
+		System.out.println("금일 총 판매금액 : "+String.valueOf(orderDetail.getTotalPrice()));
+		}
+		
+		public static void PrintMonthStatistic(OrderDetail orderDetail) {
+		System.out.println("당월 총 판매수량 : " + String.valueOf(orderDetail.getTotalQuantity())+"개");
+		
+		System.out.println("당울 총 판매금액 : "+String.valueOf(orderDetail.getTotalPrice()));
+		}
 
 }

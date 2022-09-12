@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
 import mvc.dto.Goods;
 import mvc.util.DbUtil;
 
@@ -131,12 +130,5 @@ public class GoodsDAOImpl implements GoodsDAO {
 		  }
 		  	return goods;
 	}
-
-
-
-
-
-
-
 
 }

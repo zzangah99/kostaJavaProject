@@ -13,6 +13,10 @@ public class Goods {
 		
 		public Goods() {}
 		
+		public Goods(int stock) {
+			this.stock = stock;
+		}
+		
 		public Goods(int goodsCode, String goodsName, int goodsPrice, String goodsDetail, String soldout, int stock, int categoryCode) {
 			this.goodsCode = goodsCode;
 			this.goodsName = goodsName;

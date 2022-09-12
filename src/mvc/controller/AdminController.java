@@ -4,6 +4,8 @@ import mvc.dao.GoodsDAO;
 import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
+import mvc.dto.Notice;
+import mvc.dto.OrderDetail;
 import mvc.service.AdminService;
 import mvc.view.EndView;
 import mvc.view.FailView;
@@ -19,11 +21,13 @@ public class AdminController {
   * */
 	public static void login(String adminId, String adminPw) {
 		try {
-			 System.out.println(adminId);
-			  System.out.println(adminPw);
+			// System.out.println(adminId);
+			 // System.out.println(adminPw);
 			  
 			Admin admin = adminService.login(adminId, adminPw);
+		
 			MenuView.printMenuForAdmin(adminId);
+			
 			//MenuView.menu();
 		}catch (Exception e) {
 			//e.printStackTrace();
@@ -48,31 +52,37 @@ public class AdminController {
 	/**
      * 수정
      * */
-	
-	public static void GoodsUpdateName(int goodsCode,String goodsRename) {
-		
-		
+		public static void GoodsUpdateName(Goods goods) {
 		try {
-			adminService.GoodsUpdateName(goodsCode, goodsRename);
+			adminService.GoodsUpdateName(goods);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 		}
 	}
 	 //수정
-	public static void GoodsUpdatePr(int goodsCode, int goodsReprice) {
+	public static void GoodsUpdatePr(Goods goods) {
 		try {
-			adminService.GoodsUpdatePr(goodsCode, goodsReprice);
+			adminService.GoodsUpdatePr(goods);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 		}
 	}
+	public static void GoodsUpdateDi(Goods goods) {
+		try {
+			adminService.GoodsUpdateDi(goods);
+		} catch (Exception e) {
+			//e.printStackTrace();
+			FailView.errorMessage(e.getMessage());
+		}
+	}
+	
 	
 	//수정
-	public static void GoodsUpdateSo(int goodsCode, String goodsReSo) {
+	public static void GoodsUpdateSo(Goods goods) {
 		try {
-			adminService.GoodsUpdateSo(0);
+			adminService.GoodsUpdateSo(goods);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -80,9 +90,9 @@ public class AdminController {
 	}
 	
 	 //수정
-	public static void GoodsUpdateSt(int goodsCode, int goodsReSt) {
+	public static void GoodsUpdateSt(Goods goods) {
 		try {
-			adminService.GoodsUpdateSt(0);
+			adminService.GoodsUpdateSt(goods);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -93,7 +103,7 @@ public class AdminController {
    //상품 삭제하기  
    public static  void Goodsdelete(int goodsCode) {
     try {
-    	adminService.goodsDelete(0);
+    	adminService.goodsDelete(goodsCode);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -103,13 +113,17 @@ public class AdminController {
   
    //일통계보기
 	  
-		public static void getTodaysTotalOrderDetail() {
+		public static OrderDetail getTodaysTotalOrderDetail() {
+			OrderDetail orderDetail = null;
 			 try {
-			    	adminService.getTodaysTotalOrderDetail();
+				 orderDetail = adminService.getTodaysTotalOrderDetail();
+				  EndView.PrintDayStatistic(orderDetail);
 					} catch (Exception e) {
 						//e.printStackTrace();
 						FailView.errorMessage(e.getMessage());
 					}
+			 
+			return orderDetail;
 			
 		}
 		
@@ -118,33 +132,45 @@ public class AdminController {
 
    
    //월통계보기
-		public static void getMonthTotalOrderDetail() {
+		public static OrderDetail getMonthTotalOrderDetail() {
+			OrderDetail orderDetail = null;
 			 try {
-			    	adminService.getMonthTotalOrderDetail();
+	              orderDetail = adminService.getMonthTotalOrderDetail();
+				  EndView.PrintMonthStatistic(orderDetail);
 					} catch (Exception e) {
 						//e.printStackTrace();
 						FailView.errorMessage(e.getMessage());
 					}
-			
+			 
+			return orderDetail;
 		}
    
 		
-		 //공지띄우기
+   //공지띄우기
 
-		public static String NoticePrint() {
-			String notice = null;
-			try {
-				notice = adminService.NoticePrint();
-				EndView.printMessage(notice);
-			}catch (Exception e) {
-			    FailView.errorMessage(e.getMessage());
+			public static void NoticeInsert(Notice notice) {
+				//String notice = null;
+				try {
+					adminService.NoticeInsert(notice);
+					//EndView.printMessage(notice);
+				}catch (Exception e) {
+				    FailView.errorMessage(e.getMessage());
+				}
+			
 			}
-			return notice;
-		}
 
+			 //공지띄우기
 
+			public static String NoticePrint() {
+				String notice = null;
+				try {
+					notice = adminService.NoticePrint();
+					EndView.printMessage(notice);
+				}catch (Exception e) {
+				    FailView.errorMessage(e.getMessage());
+				}
+				return notice;
+			}
 
-		
-		
    
 }

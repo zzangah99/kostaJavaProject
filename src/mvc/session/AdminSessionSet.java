@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-	//UserSesstion을 저장해주는 영역 
 
 public class AdminSessionSet {
 	
