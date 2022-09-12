@@ -6,6 +6,6 @@ import mvc.dto.Review;
 
 public interface ReviewDAO {
 	
-	int writeReview(Review review);
+
 
 }
