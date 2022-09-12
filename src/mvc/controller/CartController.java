@@ -134,9 +134,7 @@ public class CartController {
 		}
 
 		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
-		orders.setCheckGiftCon(1);
 		OrdersController.insertOrders(orders);
-		
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();
