@@ -7,7 +7,7 @@ public class OrderLine {
 	private int detailCode;// pk
 	private int orderCode;// fk
 	private int goodsCode;// fk
-	private String goodsName;
+	private String goodsName;//
 	private int detailPrice;
 	private int detailQuan;
 	private int optionCode;

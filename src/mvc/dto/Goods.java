@@ -1,7 +1,7 @@
 package mvc.dto;
 
 public class Goods {
-
+		private int num;//카테고리 선택 번호
 		private int goodsCode;
 		private String goodsName;
 		private int    goodsPrice;
@@ -88,12 +88,21 @@ public class Goods {
 		public void setCategoryCode(int categoryCode) {
 			this.categoryCode = categoryCode;
 		}
+		
+		public int getNum() {
+			return num;
+		}
+
+		public void setNum(int num) {
+			this.num = num;
+		}
 
 		@Override
 		public String toString() {
-			return goodsCode + " | " + goodsName +" | " + " | " + goodsPrice + " | " + goodsDetail + " | " + soldout + " | " + stock + " | " + categoryCode;
+			return "상품코드 : "+goodsCode + " | " +"상품이름 : "+goodsName +" | " + "상품가격 : "+ goodsPrice + " | "+"상품상세 : "+goodsDetail + " | "+"상품카테고리번호 : "+categoryCode;
 		}
-
+		
+		
 		 /**
 		   *  객체가 다르더라도 상품번호가 같으면 무조건 같다라고 이해하기 위해 오버라이드
 		   */

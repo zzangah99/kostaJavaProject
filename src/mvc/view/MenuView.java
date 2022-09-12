@@ -11,8 +11,10 @@ import mvc.controller.CustomerController;
 import mvc.controller.GoodsController;
 import mvc.controller.MyStarController;
 import mvc.controller.OrdersController;
+import mvc.controller.ReviewController;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
+import mvc.dto.Review;
 
 public class MenuView {// 메인 메뉴
 	private static Scanner sc = new Scanner(System.in);
@@ -162,7 +164,7 @@ public class MenuView {// 메인 메뉴
 			System.out.println("============================== 마이페이지 =================================");
 			System.out.println("------------------------- 안녕하세요! " +userId+ "님! ---------------------------");
 			System.out.println("| 1. 개인정보 변경 | 2. 최근 주문내역조회 | 3. 나만의 메뉴 | 4. 스탬프 조회  |"
-						   + "\n|  5. 쿠폰조회    | 6. 등록한 별점보기  |  7. 주문하기   | 0.  종료하기   |");
+						   + "\n|  5. 쿠폰조회    |  6. 별점 등록하기  |  7. 등록한 별점보기  |  8. 주문하기   | 0.  종료하기   |");
 			try {
 				int mymenu =Integer.parseInt( sc.nextLine());
 				switch(mymenu) {
@@ -181,11 +183,25 @@ public class MenuView {// 메인 메뉴
 					case 5: 
 						CouponController.UserCoupon(userId);//문제 
 						break;
-					case 6: 
+					case 6:
+						OrdersController.selectOrdersByUserId(userId);
+						int num = Integer.parseInt(sc.nextLine());
+						
+						
+						/**
+						System.out.print("리뷰를 작성하려는 주문코드는 무엇입니까? > ");
+				        int orderCode = Integer.parseInt(sc.nextLine());
+				        System.out.print("어떤 상품의 리뷰를 작성 하시겠습니까 상품 코드를 입력해주세요 > ");
+				        int goodsCode = Integer.parseInt(sc.nextLine());
+				    	System.out.println("내용을 입력해주세요.(100자) > ");
+				    	String reviewContent = sc.nextLine();
+						ReviewController.writeReview(new Review(orderCode, userId, goodsCode, reviewContent));
+						**/
+					case 7: 
 						//MyStarController.myStar(userId);//문제 
 						MenuView.myStar(userId);
 						break;
-					case 7:
+					case 8:
 						MenuView.printUserMenu(userId);
 						break;
 					case 0:
@@ -209,6 +225,7 @@ public class MenuView {// 메인 메뉴
 	private static void myStar(String userId) {
 		//주문내역을 쭉 보여주고 해당 상품 번호를 클릭해서 별점을 먹인다??
 		System.out.println("====== " +userId+ "님의 주문내역 =====");
+		OrdersController.selectOrdersByUserId(userId);
 		System.out.println("별점 등록하실 상품코드를 선택해주세요.");
 		int menu=Integer.parseInt(sc.nextLine());
 		System.out.print("별점을 등록해주세요.(최대 5점)");
@@ -273,6 +290,7 @@ public class MenuView {// 메인 메뉴
 				case 1: // 카테고리 메뉴들 출력
 					CategoryController.selectCategory();
 					int num = Integer.parseInt(sc.nextLine());
+					//GoodsController.selectBever(num, userId);
 					switch(num) {
 					case 1 :
 					case 2 :
@@ -281,21 +299,15 @@ public class MenuView {// 메인 메뉴
 					case 5 :
 					case 6 :
 					case 7 :GoodsController.selectBever(num, userId);
-					case 8 :String word = sc.nextLine();
+							break;
+					case 8 :System.out.print("상품명을 입력해주세요 > ");
+							String word = sc.nextLine();
 							GoodsController.goodsSelectByName(word);
+							break;
 						
-					case 9 :break; 
-							
+					case 9 :MenuView.printUserMenu(userId); 
 					}
-				/**
-				if(0 < num && num < 8) GoodsController.selectBever(num, userId);
-					else if(num == 8) break;
-					else(num == 9) {
-						String word = sc.nextLine();
-						GoodsController.goodsSelectByName(word);
-					}
-					GoodsController.selectBever(num, userId);
-				**/
+				
 				case 2:
 					CartController.viewCart(userId);
 					break;

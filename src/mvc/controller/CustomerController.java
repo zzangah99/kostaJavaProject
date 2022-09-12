@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import mvc.dto.Customer;
 import mvc.dto.MyStar;
 import mvc.service.CustomerService;
+import mvc.service.OrderService;
 
 public class CustomerController {
 	static CustomerService customerService = new CustomerService();
@@ -189,5 +190,4 @@ public class CustomerController {
 		}
 	
 }
-	
 	

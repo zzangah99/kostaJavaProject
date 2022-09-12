@@ -33,10 +33,10 @@ public interface AdminDAO {
 	 * update goods set content = ? where goosdCode = ?
 	 */
 
-	int GoodsUpdateName(int goodsCode) throws SQLException;
-	int GoodsUpdateSo(int goodsCode, String goodsReSo) throws SQLException;
-	int GoodsUpdateSt(int goodsCode, String goodsReSo) throws SQLException;
-	int GoodsUpdatePr(int goodsCode, int goodsReprice) throws SQLException;
+	int GoodsUpdateName(String goods) throws SQLException;
+	int GoodsUpdateSo(int goodsCode) throws SQLException;
+	int GoodsUpdateSt(int goodsCode) throws SQLException;
+	int GoodsUpdatePr(int goodsCode) throws SQLException;
 	
 	
 	/**

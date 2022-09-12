@@ -7,13 +7,13 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
-
 import mvc.controller.AdminController;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
+import mvc.dto.Notice;
 import mvc.dto.OrderDetail;
 import mvc.util.DbUtil;
+import java.util.Properties;
 
 public class AdminDAOImpl implements AdminDAO {
 	GoodsDAO goodsDao = new GoodsDAOImpl();
@@ -30,14 +30,24 @@ public class AdminDAOImpl implements AdminDAO {
 		  ResultSet rs=null;
 		  Admin admin=null;
 		 try {
+			// System.out.println("admindaoimpl login111");
 		   con = DbUtil.getConnection();
-		   ps= con.prepareStatement("admin.selectLogin");//select * from admin where admin_id = ? and admin_pw = ?
+		   //System.out.println("admindaoimpl login222");
+		   ps= con.prepareStatement("select * from admin where admin_id = ? and admin_pw = ?");
+		   //System.out.println("admindaoimpl login333");
+		  System.out.println(adminId);
+		  System.out.println(adminPw);
 		  
 		   ps.setString(1, adminId);
 		   ps.setString(2, adminPw);
-	       rs = ps.executeQuery(); 
+		   //System.out.println("admindaoimpl login444");
+	        rs = ps.executeQuery(); 
+	        //System.out.println("admindaoimpl login555");
 	        
 	        if(rs.next()) {
+	        	//System.out.println("admindaoimpl login6666");
+	        	//System.out.println(rs.getString(2));
+	        	//System.out.println(rs.getString(1));
 	        	admin = new Admin(rs.getString(1), rs.getString(2));
 	        }
         }finally {
@@ -83,7 +93,7 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	//수정
 	@Override
-	public int GoodsUpdateName(int goodsCode) throws SQLException {
+	public int GoodsUpdateName(Goods goodsName) throws SQLException {
 
         Connection con=null;
 		PreparedStatement ps =null;
@@ -109,7 +119,7 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	//수정
 	@Override
-		public int GoodsUpdatePr(int goodsCode, int goodsReprice) throws SQLException {
+		public int GoodsUpdatePr(Goods goodsCode) throws SQLException {
 
 	        Connection con=null;
 			PreparedStatement ps =null;
@@ -133,7 +143,7 @@ public class AdminDAOImpl implements AdminDAO {
 		}
 		//수정
 		@Override
-		public int GoodsUpdateSo(int goodsCode, String goodsReSo) throws SQLException {
+		public int GoodsUpdateSo(Goods goodsCode) throws SQLException {
 
 	        Connection con=null;
 			PreparedStatement ps =null;
@@ -159,7 +169,7 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		//수정
 		@Override
-		public int GoodsUpdateSt(int goodsCode, String goodsReSo) throws SQLException {
+		public int GoodsUpdateSt(Goods goodsCode) throws SQLException {
 
 	        Connection con=null;
 			PreparedStatement ps =null;
@@ -214,30 +224,30 @@ public class AdminDAOImpl implements AdminDAO {
 
 
 	//공지
-	@Override
-	public String noticeprint() throws SQLException {
-		  Connection con=null;
-		  PreparedStatement ps=null;
-		  ResultSet rs=null;
-		  String notice = null;
+		@Override
+		public String noticeprint() throws SQLException {
+			  Connection con=null;
+			  PreparedStatement ps=null;
+			  ResultSet rs=null;
+			  String notice = null;
 
-		  String sql = proFile.getProperty("notice.selectContent"); //select notice_content from notice
-		  try {
-			  con = DbUtil.getConnection();
-			  ps= con.prepareStatement(sql);
+			  String sql = proFile.getProperty("notice.selectContent"); //select notice_content from notice
+			  try {
+				  con = DbUtil.getConnection();
+				  ps= con.prepareStatement(sql);
 
-		      rs = ps.executeQuery(); 
-		 
-		  if(rs.next()) {
-			notice = rs.getString(1);
-		  }
-		  
-		  }finally {
-			  DbUtil.dbClose(con, ps, rs);
-		  }
-		  	return notice;
-		
-	}
+			      rs = ps.executeQuery(); 
+			 
+			  if(rs.next()) {
+				notice = rs.getString(1);
+			  }
+			  
+			  }finally {
+				  DbUtil.dbClose(con, ps, rs);
+			  }
+			  	return notice;
+			
+		}
 
 	/*
 	 통계보기
@@ -313,6 +323,7 @@ public class AdminDAOImpl implements AdminDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 
 
 

@@ -25,7 +25,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectAllByCode"); //select * from goods where category_code = ?
+		String sql = proFile.getProperty("goods.selectAllByCategory"); //select * from goods where category_code = ?
 
 		try {
 			con = DbUtil.getConnection();
@@ -35,7 +35,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 
 			while (rs.next()) {
 			    Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
-			    goods.setUserId(userId);
+			    goods.setUserId(userId); goods.setNum(num);
 			    list.add(goods);
 			}
 		} finally {
@@ -47,7 +47,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 	
 	/**
 	 * 재고 품절 여부 확인
-	 */
+	 
 	
 	public List<Goods> goodsSelectByStock(int goodsCode) throws SQLException {
 		Connection con = null;
@@ -73,6 +73,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 
 		return list;
 	}
+	**/
 	
 	/**
 	 * 상품 이름으로 검색
@@ -84,7 +85,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectByName"); // select * from goods where goods_name like = ?
+		String sql = proFile.getProperty("goods.selectAllByName"); // =select * from goods where goods_name like = ?
 
 		try {
 			con = DbUtil.getConnection();
@@ -109,7 +110,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 	 * 상품 번호로 검색
 	 */
 
-	public Goods goodsSelectBygoodsCode(int goodsCode) throws SQLException{
+	public Goods goodsSelectBygoodsCode(int goodsCode, String userId) throws SQLException{
 	      Connection con=null;
 		  PreparedStatement ps=null;
 		  ResultSet rs=null;
@@ -126,7 +127,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 		  if(rs.next()) {
 			  goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
 						rs.getInt(6), rs.getInt(7));
-				
+			  goods.setUserId(userId); goods.setNum(goodsCode);
 		  }
 		  }finally {
 			  DbUtil.dbClose(con, ps, rs);

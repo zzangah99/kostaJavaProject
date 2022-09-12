@@ -23,7 +23,7 @@ public class GoodsService {
 	
 	
 	/**
-	 * 상품번호에 해당하는 상품검색
+	 * 상품이름에 해당하는 상품검색
 	 * */
 	public List<Goods> goodsSelectBygoodsName(String keyword) throws SQLException{
 		List <Goods>key = goodsDAO.goodsSelectBygoodsName(keyword);
@@ -31,13 +31,6 @@ public class GoodsService {
 		return key;
 	}
 	
-	/**
-	 * 상품 재고
-	 */
-//	public List<Goods> goodsSelectByStock(int goodsCode) throws SQLException{
-//		List<Goods> stock = goodsDAO.goodsSelectByStock(goodsCode);
-//		if(Goods.toString() == null) throw new SQLException("해당 상품은 품절입니다.");
-//				
-//	}
+	
 	
 }

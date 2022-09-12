@@ -1,15 +1,19 @@
+
 package mvc.service;
 
 
 
 import java.sql.SQLException;
+import java.util.UUID;
 
-import mvc.dao.AdminDAO;
 import mvc.dao.AdminDAOImpl;
+import mvc.exception.NotFoundException;
+import mvc.dao.AdminDAO;
 import mvc.dto.Admin;
 import mvc.dto.Goods;
+import mvc.dto.Notice;
 import mvc.dto.OrderDetail;
-import mvc.exception.NotFoundException;
+import mvc.dto.Orders;
 import mvc.session.AdminSession;
 import mvc.session.AdminSessionSet;
 
@@ -24,6 +28,8 @@ public class AdminService {
    * 로그인
    * */
 	public Admin login(String adminId, String adminPw)throws NotFoundException , SQLException{ 
+		 System.out.println(adminId);
+		  System.out.println(adminPw);
 		  
 		Admin admin = adminDao.login(adminId, adminPw);
 		if(admin==null) {
@@ -32,7 +38,7 @@ public class AdminService {
 		
 		//로그인 된 정보 저장하기
 		AdminSession adminsession = new AdminSession();
-		adminsession.setAdminSessionId(Admin admin);////UUID.randomUUID().toString()
+		adminsession.setAdminSessionId(UUID.randomUUID().toString());
 		System.out.println("adminservice adminsession111");
 		
 		AdminSessionSet adminsessionSet = AdminSessionSet.getInstance();
@@ -71,7 +77,7 @@ public class AdminService {
 		    }
 		}
 		
-		public void GoodsUpdatePr(int goodsCode, int goodsReprice) throws SQLException, NotFoundException {
+		public void GoodsUpdatePr(int goodsCode) throws SQLException, NotFoundException {
 			int result = adminDao.GoodsUpdatePr(goods);
 				
 			if(result==0) {
@@ -82,7 +88,7 @@ public class AdminService {
 		    }
 		}
 		
-		public void GoodsUpdateSo(int goodsCode, String goodsReSo) throws SQLException, NotFoundException {
+		public void GoodsUpdateSo(int goodsCode) throws SQLException, NotFoundException {
 			int result = adminDao.GoodsUpdateSo(goods);
 				
 			if(result==0) {
@@ -93,7 +99,7 @@ public class AdminService {
 		    }
 		}
 		
-		public void GoodsUpdateSt(int goodsCode, String goodsReSo) throws SQLException, NotFoundException {
+		public void GoodsUpdateSt(int goodsCode) throws SQLException, NotFoundException {
 			int result = adminDao.GoodsUpdateSt(goods);
 				
 			if(result==0) {
@@ -164,6 +170,7 @@ public class AdminService {
 				
 				return notice;
 			}
+			
 			
 			
 			
