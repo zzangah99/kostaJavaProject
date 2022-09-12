@@ -28,12 +28,4 @@ public class GiftConService {
 		 
 		 return giftcon;
 	 }
-	 
-	 /**
-	  * 기프티콘 사용여부 수정
-	  */
-	 public void useGiftCon(Orders order) throws SQLException{
-		 int result = giftConDao.useGiftCon(order);
-		 if(result == 0) throw new SQLException("기프티콘 업데이트에 실패했습니다");
-	 }
 }

@@ -16,8 +16,7 @@ public class GiftConController {
 	public static void orderByGiftCon(Orders order) {
 		try {
 			giftConService.orderByGiftCon(order);
-			EndView.printMessage("기프티콘 주문이 성공했습니다");
-			GiftConController.useGiftCon(order);
+			EndView.printMessage("기프티콘 주문이 완료되었습니다");
 		}catch(Exception e) {
 			FailView.errorMessage(e.getMessage());
 		}
@@ -30,21 +29,11 @@ public class GiftConController {
 		try {
 			GiftCon giftcon = giftConService.selectGiftCon(order);
 			EndView.printGiftCon(giftcon);
+			
+			GiftConController.orderByGiftCon(order);
 		} catch (Exception e) {
 			FailView.errorMessage(e.getMessage());
 		}
 	}
-	
-	
-	/**
-	 * 기프티콘 수정
-	 */
-	public static void useGiftCon(Orders order) {
-		try {
-			giftConService.useGiftCon(order);
-			EndView.printMessage("기프티콘 사용 여부 업데이트에 성공했습니다");
-		} catch (Exception e) {
-			FailView.errorMessage(e.getMessage());
-		}
-	}
+
 }

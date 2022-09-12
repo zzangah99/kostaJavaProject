@@ -137,8 +137,6 @@ public class CartController {
 		orders.setCheckGiftCon(1);
 		OrdersController.insertOrders(orders);
 		
-		
-		//결제 정보 기프티콘 테이블에 저장 후 기프티콘 코드 발행
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();

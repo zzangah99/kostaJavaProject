@@ -76,7 +76,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 			   decrementStock(con, order.getOrderLineList());
 			   //con.commit();
 		   }
-		   System.out.println("기프티콘 문제");
+		   
 		   resultArr[0] = Integer.toString(result);//성공여부
 		   if(order.getCheckGiftCon() == 1) resultArr[1] = orderCodeReturn(con);//기프티콘코드
 		   else resultArr[1] = null;
@@ -200,13 +200,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 		for(OrderLine line : orderLineList) {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
-			/*else if(goods.getStock() < 0) {//수량 제한 없음
-				total[0] += line.getDetailQuan() * goods.getGoodsPrice();
-				if (order.getUserCpCode() == null) {
-					// 쿠폰 사용해서 금액 할인
-				}
-				*/
 			else if((goods.getStock() >= 0) & (goods.getStock() <  line.getDetailQuan())) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
+			
 			total[0] += line.getDetailQuan() * goods.getGoodsPrice();//구매금액
 			total[1] += line.getDetailQuan();//구매수량
 		}
@@ -222,8 +217,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = profile.getProperty("orderOrder.selectAllById");
-		//select * from order_order where user_id = ?
+		String sql = profile.getProperty("orderOrder.selectRecentById");
+		//select order_code, user_id, to_char(order_time, 'YYYY-MM-DD HH24:MI:SS'), order_quan, order_price, user_cp_code, order_payment, gift_code, take_out  from order_order where user_id = ?
 		List<Orders> list = new ArrayList<>();
 		
 		try {
@@ -310,12 +305,12 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public String[] getSizeName(Connection con, int sizeCode) throws SQLException{
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String sql = profile.getProperty("sizeOp.selectSizeName");
-		//select size_size from size_op where size_code = ?
+		String sql = profile.getProperty("sizeOp.selectSize");
+		//select size_size, size_price from size_op where size_code = ?
 		String size[] = new String[2];
 		
 		try {
-			ps = con.prepareStatement("select size_size, size_price from size_op where size_code = ?");
+			ps = con.prepareStatement(sql);
 			ps.setInt(1, sizeCode);
 			rs = ps.executeQuery();
 			
@@ -337,14 +332,15 @@ public class OrdersDAOImpl implements OrdersDAO {
 	 */
 	public String orderCodeReturn(Connection con) throws SQLException {
 		PreparedStatement ps = null;
-		String sql = profile.getProperty("");
+		String sql = profile.getProperty("giftInfo.insert");
+		//insert into gift_info values(? , order_seq.currval, sysdate, 'N')
 		String giftCode = randomCode();
 
 		try {
 			con = DbUtil.getConnection();
 			con.setAutoCommit(false);
 
-			ps = con.prepareStatement("insert into gift_info values(? , order_seq.currval, sysdate, 'N')");
+			ps = con.prepareStatement(sql);
 			ps.setString(1, giftCode);
 
 			int result = ps.executeUpdate();

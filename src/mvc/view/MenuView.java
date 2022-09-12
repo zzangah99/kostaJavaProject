@@ -522,10 +522,9 @@ public class MenuView {// 메인 메뉴
 	
 	
 	public static void useGiftCon(String userId) {
-		System.out.print("사용할 기프티콘 코드를 입력해 주세요 >");
+		System.out.print("사용할 기프티콘 코드를 입력해 주세요 > ");
 		String giftCode = sc.nextLine();
 		Orders orders = new Orders(0, userId, null, 1, 0, null, "기프티콘", giftCode, null);
 		GiftConController.selectGiftCon(orders);
-		GiftConController.orderByGiftCon(orders);
 	}
 }// 클래스 끝

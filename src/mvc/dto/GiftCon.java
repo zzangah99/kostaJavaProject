@@ -51,7 +51,7 @@ public class GiftCon {
 
 	@Override
 	public String toString() {
-		return giftCode+" 기프티콘 : "+ goodsName + "\n사용기한 : " + giftLimitDate; 
+		return giftCode+" 기프티콘 : "+ goodsName + "\n생성날짜 : " + giftLimitDate; 
 	}
 	
 }
