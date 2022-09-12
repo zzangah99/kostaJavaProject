@@ -17,7 +17,7 @@ public interface OrdersDAO {
 	 * 1) 코드 입력받기
 	 * 2) 코드에 해당하는 정보로 주문하기(주문 내역의 총 결제금액은 0)
 	 */
-	int orderInsert(Orders order) throws SQLException;
+	String[] orderInsert(Orders order) throws SQLException;
 
 	/**
 	 * 주문내역보기

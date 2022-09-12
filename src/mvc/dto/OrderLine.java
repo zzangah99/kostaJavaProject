@@ -16,13 +16,14 @@ public class OrderLine {
 	
 	public OrderLine() {}
 	
-	public OrderLine(int detailCode, int orderCode, int goodsCode, int detailPrice, int detailQuan) {
+	public OrderLine(int detailCode, int orderCode, int goodsCode, int detailPrice, int detailQuan, String goodsName) {
 		super();
 		this.detailCode = detailCode;
 		this.orderCode = orderCode;
 		this.goodsCode = goodsCode;
 		this.detailPrice = detailPrice;
 		this.detailQuan = detailQuan;
+		this.goodsName = goodsName;
 	}
 //	public OrderLine(int detailCode, int orderCode, int goodsCode, String goodsName, 
 //			int detailPrice, int detailQuan,int optionCode) {

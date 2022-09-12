@@ -1,5 +1,6 @@
 package mvc.view;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -9,8 +10,14 @@ import mvc.controller.CartController;
 import mvc.controller.OrdersController;
 import mvc.dao.GoodsDAO;
 import mvc.dao.GoodsDAOImpl;
+<<<<<<< HEAD
 import mvc.dto.Category;
 import mvc.dto.Customer;
+=======
+import mvc.dto.Customer;
+import mvc.dto.GiftCon;
+import mvc.dto.Category;
+>>>>>>> origin/seryunTest
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
 import mvc.dto.MyStar;
@@ -54,7 +61,7 @@ public class EndView {
 	/**
 	 * 메뉴 출력 후 주문
 	 */
-	public static void printGoodsList(List<Goods> coffeeList) {//그래서 여기 온 순간 이미 카테고리 정해진 굿즈 리스트가 나오는거고
+	public static void printGoodsList(List<Goods> coffeeList) {
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
 		String op[] = new String[3];
 		int cup = 0;
@@ -146,6 +153,7 @@ public class EndView {
 			takeOut = takeOut.replace("1", "N");
 			takeOut = takeOut.replace("2", "Y");
 
+<<<<<<< HEAD
 			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
 			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
 			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
@@ -159,12 +167,32 @@ public class EndView {
 			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
 			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
 			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+=======
+			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);// userId 받아야함
+			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
+			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
+			order.getOrderLineList().add(orderline);
+			if(orderNo < 6) {
+				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				orderline.getOptionList().add(option);
+			}
+			
+			OrdersController.insertOrders(order);
+			break;
+		case 2: // 장바구니 담기
+			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);// userId 받아야함
+			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
+			
+			if(orderNo < 6) {
+				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				cartOrderline.getOptionList().add(option);
+			}
+>>>>>>> origin/seryunTest
 			
 			cartOrder.getOrderLineList().add(cartOrderline);
-			cartOrderline.getOptionList().add(cartOption);
 			
-			CartController.putCart(cartOrder, cartOrderline);
-			System.out.println("11");
+			CartController.putCart(cartOrderline,userId);
+			
 			break;
 		}
 
@@ -182,24 +210,38 @@ public class EndView {
 	/**
 	 * 장바구니 보기
 	 **/
-	public static void printViewCart(String userId, Map<Goods, Integer> cart) {
-		System.out.println("----------------장바구니------------------");
-		// 장바구니 목록
-		for (Goods goods : cart.keySet()) {
-			int goodsCode = goods.getGoodsCode();// 상품번호
-			String goodsName = goods.getGoodsName();// 상품번호
-			// 상품옵션
-			int goodsPrice = goods.getGoodsPrice();// 상품번호
-			int quantity = cart.get(goods);//
+	public static void printViewCart(String userId, Map<OrderLine, Integer> cart) {
+		GoodsDAOImpl goodsDao = new GoodsDAOImpl();
 
-			System.out.println(" [ 상품코드:" + goodsCode + "\t | 상품이름: " + goodsName + "\t | 상품옵션: " + goodsName
-					+ "\t | 상품개수:" + quantity + "\t | 상품가격:" + goodsPrice + " ]");
+		System.out.println("-------------------------------------------장바구니--------------------------------------------------");
+
+		// 장바구니 목록
+		for (OrderLine orderLine : cart.keySet()) {
+			try {
+				Goods goods = goodsDao.goodsSelectBygoodsCode(orderLine.getGoodsCode());
+				int goodsCode = goods.getGoodsCode();// 상품코드
+				String goodsName = goods.getGoodsName();// 상품이름		
+				int goodsPrice = goods.getGoodsPrice();// 상품가격
+				int quantity = cart.get(orderLine);//
+				
+				System.out.print(" [ 주문코드:" + goodsCode +" | 상품코드: " + goodsCode + " | 상품이름: " + goodsName +" | 상품개수:" + quantity + " | 상품가격:" + goodsPrice);
+				
+				for (Option option : orderLine.getOptionList()) {
+					System.out.println(" | " +option+" ] ");
+				}
+				
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			System.out.println("--------------------------------------------------------------------------------------------------");
+			System.out.println();
 
 		}
 
 		// 장바구니 메뉴로 이동하기.
 		Scanner sc = new Scanner(System.in);
-		System.out.println("1.결제하기  | 2.수정하기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
+		System.out.println(" 1.결제하기  | 2.장바구니전체비우기  | 3.기프티콘만들기  | 4.쇼핑하러가기");
 		switch (Integer.parseInt(sc.nextLine())) {
 		case 1:
 			CartController.payingCart(userId, cart);
@@ -208,9 +250,7 @@ public class EndView {
 			CartController.modifyingCart(userId, cart);
 			break;
 		case 3:
-			System.out.println("수정할 제품의 이름을 입력해주십시오 > ");
-			String modifyingGoods = sc.nextLine();
-			CartController.gifticonCart(modifyingGoods, cart);
+			CartController.gifticonCart(userId, cart);
 			break;
 
 		case 4:
@@ -227,13 +267,17 @@ public class EndView {
 	 */
 	public static void printOrderByUserId(List<Orders> orderList) {
 		System.out.println("주문 내역");
+<<<<<<< HEAD
 		System.out.println("주문 코드\t | \t주문 날짜\t | \t주문 수량\t | \t주문 금액\t | \t결제 수단\t");
+=======
+		//System.out.println("주문 코드 | 주문 날짜 | 주문 수량 | 주문 금액 | 결제 수단");
+>>>>>>> origin/seryunTest
 		for (Orders order : orderList) {
-			System.out.println(order.getOrderCode() + " | " + order.getOrderTime() + " | " + order.getOrderQuan()
-					+ " | " + order.getOrderPrice() + " | " + order.getOrderPayment());
+			System.out.println("주문 코드: "+ order.getOrderCode() + " | " + "주문 날짜: "+ order.getOrderTime() + " | " + "주문 수량: "+ order.getOrderQuan()
+					+ " | " + "주문 금액: "+ order.getOrderPrice() + " | " + "결제 수단: "+ order.getOrderPayment());
 
 			for (OrderLine orderLine : order.getOrderLineList()) {
-				System.out.println("  ▶ " + orderLine);
+				System.out.println("  > " + orderLine);
 				for (Option option : orderLine.getOptionList()) {
 					System.out.println("     - " + option);
 				}
@@ -289,6 +333,24 @@ public class EndView {
 	}
 
 	
+<<<<<<< HEAD
+=======
+	/**
+	  * 마이페이지->별점평가 
+	  * */
+	public static void myStarAssess(MyStar myStar) {
+		System.out.println("등록하신 별점은 " +myStar.getReviewStar()+ " 점 입니다.");
+		System.out.println("등록해 주셔서 감사합니다.");
+	}
+	
+	
+	/**
+	 * 기프티콘 출력
+	 */
+	public static void printGiftCon(GiftCon giftcon) {
+		System.out.println(giftcon);
+	}
+>>>>>>> origin/seryunTest
 
 	
 
