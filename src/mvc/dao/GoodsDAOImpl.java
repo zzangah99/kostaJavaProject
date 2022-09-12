@@ -94,11 +94,10 @@ public class GoodsDAOImpl implements GoodsDAO {
 			ps.setString(1, "%" + keyword + "%");
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
-						rs.getInt(6), rs.getInt(7));
+				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 				list.add(goods);
 			}
-
+			
 		} finally {
 			DbUtil.dbClose(con, ps, rs);
 		}
@@ -125,8 +124,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 		      rs = ps.executeQuery(); 
 		 
 		  if(rs.next()) {
-			  goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
-						rs.getInt(6), rs.getInt(7));
+			  goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 			  goods.setUserId(userId); goods.setNum(goodsCode);
 		  }
 		  }finally {

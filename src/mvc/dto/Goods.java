@@ -14,16 +14,24 @@ public class Goods {
 		public Goods() {}
 		
 		public Goods(int goodsCode, String goodsName, int goodsPrice, String goodsDetail, String soldout, int stock, int categoryCode) {
-			super();
 			this.goodsCode = goodsCode;
 			this.goodsName = goodsName;
 			this.goodsPrice = goodsPrice;
 			this.goodsDetail = goodsDetail;
 			this.soldout = soldout;
-			this.stock =stock;
+			this.stock = stock;
 			this.categoryCode = categoryCode;
 			
+			
 		}
+		
+		public Goods(int num, int goodsCode, String goodsName, int goodsPrice, String goodsDetail, String soldout, int stock ,int categoryCode) {
+			//super();
+			this(goodsCode, goodsName, goodsPrice, goodsDetail, soldout, stock, categoryCode);
+			this.num = num;
+			
+		}
+		
 		
 		public String getUserId() {
 			return userId;
