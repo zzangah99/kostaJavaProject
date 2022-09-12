@@ -120,7 +120,7 @@ public class EndView {
 			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);
 			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			order.getOrderLineList().add(orderline);
-			if(orderNo < 6) {
+			if(coffeeList.get(orderNo - 1).getNum() < 6) {
 				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 				orderline.getOptionList().add(option);
 			}

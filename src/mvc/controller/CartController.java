@@ -28,7 +28,7 @@ public class CartController {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(orderLine.getGoodsCode());
 			int quantity = orderLine.getDetailQuan();
 
-			if ((goods.getStock()>=0 )& (goods.getStock() < quantity)) {
+			if (goods.getStock() <=0 ) {
 	            throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
 	         }
 
