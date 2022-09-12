@@ -5,14 +5,24 @@ public class GiftCon {
 	private int orderCode;//fk
 	private String giftLimitDate;
 	private String goodsName;
+	private String giftFlag;
 	
 	public GiftCon() {}
 
-	public GiftCon(int giftCode, int orderCode, String giftLimitDate) {
+	public GiftCon(int giftCode, int orderCode, String giftLimitDate, String giftFlag) {
 		super();
 		this.giftCode = giftCode;
 		this.orderCode = orderCode;
 		this.giftLimitDate = giftLimitDate;
+		this.giftFlag = giftFlag;
+	}
+
+	public String getGiftFlag() {
+		return giftFlag;
+	}
+
+	public void setGiftFlag(String giftFlag) {
+		this.giftFlag = giftFlag;
 	}
 
 	public int getGiftCode() {

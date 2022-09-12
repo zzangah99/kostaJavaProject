@@ -12,7 +12,7 @@ import mvc.controller.OrdersController;
 import mvc.dao.GoodsDAO;
 import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Customer;
-
+import mvc.dto.GiftCon;
 import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.MyMenu;
@@ -44,7 +44,7 @@ public class EndView {
 	/**
 	 * 메뉴 출력 후 주문
 	 */
-	public static void printGoodsList(List<Goods> coffeeList) {//그래서 여기 온 순간 이미 카테고리 정해진 굿즈 리스트가 나오는거고
+	public static void printGoodsList(List<Goods> coffeeList) {
 		List<Integer> goodsCodeList = new ArrayList<Integer>();
 		String op[] = new String[3];
 		int cup = 0;
@@ -118,7 +118,7 @@ public class EndView {
 			takeOut = takeOut.replace("2", "Y");
 
 			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);// userId 받아야함
-			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
+			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
 			order.getOrderLineList().add(orderline);
 			if(orderNo < 6) {
@@ -126,11 +126,11 @@ public class EndView {
 				orderline.getOptionList().add(option);
 			}
 			
-			OrdersController.insertOrders(order);//이후 스탬프 적립 컨트롤러 추가
+			OrdersController.insertOrders(order);
 			break;
 		case 2: // 장바구니 담기
 			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);// userId 받아야함
-			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan);
+			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			
 			if(orderNo < 6) {
 				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
@@ -217,7 +217,7 @@ public class EndView {
 					+ " | " + "주문 금액: "+ order.getOrderPrice() + " | " + "결제 수단: "+ order.getOrderPayment());
 
 			for (OrderLine orderLine : order.getOrderLineList()) {
-				System.out.println("  ▶ " + orderLine);
+				System.out.println("  > " + orderLine);
 				for (Option option : orderLine.getOptionList()) {
 					System.out.println("     - " + option);
 				}
@@ -336,6 +336,14 @@ public class EndView {
 	public static void myStarAssess(MyStar myStar) {
 		System.out.println("등록하신 별점은 " +myStar.getReviewStar()+ " 점 입니다.");
 		System.out.println("등록해 주셔서 감사합니다.");
+	}
+	
+	
+	/**
+	 * 기프티콘 출력
+	 */
+	public static void printGiftCon(GiftCon giftcon) {
+		System.out.println(giftcon);
 	}
 
 }

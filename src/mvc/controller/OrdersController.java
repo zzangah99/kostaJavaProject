@@ -15,8 +15,10 @@ public class OrdersController {
 	 * */
 	public static void insertOrders(Orders order) {
 		try {
-		  orderService.insertOrders(order);
+		  String result[] = orderService.insertOrders(order);
 		  EndView.printMessage("주문이 완료되었습니다");
+		  
+		  if(result[1] != null) EndView.printMessage("기프티콘 코드는 "+ result[1] +" 입니다. 따로 저장해두신 뒤 코드를 입력해서 사용하세요");
 		}catch (Exception e) {
 			FailView.errorMessage(e.getMessage());
 			
@@ -36,5 +38,4 @@ public class OrdersController {
 		}
 	}
 	
-
 }

@@ -9,6 +9,7 @@ import mvc.controller.CouponController;
 import mvc.controller.CategoryController;
 import mvc.controller.CouponController;
 import mvc.controller.CustomerController;
+import mvc.controller.GiftConController;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
@@ -18,6 +19,7 @@ import mvc.controller.OrdersController;
 import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
+import mvc.dto.Orders;
 import mvc.session.UserSessionSet;
 import mvc.controller.GoodsController;
 
@@ -288,7 +290,8 @@ public class MenuView {// 메인 메뉴
 					CartController.viewCart(userId);
 					break;
 				case 3: // 기프티콘으로 구매하기
-
+					MenuView.useGiftCon(userId);
+					break;
 				case 4:
 					// CustomerController.myPage(userId);
 					MenuView.printUserMyPage(userId);// 마이페이지가기
@@ -515,5 +518,14 @@ public class MenuView {// 메인 메뉴
 		int goodsReSt = Integer.parseInt(sc.nextLine());
 		;
 		AdminController.GoodsUpdateSt(goodsCode, goodsReSt);
+	}
+	
+	
+	public static void useGiftCon(String userId) {
+		System.out.print("사용할 기프티콘 코드를 입력해 주세요 >");
+		String giftCode = sc.nextLine();
+		Orders orders = new Orders(0, userId, null, 1, 0, null, "기프티콘", giftCode, null);
+		GiftConController.selectGiftCon(orders);
+		GiftConController.orderByGiftCon(orders);
 	}
 }// 클래스 끝

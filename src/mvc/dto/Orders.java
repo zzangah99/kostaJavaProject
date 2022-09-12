@@ -14,6 +14,7 @@ public class Orders {
 	private String orderPayment;
 	private String giftCode;
 	private String takeOut;
+	private int checkGiftCon;
 	
 	private List<OrderLine> orderLineList = new ArrayList<OrderLine>();	//상세주문
 	
@@ -31,6 +32,14 @@ public class Orders {
 		this.orderPayment = orderPayment;
 		this.giftCode = giftCode;
 		this.takeOut = takeOut;
+	}
+
+	public int getCheckGiftCon() {
+		return checkGiftCon;
+	}
+
+	public void setCheckGiftCon(int checkGiftCon) {
+		this.checkGiftCon = checkGiftCon;
 	}
 
 	public int getOrderCode() {

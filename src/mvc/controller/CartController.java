@@ -28,7 +28,7 @@ public class CartController {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(orderLine.getGoodsCode());
 			int quantity = orderLine.getDetailQuan();
 
-			if ((goods.getStock()>=0 )&& (goods.getStock() < quantity)) {
+			if ((goods.getStock()>=0 )& (goods.getStock() < quantity)) {
 	            throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
 	         }
 
@@ -84,7 +84,7 @@ public class CartController {
 		List<OrderLine> orderLineList = orders.getOrderLineList();
 
 		for (OrderLine orderLineKey : cart.keySet()) {
-			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0);
+			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
 			orderLineList.add(orderLine);
 		}
 
@@ -129,12 +129,16 @@ public class CartController {
 		List<OrderLine> orderLineList = orders.getOrderLineList();
 
 		for (OrderLine orderLineKey : cart.keySet()) {
-			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0);
+			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
 			orderLineList.add(orderLine);
 		}
 
 		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
+		orders.setCheckGiftCon(1);
 		OrdersController.insertOrders(orders);
+		
+		
+		//결제 정보 기프티콘 테이블에 저장 후 기프티콘 코드 발행
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();
