@@ -22,4 +22,10 @@ public interface GoodsDAO {
 	 * goodsId에 해당하는 정보 검색
 	 */
 	Goods goodsSelectBygoodsCode(int goodsCode) throws SQLException;
-}
+
+
+	/**
+	 * goodsStock에 해당하는 정보 검색
+	 */
+	//List<Goods> goodsSelectByStock(int goodsCode) throws SQLException;
+} 

@@ -2,26 +2,20 @@ package mvc.view;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-import mvc.view.MenuView;
 import mvc.controller.AdminController;
 import mvc.controller.CartController;
-import mvc.controller.CouponController;
 import mvc.controller.CategoryController;
 import mvc.controller.CouponController;
 import mvc.controller.CustomerController;
 import mvc.controller.GiftConController;
-import mvc.session.UserSession;
-import mvc.session.UserSessionSet;
-import mvc.session.UserSession;
 import mvc.controller.GoodsController;
 import mvc.controller.MyStarController;
 import mvc.controller.OrdersController;
-import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
 import mvc.dto.Orders;
+import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
-import mvc.controller.GoodsController;
 
 public class MenuView {// 메인 메뉴
 	private static Scanner sc = new Scanner(System.in);
@@ -31,8 +25,6 @@ public class MenuView {// 메인 메뉴
 	 */
 	public static void menu() { // 초기 메뉴
 		while (true) {
-			// UserSessionSet us = UserSessionSet.getInstance();
-			// System.out.println(ss.getSet());
 			System.out.println("=============================== Cafe ================================");
 			// AdminController adminController = new AdminController();
 			// adminController.NoticePrint();
@@ -193,10 +185,10 @@ public class MenuView {// 메인 메뉴
 						CouponController.UserCoupon(userId);// 문제
 						break;
 					case 6:
-						// MyStarController.myStar(userId);//문제
+					case 7: 
 						MenuView.myStar(userId);
 						break;
-					case 7:
+					case 8:
 						MenuView.printUserMenu(userId);
 						break;
 					case 0:
@@ -285,16 +277,31 @@ public class MenuView {// 메인 메뉴
 					CategoryController.selectCategory();
 					int num = Integer.parseInt(sc.nextLine());
 					GoodsController.selectBever(num, userId);
+					switch(num) {
+					case 1 :
+					case 2 :
+					case 3 :
+					case 4 :
+					case 5 :
+					case 6 :
+					case 7 :GoodsController.selectBever(num, userId);
+							break;
+					case 8 :System.out.print("상품명을 입력해주세요 > ");
+							String word = sc.nextLine();
+							GoodsController.goodsSelectByName(word);
+							break;
+						
+					case 9 :MenuView.printUserMenu(userId); 
+					}
 					break;
 				case 2:
 					CartController.viewCart(userId);
 					break;
-				case 3: // 기프티콘으로 구매하기
+				case 3:
 					MenuView.useGiftCon(userId);
 					break;
 				case 4:
-					// CustomerController.myPage(userId);
-					MenuView.printUserMyPage(userId);// 마이페이지가기
+					MenuView.printUserMyPage(userId);
 					break;
 				case 0:
 					System.exit(0);
@@ -317,10 +324,8 @@ public class MenuView {// 메인 메뉴
 		System.out.println(">>>>관리자로 로그인하기>>>>");
 		System.out.print("아이디 : ");
 		String adminId = sc.nextLine();
-		// System.out.println(adminId);
 		System.out.print("비번 : ");
 		String adminPw = sc.nextLine();
-		// System.out.println(adminPw);
 
 		AdminController.login(adminId, adminPw);
 	}

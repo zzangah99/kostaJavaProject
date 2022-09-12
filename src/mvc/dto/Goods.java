@@ -14,16 +14,24 @@ public class Goods {
 		public Goods() {}
 		
 		public Goods(int goodsCode, String goodsName, int goodsPrice, String goodsDetail, String soldout, int stock, int categoryCode) {
-			super();
 			this.goodsCode = goodsCode;
 			this.goodsName = goodsName;
 			this.goodsPrice = goodsPrice;
 			this.goodsDetail = goodsDetail;
 			this.soldout = soldout;
-			this.stock =stock;
+			this.stock = stock;
 			this.categoryCode = categoryCode;
 			
+			
 		}
+		
+		public Goods(int num, int goodsCode, String goodsName, int goodsPrice, String goodsDetail, String soldout, int stock ,int categoryCode) {
+			//super();
+			this(goodsCode, goodsName, goodsPrice, goodsDetail, soldout, stock, categoryCode);
+			this.num = num;
+			
+		}
+		
 		
 		public String getUserId() {
 			return userId;
@@ -99,9 +107,10 @@ public class Goods {
 
 		@Override
 		public String toString() {
-			return goodsCode + " | " + goodsName +" | " + " | " + goodsPrice + " | " + goodsDetail + " | " + soldout + " | " + stock + " | " + categoryCode;
+			return "상품코드 : "+goodsCode + " | " +"상품이름 : "+goodsName +" | " + "상품가격 : "+ goodsPrice + " | "+"상품상세 : "+goodsDetail + " | "+"상품카테고리번호 : "+categoryCode;
 		}
-
+		
+		
 		 /**
 		   *  객체가 다르더라도 상품번호가 같으면 무조건 같다라고 이해하기 위해 오버라이드
 		   */

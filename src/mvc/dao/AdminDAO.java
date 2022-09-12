@@ -69,3 +69,4 @@ public interface AdminDAO {
 	String noticeprint() throws SQLException;
 	
 }
+

@@ -1,22 +1,29 @@
 package mvc.dto;
 
-class ReviewService {
+public class Review {
 	private int reNum;
 	private int orderCode;
 	private String userId;
 	private int goodsCode;
+	private String reviewContent;
 	private String reviewDate;
 	private String reviewStar;
 
-	public ReviewService() {
+	public Review() {
 	}
-
-	public ReviewService(int reNum, int orderCode, String userId, int goodsCode, String reviewDate, String reviewStar) {
-		super();
-		this.reNum = reNum;
+	
+	public Review(int orderCode, String userId, int goodsCode, String reviewContent) {
 		this.orderCode = orderCode;
 		this.userId = userId;
 		this.goodsCode = goodsCode;
+		this.reviewContent = reviewContent;
+	}
+
+	public Review(int reNum, int orderCode, String userId, int goodsCode, String reviewContent, String reviewDate,
+			String reviewStar) {
+		//super();
+		this(orderCode, userId, goodsCode, reviewContent);
+		this.reNum = reNum;
 		this.reviewDate = reviewDate;
 		this.reviewStar = reviewStar;
 	}
@@ -45,6 +52,14 @@ class ReviewService {
 		this.userId = userId;
 	}
 
+	public String getReviewContent() {
+		return reviewContent;
+	}
+
+	public void setReviewContent(String reviewContent) {
+		this.reviewContent = reviewContent;
+	}
+
 	public int getGoodsCode() {
 		return goodsCode;
 	}
@@ -70,4 +85,3 @@ class ReviewService {
 	}
 
 }
-

@@ -217,9 +217,10 @@ public class OrdersDAOImpl implements OrdersDAO {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+
 		String sql = profile.getProperty("orderOrder.selectRecentById");
 		//select order_code, user_id, to_char(order_time, 'YYYY-MM-DD HH24:MI:SS'), order_quan, order_price, user_cp_code, order_payment, gift_code, take_out  from order_order where user_id = ?
-		List<Orders> list = new ArrayList<>();
+		List<Orders> list = new ArrayList<Orders>();
 		
 		try {
 			con = DbUtil.getConnection();

@@ -1,3 +1,4 @@
+
 package mvc.session;
 
 public class AdminSession {
@@ -36,3 +37,4 @@ public class AdminSession {
 	}
 
 }
+
