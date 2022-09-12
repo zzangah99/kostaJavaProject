@@ -99,7 +99,7 @@ public class EndView {
 		System.out.print("수량을 입력하세요 >");
 		int quan = Integer.parseInt(sc.nextLine());
 
-		System.out.println("1.주문하기\t 2.장바구니에 담기");
+		System.out.println("1.주문하기\t 2.장바구니에 담기\t 3.기프티콘");
 		int choice = Integer.parseInt(sc.nextLine());
 		System.out.println("- 주문 상품 : " + coffeeList.get(orderNo - 1).getGoodsName() + "  |  주문 수량 : " + quan+ "  |  주문 금액 : "+ (coffeeList.get(orderNo - 1).getGoodsPrice() * quan));
 
@@ -128,18 +128,30 @@ public class EndView {
 			OrdersController.insertOrders(order);
 			break;
 		case 2: // 장바구니 담기
+			System.out.println(userId +  quan +  cup + tem);
 			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);
 			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			cartOrder.getOrderLineList().add(cartOrderline);
+			
 			if(coffeeList.get(orderNo - 1).getNum() < 6) {
 				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				System.out.println(option.getSizeCode());
 				cartOrderline.getOptionList().add(option);
 			}
 			
-			
-			
 			CartController.putCart(cartOrderline,userId);
 			
+			break;
+		case 3:
+			Orders orderGift = new Orders(0, userId, null, quan, 0, null, null, null, null);
+			OrderLine orderlineGift = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
+			orderGift.getOrderLineList().add(orderlineGift);
+			if(orderNo < 6) {
+				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
+				orderlineGift.getOptionList().add(option);
+			}
+			orderGift.setCheckGiftCon(1);
+			OrdersController.insertOrders(orderGift);
 			break;
 		}
 

@@ -71,14 +71,18 @@ public class OrdersDAOImpl implements OrdersDAO {
 					   throw new SQLException("주문에 실패하였습니다");
 				   }
 			   }
-			   
-			   //주문수량만큼 재고량 감소하기
-			   decrementStock(con, order.getOrderLineList());
-			   //con.commit();
 		   }
 		   
+		   //주문수량만큼 재고량 감소하기
+		   decrementStock(con, order.getOrderLineList());
+		   //con.commit();
+		   
 		   resultArr[0] = Integer.toString(result);//성공여부
-		   if(order.getCheckGiftCon() == 1) resultArr[1] = orderCodeReturn(con);//기프티콘코드
+		   
+		   if(order.getCheckGiftCon() == 1) {
+			   resultArr[1] = orderGiftCode(con);//기프티콘코드
+			   System.out.println("test2"+resultArr[0]);
+		   }
 		   else resultArr[1] = null;
 		   
     }finally {
@@ -332,12 +336,12 @@ public class OrdersDAOImpl implements OrdersDAO {
 	/**
 	 * 주문코드 이용해서 기프트콘 생성
 	 */
-	public String orderCodeReturn(Connection con) throws SQLException {
+	public String orderGiftCode(Connection con) throws SQLException {
 		PreparedStatement ps = null;
 		String sql = profile.getProperty("giftInfo.insert");
 		//insert into gift_info values(? , order_seq.currval, sysdate, 'N')
 		String giftCode = randomCode();
-
+		
 		try {
 			con = DbUtil.getConnection();
 			con.setAutoCommit(false);
@@ -352,7 +356,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 			}
 
 		} finally {
-			DbUtil.dbClose(con, ps, null);
+			DbUtil.dbClose(null, ps, null);
 		}
 
 		return giftCode;
@@ -364,16 +368,17 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public String randomCode() {
 		Random ran = new Random();
 		int setSize = codeSet.size();
-		String ranCode = null;
+		int ranCode = 0;
+		String ranCodes = null;
 		
 		while(codeSet.size() == setSize) {
-			ranCode = Integer.toString(ran.nextInt(10000000)+1);
-			ranCode = String.format("%08d", ranCode);
-			codeSet.add(ranCode);
+			ranCode = ran.nextInt(10000000)+1;
+			ranCodes = String.format("%08d", ranCode);
+			codeSet.add(ranCodes);
 			if(codeSet.size() > setSize) break;
 		}
-		System.out.println("기프트코드: "+ranCode);
-		return ranCode;
+		
+		return ranCodes;
 	}
 	
 }

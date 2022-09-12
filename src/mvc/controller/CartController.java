@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Goods;
 import mvc.dto.OrderLine;
@@ -74,7 +75,23 @@ public class CartController {
 			EndView.printViewCart(id, cart);
 		}
 	}
-
+	
+	/*
+	 Orders orders = new Orders(0, null, id, address, 0);
+	 
+	 List<OrderLine> orderLineList = orders.getOrderLineList();
+	 
+	 for(Goods goodsKey : cart.keySet()) {
+		 int qty = cart.get(goodsKey);
+		 OrderLine orderLine = new OrderLine(0, 0, goodsKey.getGoodsId() , 0, qty, 0);
+		 orderLineList.add(orderLine);
+	 }
+	 
+	 System.out.println("orderLineList 개수 : " + orderLineList.size());
+	 OrderController.insertOrders(orders);
+	 
+	 */
+	
 	/**
 	 * 장바구니 결제하기
 	 */
@@ -84,12 +101,12 @@ public class CartController {
 		List<OrderLine> orderLineList = orders.getOrderLineList();
 
 		for (OrderLine orderLineKey : cart.keySet()) {
-			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
-			System.out.println(orderLine);
+			int qty = cart.get(orderLineKey);
+			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, qty, orderLineKey.getGoodsName());
 			orderLineList.add(orderLine);
 		}
 
-		System.out.println("------------ 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다 ------------");
+		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
 		OrdersController.insertOrders(orders);
 
 		// 장바구니비우기
@@ -124,16 +141,17 @@ public class CartController {
 	/**
 	 * 기프티콘 넣기
 	 */
-	public static void gifticonCart(String userId, Map<OrderLine, Integer> cart) {
+	public static void gifticonCart(String userId, Orders order) {
 
 		Orders orders = new Orders(0, userId, null, 0, 0, null, null, null, null);
-		List<OrderLine> orderLineList = orders.getOrderLineList();
-
-		for (OrderLine orderLineKey : cart.keySet()) {
-			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
-			orderLineList.add(orderLine);
+		List<OrderLine> orderLineList = order.getOrderLineList();
+		
+		for (OrderLine orderLineKey : orderLineList) {
+			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), orderLineKey.getDetailPrice(), orderLineKey.getDetailQuan(), orderLineKey.getGoodsName());
+			orders.getOrderLineList().add(orderLine);
 		}
-
+		
+		orders.setCheckGiftCon(1);
 		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
 		OrdersController.insertOrders(orders);
 
