@@ -2,12 +2,12 @@ package mvc.dto;
 
 public class OrderDetail {
 	
-	int totalPrice;
+	String totalPrice;
 	int totalQuantity;
 
 		
 		public OrderDetail() {}
-		public OrderDetail(int totalPrice, int totalQuantity) {
+		public OrderDetail(String totalPrice, int totalQuantity) {
 			super();
 			this.totalPrice = totalPrice;
 			this.totalQuantity = totalQuantity;
@@ -15,12 +15,12 @@ public class OrderDetail {
 
 
 
-		public int getTotalPrice() {
+		public String getTotalPrice() {
 			return totalPrice;
 		}
 
 
-		public void setTotalPrice(int totalPrice) {
+		public void setTotalPrice(String totalPrice) {
 			this.totalPrice = totalPrice;
 		}
 

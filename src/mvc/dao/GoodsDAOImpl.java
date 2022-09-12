@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
-
-import mvc.dto.Category;
 import mvc.dto.Goods;
 import mvc.util.DbUtil;
 
@@ -36,7 +34,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 
 			while (rs.next()) {
 			    Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
-			    goods.setUserId(userId);
+			    goods.setUserId(userId); goods.setNum(num);
 			    list.add(goods);
 			}
 		} finally {
@@ -48,24 +46,24 @@ public class GoodsDAOImpl implements GoodsDAO {
 	
 	/**
 	 * 재고 품절 여부 확인
-	 */
+	 
 	
-	public List<Goods> goodsSelectByStock() throws SQLException {
+	public List<Goods> goodsSelectByStock(int goodsCode) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectAllAll");// select * from goods
+		List<Goods> list  = new ArrayList<Goods>();
+		String sql = proFile.getProperty("goods.selectAllByCode");// select * from goods where goods_code = ?
 
 		try {
 			con = DbUtil.getConnection();
 			ps = con.prepareStatement(sql);
 			// ?가 있다면 setXxx설정
+			ps.setInt(1, goodsCode);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
-						rs.getInt(6), rs.getInt(7));
-				list.add(goods);
+				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
+			    list.add(goods);
 			}
 
 		} finally {
@@ -74,6 +72,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 
 		return list;
 	}
+	**/
 	
 	/**
 	 * 상품 이름으로 검색
@@ -85,7 +84,7 @@ public class GoodsDAOImpl implements GoodsDAO {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		List<Goods> list = new ArrayList<Goods>();
-		String sql = proFile.getProperty("goods.selectByName"); // select * from goods where goods_name like = ?
+		String sql = proFile.getProperty("goods.selectAllByName"); // =select * from goods where goods_name like = ?
 
 		try {
 			con = DbUtil.getConnection();
@@ -94,11 +93,10 @@ public class GoodsDAOImpl implements GoodsDAO {
 			ps.setString(1, "%" + keyword + "%");
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
-						rs.getInt(6), rs.getInt(7));
+				Goods goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 				list.add(goods);
 			}
-
+			
 		} finally {
 			DbUtil.dbClose(con, ps, rs);
 		}
@@ -125,21 +123,12 @@ public class GoodsDAOImpl implements GoodsDAO {
 		      rs = ps.executeQuery(); 
 		 
 		  if(rs.next()) {
-			  goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5),
-						rs.getInt(6), rs.getInt(7));
-				
+			  goods = new Goods(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getInt(6), rs.getInt(7));
 		  }
 		  }finally {
 			  DbUtil.dbClose(con, ps, rs);
 		  }
 		  	return goods;
 	}
-
-
-
-
-
-
-
 
 }

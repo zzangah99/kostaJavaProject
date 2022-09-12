@@ -24,9 +24,9 @@ public class GoodsController {
 		
 	}
 	
-	
-	
-	
+	/**
+	 * 상품 이름으로 상품 출력 
+	 */
 	public static void goodsSelectByName(String word) { //이름 검색
 		try {
 			List<Goods> list = goodsService.goodsSelectBygoodsName(word);
@@ -36,8 +36,6 @@ public class GoodsController {
 			FailView.errorMessage(e.getMessage());
 		}
 	}
-
-    
-
 	
 }
+

@@ -13,9 +13,10 @@ public class OrderService {
    /**
     * 주문하기
     * */
-	 public void insertOrders(Orders orders) throws SQLException{
-		int result =  orderDao.orderInsert(orders);
-		if(result==0)throw new SQLException("주문이 실패하였습니다.");
+	 public String[] insertOrders(Orders orders) throws SQLException{
+		String result[] =  orderDao.orderInsert(orders);
+		if(result[0].equals("0"))throw new SQLException("주문이 실패하였습니다.");
+		return result;
 	 }
 	 
 	 /**
@@ -26,4 +27,5 @@ public class OrderService {
 		 if(list==null || list.size()==0)throw new SQLException(userId+" 님의 주문내역이 없습니다.");
 		 return list;
 	 }
+	 
 }

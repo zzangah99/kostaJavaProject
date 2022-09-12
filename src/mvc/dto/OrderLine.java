@@ -7,7 +7,7 @@ public class OrderLine {
 	private int detailCode;// pk
 	private int orderCode;// fk
 	private int goodsCode;// fk
-	private String goodsName;
+	private String goodsName;//
 	private int detailPrice;
 	private int detailQuan;
 	private int optionCode;
@@ -16,13 +16,14 @@ public class OrderLine {
 	
 	public OrderLine() {}
 	
-	public OrderLine(int detailCode, int orderCode, int goodsCode, int detailPrice, int detailQuan) {
+	public OrderLine(int detailCode, int orderCode, int goodsCode, int detailPrice, int detailQuan, String goodsName) {
 		super();
 		this.detailCode = detailCode;
 		this.orderCode = orderCode;
 		this.goodsCode = goodsCode;
 		this.detailPrice = detailPrice;
 		this.detailQuan = detailQuan;
+		this.goodsName = goodsName;
 	}
 
 	public int getDetailCode() {
