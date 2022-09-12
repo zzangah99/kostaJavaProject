@@ -73,7 +73,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		   }
 		   
     }finally {
-  	  con.commit();
+  	  	con.commit();
     	DbUtil.dbClose(con, ps , null);
     }
 		
@@ -88,7 +88,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public int[] orderLineInsert(Connection con, Orders order) throws SQLException{
 		PreparedStatement ps = null;
 		String sql = profile.getProperty("orderDetail.insert");
-		//insert into order_detail (order_code, goods_code, detail_price, detail_quan) values (?, ?, ?, ?)
+		//insert into order_detail (detail_code, order_code, goods_code, detail_price, detail_quan) values (detail_seq.nextval, order_seq.currval, ?, ?, ?)
 		int result[] = null;
 		
 		try {
@@ -96,13 +96,13 @@ public class OrdersDAOImpl implements OrdersDAO {
 			for (OrderLine orderline : order.getOrderLineList()) {
 				Goods goods = goodsDao.goodsSelectBygoodsCode(orderline.getGoodsCode());
 
-				ps.setInt(1, order.getOrderCode());
-				ps.setInt(2, orderline.getGoodsCode());//상품코드
-				ps.setInt(3, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
-				ps.setInt(4, orderline.getDetailQuan());// 상품별 구매 수량
+				//ps.setInt(1, order.getOrderCode());
+				ps.setInt(1, orderline.getGoodsCode());//상품코드
+				ps.setInt(2, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
+				ps.setInt(3, orderline.getDetailQuan());// 상품별 구매 수량
 				ps.addBatch(); // 일괄처리할 작업에 추가
 				ps.clearParameters();
-				
+				ps.executeBatch();//공부.................................
 				//옵션
 				int re = optionListInsert(con, orderline);
 				if(re != 1) {
@@ -131,14 +131,14 @@ public class OrdersDAOImpl implements OrdersDAO {
 		int result = 0;
 		
 		try {
-			ps = con.prepareStatement("sql");
+			ps = con.prepareStatement(sql);
 			for (Option option : orderline.getOptionList()) {
-				ps.setInt(1, orderline.getDetailCode());
-				ps.setInt(2, option.getSizeCode());
-				ps.setString(3, option.getTem());
-				ps.setString(4, option.getSyrup());
-				ps.setString(5, option.getDef());
-				ps.setString(6, option.getWhip());
+				//ps.setInt(1, orderline.getDetailCode());
+				ps.setInt(1, option.getSizeCode());
+				ps.setString(2, option.getTem());
+				ps.setString(3, option.getSyrup());
+				ps.setString(4, option.getDef());
+				ps.setString(5, option.getWhip());
 			}
 			result = ps.executeUpdate();
 
@@ -156,8 +156,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 	 * */
 	public int[] decrementStock(Connection con , List<OrderLine> orderLineList)throws SQLException {
 		PreparedStatement ps = null;
-		String sql = profile.getProperty("goods.updateStockByCode");
-		//update goods set stock = ? where goods_code = ?
+		String sql = profile.getProperty("goods.updateStockCountByCode");
+		//update goods set stock = stock-? where goods_code = ?
 		int result[] = null;
 		
 		try {
@@ -189,8 +189,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 		for(OrderLine line : orderLineList) {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());//오류 있음
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
+			else if(Integer.toString(goods.getStock()) == null) break;
 			else if(goods.getStock() <  line.getDetailQuan()) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
-			
 			
 	    	total += line.getDetailQuan() * goods.getGoodsPrice() ;
 	    	if(order.getUserCpCode()==null) {
@@ -220,10 +220,14 @@ public class OrdersDAOImpl implements OrdersDAO {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 
+
 				Orders orders = new Orders(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4),
 						rs.getInt(5),rs.getInt(6),rs.getString(7),rs.getString(8),rs.getString(9));
 
 				Orders ordersLine = new Orders(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4), rs.getInt(5),rs.getInt(6),rs.getString(7),rs.getString(8),rs.getString(9));
+
+				Orders orders = new Orders(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getString(9));
+
 
 				// 주문번호에 해당하는 상세정보 가져오기
 				List<OrderLine> orderLineList = selectOrderLine(con, orders.getOrderCode());// 메소드 호출
