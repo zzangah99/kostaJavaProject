@@ -105,14 +105,14 @@ public class OrdersDAOImpl implements OrdersDAO {
 			for (OrderLine orderline : order.getOrderLineList()) {
 				Goods goods = goodsDao.goodsSelectBygoodsCode(orderline.getGoodsCode());
 
-				//ps.setInt(1, order.getOrderCode());
+				
 				ps.setInt(1, orderline.getGoodsCode());//상품코드
 				ps.setInt(2, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
 				ps.setInt(3, orderline.getDetailQuan());// 상품별 구매 수량
 				ps.setString(4, orderline.getGoodsName());//상품이름
-				ps.addBatch(); // 일괄처리할 작업에 추가
+				ps.addBatch(); 
 				ps.clearParameters();
-				ps.executeBatch();//Batch 공부.................................
+				ps.executeBatch();
 				
 				//옵션
 				int re = optionListInsert(con, orderline);
@@ -121,7 +121,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 					throw new SQLException("상품의 옵션 처리 중 주문에 실패하였습니다");
 				}
 			}
-			result = ps.executeBatch();// 일괄처리
+			result = ps.executeBatch();
 
 		} finally {
 			DbUtil.dbClose(null, ps, null);
@@ -200,7 +200,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 		for(OrderLine line : orderLineList) {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
-			else if((goods.getStock() >= 0) & (goods.getStock() <  line.getDetailQuan())) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
+			else if(goods.getStock() == 0) throw new SQLException("품절 상품입니다");
+			else if((goods.getStock() > 0) & (goods.getStock() <  line.getDetailQuan())) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
 			
 			total[0] += line.getDetailQuan() * goods.getGoodsPrice();//구매금액
 			total[1] += line.getDetailQuan();//구매수량

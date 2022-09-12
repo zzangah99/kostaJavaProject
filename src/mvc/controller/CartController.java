@@ -85,10 +85,11 @@ public class CartController {
 
 		for (OrderLine orderLineKey : cart.keySet()) {
 			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
+			System.out.println(orderLine);
 			orderLineList.add(orderLine);
 		}
 
-		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
+		System.out.println("------------ 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다 ------------");
 		OrdersController.insertOrders(orders);
 
 		// 장바구니비우기
