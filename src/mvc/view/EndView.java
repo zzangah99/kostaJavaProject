@@ -153,7 +153,7 @@ public class EndView {
 			takeOut = takeOut.replace("1", "N");
 			takeOut = takeOut.replace("2", "Y");
 
-<<<<<<< HEAD
+
 			Orders order = new Orders(0, null, userId, null, 0, quan, payment, null, takeOut);// userId 받아야함
 			OrderLine orderline = new OrderLine(0, orderCode, coffeeList.get(orderNo - 1).getGoodsCode(), 0, quan);
 			Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
@@ -167,7 +167,7 @@ public class EndView {
 			Orders cartOrder = new Orders(0, null, userId, null, 0, quan, null, null, null);// userId 받아야함
 			OrderLine cartOrderline = new OrderLine(0, 0, orderCode, 0, quan);
 			Option cartOption = new Option(0, cup, null, tem, op[0], op[1], op[2]);
-=======
+
 			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);// userId 받아야함
 			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			orderline.setGoodsName(coffeeList.get(orderNo - 1).getGoodsName());
@@ -187,8 +187,7 @@ public class EndView {
 				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 				cartOrderline.getOptionList().add(option);
 			}
->>>>>>> origin/seryunTest
-			
+
 			cartOrder.getOrderLineList().add(cartOrderline);
 			
 			CartController.putCart(cartOrderline,userId);
@@ -267,11 +266,11 @@ public class EndView {
 	 */
 	public static void printOrderByUserId(List<Orders> orderList) {
 		System.out.println("주문 내역");
-<<<<<<< HEAD
+
 		System.out.println("주문 코드\t | \t주문 날짜\t | \t주문 수량\t | \t주문 금액\t | \t결제 수단\t");
-=======
+
 		//System.out.println("주문 코드 | 주문 날짜 | 주문 수량 | 주문 금액 | 결제 수단");
->>>>>>> origin/seryunTest
+
 		for (Orders order : orderList) {
 			System.out.println("주문 코드: "+ order.getOrderCode() + " | " + "주문 날짜: "+ order.getOrderTime() + " | " + "주문 수량: "+ order.getOrderQuan()
 					+ " | " + "주문 금액: "+ order.getOrderPrice() + " | " + "결제 수단: "+ order.getOrderPayment());
@@ -333,8 +332,7 @@ public class EndView {
 	}
 
 	
-<<<<<<< HEAD
-=======
+
 	/**
 	  * 마이페이지->별점평가 
 	  * */
@@ -350,7 +348,6 @@ public class EndView {
 	public static void printGiftCon(GiftCon giftcon) {
 		System.out.println(giftcon);
 	}
->>>>>>> origin/seryunTest
 
 	
 

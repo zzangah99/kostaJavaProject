@@ -8,26 +8,25 @@ import mvc.controller.CartController;
 import mvc.controller.CategoryController;
 import mvc.controller.CouponController;
 import mvc.controller.CustomerController;
-<<<<<<< HEAD
-=======
+
 import mvc.controller.GiftConController;
 import mvc.session.UserSession;
 import mvc.session.UserSessionSet;
 import mvc.session.UserSession;
->>>>>>> origin/seryunTest
+
 import mvc.controller.GoodsController;
 import mvc.controller.MyStarController;
 import mvc.controller.OrdersController;
 import mvc.controller.ReviewController;
 import mvc.dto.Goods;
 import mvc.dto.Notice;
-<<<<<<< HEAD
+
 import mvc.dto.Review;
-=======
+
 import mvc.dto.Orders;
 import mvc.session.UserSessionSet;
 import mvc.controller.GoodsController;
->>>>>>> origin/seryunTest
+
 
 public class MenuView {// 메인 메뉴
 	private static Scanner sc = new Scanner(System.in);
@@ -40,14 +39,14 @@ public class MenuView {// 메인 메뉴
 			// UserSessionSet us = UserSessionSet.getInstance();
 			// System.out.println(ss.getSet());
 			System.out.println("=============================== Cafe ================================");
-<<<<<<< HEAD
+
 			System.out.println();
 			AdminController.NoticePrint(); //공지
 			System.out.println();
-=======
+
 			// AdminController adminController = new AdminController();
 			// adminController.NoticePrint();
->>>>>>> origin/seryunTest
+
 			System.out.println("-------------------------접속 유형을 선택해주세요--------------------------");
 			System.out.println("| 1. 회원으로 주문하기 | 2. 비회원으로 주문하기 | 3.  관리자 접속   | 0.  종료   |");
 			try {
@@ -57,9 +56,9 @@ public class MenuView {// 메인 메뉴
 					MenuView.printMenuForMember();
 					break;
 				case 2:
-<<<<<<< HEAD
+
 					MenuView.printUserMenu(null);// 비회원은 바로 메인 메뉴 선택으로
-=======
+
 					// 회원이면 printUserMenu(회원ID)
 					// 비회원이면 printUserMenu("Guest")
 					UserSession userSession = new UserSession("Guest"); // 회원 하나하나에 대한 목록
@@ -67,7 +66,7 @@ public class MenuView {// 메인 메뉴
 					userSessionSet.add(userSession);
 
 					MenuView.printUserMenu("Guest");// 비회원은 바로 메인 메뉴 선택으로
->>>>>>> origin/seryunTest
+
 					break;
 				case 3:
 					MenuView.AdminLogin();
@@ -179,7 +178,7 @@ public class MenuView {// 메인 메뉴
 	/**
 	 * 회원-마이페이지 초기메뉴 -> 회원메뉴 -> 로그인후 "마이페이지"
 	 */
-<<<<<<< HEAD
+
 public static void printUserMyPage(String userId) {//회원마이페이지
 		
 		if(userId.equalsIgnoreCase("Guest")) {
@@ -201,7 +200,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 						OrdersController.selectOrdersByUserId(userId);
 						break;
 					case 4:
-=======
+
 	public static void printUserMyPage(String userId) {// 회원마이페이지
 		if (userId.equalsIgnoreCase("Guest")) {
 			System.out.println("회원만 사용가능합니다. 로그인 후 이용해주세요.");
@@ -236,7 +235,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 						MenuView.myStar(userId);
 						break;
 					case 7:
->>>>>>> origin/seryunTest
+
 						MenuView.printUserMenu(userId);
 						break;
 					case 0:
@@ -254,9 +253,9 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 		}
 	}// 회원마이페이지 메소드 끝
 
-<<<<<<< HEAD
+
 }
-=======
+
 	/**
 	 * 마이페이지 switch 사용 메소드 별점 평가
 	 */
@@ -269,7 +268,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 		String myStar = sc.nextLine();
 		MyStarController.myStar(userId);
 	}
->>>>>>> origin/seryunTest
+
 
 	/**
 	 * 마이페이지 switch 사용 메소드 개인정보 변경
@@ -328,7 +327,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 				case 1: // 카테고리 메뉴들 출력
 					CategoryController.selectCategory();
 					int num = Integer.parseInt(sc.nextLine());
-<<<<<<< HEAD
+
 					//GoodsController.selectBever(num, userId);
 					switch(num) {
 					case 1 :
@@ -347,10 +346,10 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 					case 9 :MenuView.printUserMenu(userId); 
 					}
 				
-=======
+
 					GoodsController.selectBever(num, userId);
 					break;
->>>>>>> origin/seryunTest
+
 				case 2:
 					CartController.viewCart(userId);
 					break;
@@ -374,7 +373,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 
 		} // while 메뉴선택 끝
 	}// 주문메뉴 메소드 끝
-<<<<<<< HEAD
+
 	
 	
 	/** 관리자 로그인 메뉴
@@ -396,7 +395,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 
 		AdminController.login(adminId, adminPw);
 	}
-<<<<<<< HEAD
+
 	
 		/**
 		 * 관리자 로그인 메뉴
@@ -407,7 +406,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 		while(true) {
 			//AdminSessionSet ss = AdminSessionSet.getInstance();
 			//System.out.println(ss.getSet()); //Set객체 [session]
-=======
+
 
 	/**
 	 * 관리자 메뉴 초기메뉴(관리자주문) -> 관리자 로그인 메뉴(로그인) -> "관리자 메뉴"
@@ -418,7 +417,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 		while (true) {
 			// AdminSessionSet ss = AdminSessionSet.getInstance();
 			// System.out.println(ss.getSet()); //Set객체 [session]
->>>>>>> origin/seryunTest
+
 			System.out.println("================================ 관리자 로그인 중====================================");
 			System.out.println("| 1. 상품 등록  | 2. 상품 수정  | 3. 상품삭제  | 4. 판매통계보기  | 5. 공지입력하기 | 0. 종료  |");
 			try {
@@ -600,7 +599,7 @@ public static void printUserMyPage(String userId) {//회원마이페이지
 		System.out.println("수정 할 상품의 상품코드는?");
 		int goodsCode = Integer.parseInt(sc.nextLine());
 		System.out.println("변경할 재고량");
-<<<<<<< HEAD
+
 		int goodsReSt = Integer.parseInt(sc.nextLine());;
 		AdminController.GoodsUpdateSt(goodsCode,goodsReSt); 
 	  
