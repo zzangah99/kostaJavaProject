@@ -1,10 +1,8 @@
-
 package mvc.dao;
 
 import java.sql.SQLException;
 
 import mvc.dto.Customer;
-import mvc.dto.MyStar;
 
 public interface CustomerDAO {
 	
@@ -39,7 +37,11 @@ public interface CustomerDAO {
 	 * 개인정보 보여주기  
 	 */
 	Customer userInfoChange(String userId, String userPw)throws SQLException;
-
+	
+	/**
+	 * 개인정보 보여주기  
+	 */
+	Customer userInfoChange(String userId)throws SQLException;
 	/**
 	 * 개인정보 변경->닉네임 
 	 */
@@ -64,28 +66,6 @@ public interface CustomerDAO {
 	int userInfoChangeEmail(String userId, String eamil) throws SQLException;
 	
 	
-	/**
-	 * 마이페이지->최근 주문내역 보기(쵀대 5개)
-	 */
-	Customer selectOrderRecent(String userId)throws SQLException;
-
-	/**
-	 * 마이페이지->나만의 메뉴 만들기 
-	 */
-	Customer myMenu(String userId)throws SQLException;
-
-	/**
-	 * 마이페이지->스탬프 조회
-	 */
-	int myStamp(String userId)throws SQLException;
-
-	/**
-	 * 마이페이지->쿠폰 조회 
-	 */
-	Customer myCp(String userId)throws SQLException;
-
-	
-
 	
 
 	

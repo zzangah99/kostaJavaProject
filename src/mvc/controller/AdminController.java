@@ -23,7 +23,9 @@ public class AdminController {
 			  System.out.println(adminPw);
 			  
 			Admin admin = adminService.login(adminId, adminPw);
+		
 			MenuView.printMenuForAdmin(adminId);
+			
 			//MenuView.menu();
 		}catch (Exception e) {
 			//e.printStackTrace();
@@ -53,7 +55,7 @@ public class AdminController {
 		
 		
 		try {
-			adminService.GoodsUpdateName(goodsCode, goodsRename);
+			adminService.GoodsUpdateName(goodsCode);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -62,7 +64,7 @@ public class AdminController {
 	 //수정
 	public static void GoodsUpdatePr(int goodsCode, int goodsReprice) {
 		try {
-			adminService.GoodsUpdatePr(goodsCode, goodsReprice);
+			adminService.GoodsUpdatePr(0);
 		} catch (Exception e) {
 			//e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
@@ -129,18 +131,21 @@ public class AdminController {
 		}
    
 		
-		 //공지띄우기
+   //공지띄우기
 
 		public static String NoticePrint() {
 			String notice = null;
 			try {
+				//System.out.println("1234567");
 				notice = adminService.NoticePrint();
-				EndView.printMessage(notice);
+				//System.out.println("567890");
+				EndView.printMessage("시작화면");
 			}catch (Exception e) {
 			    FailView.errorMessage(e.getMessage());
 			}
 			return notice;
 		}
+
 
 
 

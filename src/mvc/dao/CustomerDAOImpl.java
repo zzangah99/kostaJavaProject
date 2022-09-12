@@ -9,13 +9,11 @@ import java.util.List;
 import java.util.Properties;
 
 import mvc.dto.Customer;
-import mvc.dto.MyStar;
 import mvc.util.DbUtil;
 
 public class CustomerDAOImpl implements CustomerDAO {
 	
 	private Properties proFile = DbUtil.getProfile();
-	//int customer = new Customer();
 
 	/**
 	 * 로그인  
@@ -70,13 +68,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 			 ps.setString(1, phonNum);
 			 rs=ps.executeQuery();
 			
-			 if(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 아이디컬럼 하나만 결과임 
+			 if(rs.next()) {
 				 catchUserId=rs.getString(1); 
 			 	}
 		 }finally {
 			DbUtil.dbClose(con, ps, rs);
 		 }
-		 return catchUserId;//쿼리결과가 여기에 저장 
+		 return catchUserId;
 	}
 
 	/**
@@ -98,9 +96,8 @@ public class CustomerDAOImpl implements CustomerDAO {
 			 ps.setString(2, phoneNum);
 			 rs=ps.executeQuery();
 			
-			 //중복값으로 폰번호가 들어가서 2명의 사용자 비번이 나와야할 경우에는 여길 어떻게 처리해야할까 
-			 while(rs.next()) {//쿼리로 뽑힌 컬럼으로 getXXX(index) 여기선 버번컬럼 하나만 결과임 
-				 catchUserPw=rs.getString(1); //이게 결과임 
+			 while(rs.next()) {
+				 catchUserPw=rs.getString(1); 
 			 	}//if
 			 
 		 }finally {
@@ -271,110 +268,16 @@ public class CustomerDAOImpl implements CustomerDAO {
 		 }
 		 return userInfoChangeEmail;
 	}
-	
-	/**
-	  * 마이페이지->최근주문내역 조회 
-	  * */
-	public Customer selectOrderRecent(String userId) throws SQLException {
-		 Connection con=null;
-		 PreparedStatement ps=null;
-		 ResultSet rs=null;
-		 Customer customer=null;
-		 String sql=proFile.getProperty("");
-		 //select * from order_order where user_id = ?
-		 
-		 try {
-			 con=DbUtil.getConnection();
-			 ps=con.prepareStatement(sql);
-			 ps.setString(1, userId);
-			 rs=ps.executeQuery();
-			
-			 if(rs.next()) {
-				 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), 
-						 rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
-			 	}
-		 }finally {
-			DbUtil.dbClose(con, ps, rs);
-		 }
-		return customer;
-	}
 
-	/**
-	  * 마이페이지->나만의 메뉴 조회 
-	  * */
-	public Customer myMenu(String userId) throws SQLException {
-		 Connection con=null;
-		 PreparedStatement ps=null;
-		 ResultSet rs=null;
-		 Customer customer=null;
-		 //String sql=proFile.getProperty("myMenu.selectAl");
-		 String sql="select * from my_menu";
-		 try {
-			 con=DbUtil.getConnection();
-			 ps=con.prepareStatement(sql);
-			 rs=ps.executeQuery();
-			 
-			 if(rs.next()) {
-				 customer = new Customer(rs.getString(1), rs.getString(2), rs.getString(3), 
-						 rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getInt(8));
-			 	}
-		 }finally {
-			DbUtil.dbClose(con, ps);
-		 }
-		return customer;
-	}
-	
-	/**
-	  * 아이디 인수로 받아 나만의 메뉴 만들기  
-	  * */
-	
-	
-	
-	/**
-	  * 마이페이지->스탬프 조회 
-	  * */
-	public int myStamp(String userId) throws SQLException {
-		 Connection con=null;
-		 PreparedStatement ps=null;
-		 ResultSet rs=null;
-		 int myStamp=0;
-		 String sql=proFile.getProperty("userInfo.selectStampById");
-		 //String sql="select stamp from user_info where user_id = ?";
-		 try {
-			 con=DbUtil.getConnection();
-			 ps=con.prepareStatement(sql);
-			 ps.setString(1, userId);
-			 rs=ps.executeQuery();
-			 if(rs.next()) {
-				 myStamp=rs.getInt(1);
-			 }
-		 }finally {
-			DbUtil.dbClose(con, ps, rs);
-		 }
-		return myStamp;
-	}
-
-	
-	/**
-	  * 마이페이지->쿠폰 조회 
-	*/
-	public Customer myCp(String userId) throws SQLException {
+	@Override
+	public Customer userInfoChange(String userId) throws SQLException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	
-	
 
 	
 	
-	/**
-	  * 아이디 인수로 받아 내가 쓴 리뷰쓰기 
-	  * */
-
-	
-		
-		
 		
 
 

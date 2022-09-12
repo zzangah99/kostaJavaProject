@@ -31,7 +31,7 @@ public class Customer {
 	 * 개인정보 보여주기
 	 */
 	               //user_name, user_pw, phone_num, email, reg_date, pin_num
-	public Customer(String userName, String userPw, String phomeNum, String email, String pinNum, String regDate) {
+	public Customer(String userName, String userPw, String phoneNum, String email, String pinNum, String regDate) {
 		super();
 		this.userName = userName;
 		this.userPw = userPw;

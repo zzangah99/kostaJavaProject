@@ -1,4 +1,3 @@
-
 package mvc.service;
 
 
@@ -165,12 +164,16 @@ public class AdminService {
 		 * 공지 등록
          */
 			public String NoticePrint() throws SQLException, NotFoundException {
+				//System.out.println("asdfgh");
 				String notice = adminDao.noticeprint();
-				if(notice == null) throw new NotFoundException("공지등록에 실패하였습니다");
-				
-				return notice;
+			//System.out.println("qwerty");
+				if(notice == null) {
+					throw new NotFoundException("공지등록에 실패하였습니다");
+				}else {
+					System.out.println("공지이 등록되었습니다");
+				}
+			return notice;
 			}
-			
 			
 			
 			

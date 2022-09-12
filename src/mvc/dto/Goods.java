@@ -13,6 +13,11 @@ public class Goods {
 		
 		public Goods() {}
 		
+		public Goods(int stock) {
+			this.stock = stock;
+			
+		}
+		
 		public Goods(int goodsCode, String goodsName, int goodsPrice, String goodsDetail, String soldout, int stock, int categoryCode) {
 			this.goodsCode = goodsCode;
 			this.goodsName = goodsName;
@@ -111,62 +116,7 @@ public class Goods {
 		}
 		
 		
-		 /**
-		   *  객체가 다르더라도 상품번호가 같으면 무조건 같다라고 이해하기 위해 오버라이드
-		   */
-//			@Override
-//			public int hashCode() {
-//				final int prime = 31;
-//				int result = 1;
-//				result = prime * result + ((goodsCode == null) ? 0 : goodsCode.hashCode());
-//				return result;
-//			}
-	//
-//			@Override
-//			public boolean equals(Object obj) {
-//				if (this == obj)
-//					return true;
-//				if (obj == null)
-//					return false;
-//				if (getClass() != obj.getClass())
-//					return false;
-//				
-//				Goods other = (Goods) obj;
-//				if (goodsCode == null) {
-//					if (other.goodsCode != null)
-//						return false;
-//				} else if (!goodsCode.equals(other.goodsId))
-//					return false;
-//				return true;
-//			}
-		 /**
-		    @Override
-			public int hashCode() {
-		    	
-				return goodsCode.hashCode();
-			}
-		 
-		 @Override
-			public boolean equals(Object obj) {
-			
-//			    if (this == obj)
-//					return true;
-//				if (obj == null)
-//					return false;
-//				if (getClass() != obj.getClass())
-//					return false;
-				
-				Goods other = (Goods) obj;
-				if(goodsCode.equals(other.goodsCode)) {
-					return true;
-				}else {
-					return false;
-				}
-				
-			}
-			**/
-	}
-
+}
 
 
 

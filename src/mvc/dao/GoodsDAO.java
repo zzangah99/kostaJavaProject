@@ -1,4 +1,5 @@
 package mvc.dao;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import mvc.dto.Goods;
 public interface GoodsDAO {
 
 	/**
-	 * 대분류 상품 검색 
+	 * 대분류 상품 검색 (커피,스무디와 같은)
 	 */
 	
 	List<Goods> selectBever(int num, String userId) throws SQLException;
@@ -19,13 +20,13 @@ public interface GoodsDAO {
 	
 	
 	/**
-	 * goodsId에 해당하는 정보 검색
+	 * goodsCode에 해당하는 정보 검색
 	 */
 	Goods goodsSelectBygoodsCode(int goodsCode, String userId) throws SQLException;
 
 
 	/**
-	 * goodsStock에 해당하는 정보 검색
+	 * goodsStock에 해당하는 정보 검색(품절여부)
 	 */
-	//List<Goods> goodsSelectByStock(int goodsCode) throws SQLException;
+	//boolean goodsSelectByStock(int goodsCode, String goodsName) throws SQLException;
 } 

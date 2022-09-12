@@ -39,8 +39,6 @@ public class MenuView {// 메인 메뉴
 					MenuView.printMenuForMember();
 					break;
 				case 2:
-					// 회원이면 printUserMenu(회원ID)
-					// 비회원이면 printUserMenu(null)
 					MenuView.printUserMenu(null);// 비회원은 바로 메인 메뉴 선택으로
 					break;
 				case 3:
@@ -153,18 +151,17 @@ public class MenuView {// 메인 메뉴
 	/**
 	 * 회원-마이페이지 초기메뉴 -> 회원메뉴 -> 로그인후 "마이페이지"
 	 */
-	public static void printUserMyPage(String userId) {//회원마이페이지
-		/*
-		if(userId==null) {
-			System.out.println("회원만 사용가능합니다. 로그인 후 이용해주세요. 테스트1");  
-		}
-		*/
-		//while (userId!=null) {
+public static void printUserMyPage(String userId) {//회원마이페이지
+		
+		if(userId.equalsIgnoreCase("Guest")) {
+			System.out.println("회원만 사용가능합니다. 로그인 후 이용해주세요.");  
+		}else {
+		
+		//while (userId!=n) {
 		while(true) {
 			System.out.println("============================== 마이페이지 =================================");
 			System.out.println("------------------------- 안녕하세요! " +userId+ "님! ---------------------------");
-			System.out.println("| 1. 개인정보 변경 | 2. 최근 주문내역조회 | 3. 나만의 메뉴 | 4. 스탬프 조회  |"
-						   + "\n|  5. 쿠폰조회    |  6. 별점 등록하기  |  7. 등록한 별점보기  |  8. 주문하기   | 0.  종료하기   |");
+			System.out.println("| 1. 개인정보 변경 | 2. 최근 주문내역조회 |  7. 주문하기   | 0.  돌아가기   |");
 			try {
 				int mymenu =Integer.parseInt( sc.nextLine());
 				switch(mymenu) {
@@ -172,40 +169,13 @@ public class MenuView {// 메인 메뉴
 						MenuView.userInfoChange(userId);
 						break;
 					case 2: 
-						OrdersController.selectOrdersByUserId(userId);//문제 
-						break;
-					case 3: 
-						CustomerController.myMenu(userId);//문제 
-						break;
-					case 4: 
-						CustomerController.myStamp(userId);//문제 
-						break;
-					case 5: 
-						CouponController.UserCoupon(userId);//문제 
-						break;
-					case 6:
 						OrdersController.selectOrdersByUserId(userId);
-						int num = Integer.parseInt(sc.nextLine());
-						
-						
-						/**
-						System.out.print("리뷰를 작성하려는 주문코드는 무엇입니까? > ");
-				        int orderCode = Integer.parseInt(sc.nextLine());
-				        System.out.print("어떤 상품의 리뷰를 작성 하시겠습니까 상품 코드를 입력해주세요 > ");
-				        int goodsCode = Integer.parseInt(sc.nextLine());
-				    	System.out.println("내용을 입력해주세요.(100자) > ");
-				    	String reviewContent = sc.nextLine();
-						ReviewController.writeReview(new Review(orderCode, userId, goodsCode, reviewContent));
-						**/
-					case 7: 
-						//MyStarController.myStar(userId);//문제 
-						MenuView.myStar(userId);
 						break;
-					case 8:
+					case 4:
 						MenuView.printUserMenu(userId);
 						break;
 					case 0:
-						System.exit(0);
+						MenuView.printUserMenu(userId);
 						break;
 					default:
 						System.out.println(">>>>>>메뉴속 번호를 입력해 주세요");
@@ -218,20 +188,7 @@ public class MenuView {// 메인 메뉴
 		} // while 끝
 	}// 회원마이페이지 메소드 끝
 
-	/**
-	 * 마이페이지 switch 사용 메소드
-	 * 별점 평가  
-	 */
-	private static void myStar(String userId) {
-		//주문내역을 쭉 보여주고 해당 상품 번호를 클릭해서 별점을 먹인다??
-		System.out.println("====== " +userId+ "님의 주문내역 =====");
-		OrdersController.selectOrdersByUserId(userId);
-		System.out.println("별점 등록하실 상품코드를 선택해주세요.");
-		int menu=Integer.parseInt(sc.nextLine());
-		System.out.print("별점을 등록해주세요.(최대 5점)");
-		String myStar=sc.nextLine();
-		MyStarController.myStar(userId);
-	}
+}
 
 	/**
 	 * 마이페이지 switch 사용 메소드
@@ -330,23 +287,25 @@ public class MenuView {// 메인 메뉴
 
 		} // while 메뉴선택 끝
 	}// 주문메뉴 메소드 끝
-
-	/**
-	 * 관리자 로그인 메뉴
+	
+	
+	/** 관리자 로그인 메뉴
 	 * 초기메뉴(관리자주문) ->"관리자 로그인 메뉴" -> 관리자 메뉴
 	 */
 	public static void AdminLogin() {//관리자 로그인 메뉴
 		System.out.println(">>>>관리자로 로그인하기>>>>");
 		 System.out.print("아이디 : ");
 		 String adminId = sc.nextLine();
-		 System.out.print("비번   : ");
+		 //System.out.println(adminId);
+		 System.out.print("비번 : ");
 		 String adminPw = sc.nextLine();
+		 //System.out.println(adminPw);
 		 
 		 AdminController.login(adminId, adminPw); 
 	}
 	
 		/**
-		 * 관리자 메뉴
+		 * 관리자 로그인 메뉴
 		 * 초기메뉴(관리자주문) -> 관리자 로그인 메뉴(로그인) -> "관리자 메뉴"
 		 * @throws SQLException 
 		 */

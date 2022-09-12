@@ -19,7 +19,7 @@ public class Orders {
 	
 	public Orders() {}
 
-	public Orders(int orderCode, String userId, String orderTime,int orderQuan, int orderPrice, String userCpCode, 
+	public Orders(int orderCode, String userId, String orderTime, String userCpCode, int orderQuan, int orderPrice, 
 			String orderPayment, String giftCode, String takeOut) {
 		super();
 		this.orderCode = orderCode;

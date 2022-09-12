@@ -24,7 +24,12 @@ public class OrderLine {
 		this.detailPrice = detailPrice;
 		this.detailQuan = detailQuan;
 	}
-
+//	public OrderLine(int detailCode, int orderCode, int goodsCode, String goodsName, 
+//			int detailPrice, int detailQuan,int optionCode) {
+//		this(detailCode, orderCode, goodsCode,detailPrice, detailQuan);
+//		this.goodsName = goodsName;
+//		this.optionCode = optionCode;
+//	}
 	public int getDetailCode() {
 		return detailCode;
 	}

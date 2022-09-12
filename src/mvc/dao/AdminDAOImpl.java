@@ -224,30 +224,30 @@ public class AdminDAOImpl implements AdminDAO {
 
 
 	//공지
-		@Override
-		public String noticeprint() throws SQLException {
-			  Connection con=null;
-			  PreparedStatement ps=null;
-			  ResultSet rs=null;
-			  String notice = null;
+	@Override
+	public String noticeprint() throws SQLException {
+		  Connection con=null;
+		  PreparedStatement ps=null;
+		  ResultSet rs=null;
+		  String notice = "";
 
-			  String sql = proFile.getProperty("notice.selectContent"); //select notice_content from notice
-			  try {
-				  con = DbUtil.getConnection();
-				  ps= con.prepareStatement(sql);
+		  String sql = proFile.getProperty("notice.selectLatestContent");	  
+		  try {
+			  con = DbUtil.getConnection();
+			  ps= con.prepareStatement(sql);
 
-			      rs = ps.executeQuery(); 
-			 
-			  if(rs.next()) {
-				notice = rs.getString(1);
-			  }
-			  
-			  }finally {
-				  DbUtil.dbClose(con, ps, rs);
-			  }
-			  	return notice;
-			
-		}
+		      rs = ps.executeQuery(); 
+		 
+		  if(rs.next()) {
+			  notice = rs.getString(1);
+		  }
+		  
+		  }finally {
+			  DbUtil.dbClose(con, ps, rs);
+		  }
+		  	return notice;
+		
+	}
 
 	/*
 	 통계보기
@@ -323,7 +323,6 @@ public class AdminDAOImpl implements AdminDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 
 

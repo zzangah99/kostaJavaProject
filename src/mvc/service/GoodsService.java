@@ -28,9 +28,10 @@ public class GoodsService {
 	public List<Goods> goodsSelectBygoodsName(String keyword) throws SQLException{
 		List <Goods>key = goodsDAO.goodsSelectBygoodsName(keyword);
 		if(key.size() == 0 || key.isEmpty()) throw new SQLException(keyword + "의 상품을 찾을 수 없습니다.");
+		
 		return key;
 	}
-	
+
 	
 	
 }
