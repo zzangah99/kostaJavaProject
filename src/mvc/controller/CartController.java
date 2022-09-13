@@ -86,13 +86,13 @@ public class CartController {
 
 		for (OrderLine orderLineKey : cart.keySet()) {
 			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
-			System.out.println(orderLine);
+			//System.out.println(orderLine);
 			List<Option> optionList = orderLine.getOptionList();
 			
 			//카드에서 옵션의 정보를 꺼내서 orderLIne에 저장한다. 
 			optionList.add(orderLineKey.getOptionList().get(0));
 			
-			System.out.println("orderLine.getOptionList = " + orderLine.getOptionList());
+			//System.out.println("orderLine.getOptionList = " + orderLine.getOptionList());
 			orderLineList.add(orderLine);
 		}
 

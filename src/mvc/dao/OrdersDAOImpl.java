@@ -108,7 +108,6 @@ public class OrdersDAOImpl implements OrdersDAO {
 			ps = con.prepareStatement(sql);
 			for (OrderLine orderline : order.getOrderLineList()) {
 				Goods goods = goodsDao.goodsSelectBygoodsCode(orderline.getGoodsCode());
-
 				
 				ps.setInt(1, orderline.getGoodsCode());//상품코드
 				ps.setInt(2, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
@@ -118,8 +117,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 				ps.clearParameters();
 				ps.executeBatch();
 				
-				System.out.println("orderline.getOptionList().size() = "+orderline.getOptionList().size());
-				System.out.println("orderline.getOptionList() = " +  orderline.getOptionList());
+				//System.out.println("orderline.getOptionList().size() = "+orderline.getOptionList().size());
+				//System.out.println("orderline.getOptionList() = " +  orderline.getOptionList());
 				//옵션
 				int re = optionListInsert(con, orderline.getOptionList().get(0)); //주문 상세 하나에 옵션이 여러개 등록 
 				if(re != 1) {
