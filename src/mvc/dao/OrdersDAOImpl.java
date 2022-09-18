@@ -41,6 +41,9 @@ public class OrdersDAOImpl implements OrdersDAO {
 	public String[] orderInsert(Orders order) throws SQLException {
 		Connection con = null;
 		PreparedStatement ps = null;
+		
+		//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) 
+		//values (?, ?, ?, ?, ?, ?, ?)
 		String sql = profile.getProperty("orderOrder.insertAll");//insert into order_order (user_id, order_quan, order_price, user_cp_code, order_payment, gift_code, take_out) values (?, ?, ?, ?, ?, ?, ?)
 		String resultArr[] = new String[2];
 		int orderTotal[] = getOrderTotal(order);
@@ -50,6 +53,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		   con.setAutoCommit(false);
 		   
 		   ps = con.prepareStatement(sql);
+		   
 		   ps.setString(1, order.getUserId());
 		   ps.setInt(2, orderTotal[1]);//총구매수량
 		   ps.setInt(3, orderTotal[0]);//총구매금액구하는 메소드 호출
@@ -104,24 +108,25 @@ public class OrdersDAOImpl implements OrdersDAO {
 			ps = con.prepareStatement(sql);
 			for (OrderLine orderline : order.getOrderLineList()) {
 				Goods goods = goodsDao.goodsSelectBygoodsCode(orderline.getGoodsCode());
-
-				//ps.setInt(1, order.getOrderCode());
+				
 				ps.setInt(1, orderline.getGoodsCode());//상품코드
 				ps.setInt(2, goods.getGoodsPrice() * orderline.getDetailQuan());//상품별 구매금액
 				ps.setInt(3, orderline.getDetailQuan());// 상품별 구매 수량
 				ps.setString(4, orderline.getGoodsName());//상품이름
-				ps.addBatch(); // 일괄처리할 작업에 추가
+				ps.addBatch(); 
 				ps.clearParameters();
-				ps.executeBatch();//Batch 공부.................................
+				ps.executeBatch();
 				
+				//System.out.println("orderline.getOptionList().size() = "+orderline.getOptionList().size());
+				//System.out.println("orderline.getOptionList() = " +  orderline.getOptionList());
 				//옵션
-				int re = optionListInsert(con, orderline);
+				int re = optionListInsert(con, orderline.getOptionList().get(0)); //주문 상세 하나에 옵션이 여러개 등록 
 				if(re != 1) {
 					con.rollback();
 					throw new SQLException("상품의 옵션 처리 중 주문에 실패하였습니다");
 				}
 			}
-			result = ps.executeBatch();// 일괄처리
+			result = ps.executeBatch();
 
 		} finally {
 			DbUtil.dbClose(null, ps, null);
@@ -135,23 +140,30 @@ public class OrdersDAOImpl implements OrdersDAO {
 	/**
 	 * 상세 주문에 옵션 등록하기
 	 */
-	public int optionListInsert(Connection con, OrderLine orderline) throws SQLException{
+	//public int optionListInsert(Connection con, OrderLine orderline) throws SQLException{
+	public int optionListInsert(Connection con, Option op) throws SQLException{
 		PreparedStatement ps = null;
-		String sql = profile.getProperty("optionOp.insert");
+		
+		//insert into option_op ( size_code, tem, syrup, def, whip ) values (?, ?, ?, ?, ?)
 		//insert into option_op ( size_code, tem, syrup, def, whip ) values (?, ?, ?, ?, ?)
 		int result = 0;
 		
 		try {
-			ps = con.prepareStatement(sql);
-			for (Option option : orderline.getOptionList()) {
+			
+		//	for (Option option : orderline.getOptionList()) {
 				//ps.setInt(1, orderline.getDetailCode());
-				ps.setInt(1, option.getSizeCode());
-				ps.setString(2, option.getTem());
-				ps.setString(3, option.getSyrup());
-				ps.setString(4, option.getDef());
-				ps.setString(5, option.getWhip());
-			}
-			result = ps.executeUpdate();
+				String sql = profile.getProperty("optionOp.insert");
+				ps = con.prepareStatement(sql);
+				ps.setInt(1, op.getSizeCode());
+				ps.setString(2, op.getTem());
+				ps.setString(3, op.getSyrup());
+				ps.setString(4, op.getDef());
+				ps.setString(5, op.getWhip());
+				
+				result = ps.executeUpdate();
+			//}
+			
+			
 
 		} finally {
 			DbUtil.dbClose(null, ps, null);
@@ -200,7 +212,7 @@ public class OrdersDAOImpl implements OrdersDAO {
 		for(OrderLine line : orderLineList) {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(line.getGoodsCode());
 			if(goods==null)throw new SQLException("상품번호 오류로 주문에 실패하였습니다");
-			else if((goods.getStock() >= 0) & (goods.getStock() <  line.getDetailQuan())) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
+			else if((goods.getStock() <= 0 )) throw new SQLException("재고량 부족으로 주문에 실패하였습니다");
 			
 			total[0] += line.getDetailQuan() * goods.getGoodsPrice();//구매금액
 			total[1] += line.getDetailQuan();//구매수량
@@ -338,8 +350,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 		String giftCode = randomCode();
 
 		try {
-			con = DbUtil.getConnection();
-			con.setAutoCommit(false);
+			//con = DbUtil.getConnection();
+			//con.setAutoCommit(false);
 
 			ps = con.prepareStatement(sql);
 			ps.setString(1, giftCode);

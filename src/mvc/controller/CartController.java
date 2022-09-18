@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import mvc.dao.GoodsDAOImpl;
 import mvc.dto.Goods;
+import mvc.dto.Option;
 import mvc.dto.OrderLine;
 import mvc.dto.Orders;
 import mvc.session.UserSession;
@@ -28,7 +29,7 @@ public class CartController {
 			Goods goods = goodsDao.goodsSelectBygoodsCode(orderLine.getGoodsCode());
 			int quantity = orderLine.getDetailQuan();
 
-			if ((goods.getStock()>=0 )& (goods.getStock() < quantity)) {
+			if (goods.getStock() <=0 ) {
 	            throw new SQLException("재고량 부족으로 장바구니에 담을수 없습니다.");
 	         }
 
@@ -85,11 +86,18 @@ public class CartController {
 
 		for (OrderLine orderLineKey : cart.keySet()) {
 			OrderLine orderLine = new OrderLine(0, 0, orderLineKey.getGoodsCode(), 0, 0, orderLineKey.getGoodsName());
+			//System.out.println(orderLine);
+			List<Option> optionList = orderLine.getOptionList();
+			
+			//카드에서 옵션의 정보를 꺼내서 orderLIne에 저장한다. 
+			optionList.add(orderLineKey.getOptionList().get(0));
+			
+			//System.out.println("orderLine.getOptionList = " + orderLine.getOptionList());
 			orderLineList.add(orderLine);
 		}
 
-		System.out.println("----- 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다.------ ");
-		OrdersController.insertOrders(orders);
+		System.out.println("------------ 총 " + orderLineList.size() + "개의 상품이 결제 진행 중입니다 ------------");
+		OrdersController.insertOrders(orders);//옵션 저장해서 가야한다. 
 
 		// 장바구니비우기
 		UserSessionSet ss = UserSessionSet.getInstance();

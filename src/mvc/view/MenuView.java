@@ -344,33 +344,37 @@ public class MenuView {// 메인 메뉴
 		}//while 끝
 	}//관리자메뉴 메소드 끝
 	
-	
 	//상품등록하기
-		public static void GoodsInsert () {
-			System.out.println("--새로운 상품 등록하기 --");
-			//System.out.print("상품코드를 입력해주세요 : ");
-			//int goodsCode = Integer.parseInt(sc.nextLine());
-			
-			System.out.print("상품이름을 입력해주세요 : ");
-			String goodsName = sc.nextLine();
-			
-			System.out.print("상품가격을 입력해주세요 : ");
-			int goodsPrice = Integer.parseInt(sc.nextLine());
-			
-			System.out.print("상세설명을 입력해주세요 : ");
-			String goodsDetail = sc.nextLine();
-			
-			System.out.print("재고수량을 입력해주세요 : ");
-			int stock = Integer.parseInt(sc.nextLine());
-			
-			System.out.print("카테고리코드를 입력해주세요 : ");
-			int categoryCode =Integer.parseInt(sc.nextLine());
-			
-			Goods goods =  new Goods(0,goodsName, goodsPrice, goodsDetail,goodsDetail, stock,categoryCode);		
-			AdminController adminController = new AdminController();
-			adminController.GoodsInsert(goods); 
-			
-		}
+    public static void GoodsInsert () {
+       System.out.println("--새로운 상품 등록하기 --");
+       //System.out.print("상품코드를 입력해주세요 : ");
+       //int goodsCode = Integer.parseInt(sc.nextLine());
+       
+       System.out.print("상품이름을 입력해주세요 : ");
+       String goodsName = sc.nextLine();
+       
+       System.out.print("상품가격을 입력해주세요 : ");
+       int goodsPrice = Integer.parseInt(sc.nextLine());
+       
+       System.out.print("상세설명을 입력해주세요 : ");
+       String goodsDetail = sc.nextLine();
+       
+       System.out.print("품절여부 입력해주세요 : ");
+       String SoldOut = sc.nextLine();
+       
+       System.out.print("재고수량을 입력해주세요 : ");
+       int stock = Integer.parseInt(sc.nextLine());
+       
+       System.out.print("카테고리코드를 입력해주세요 : ");
+       int categoryCode =Integer.parseInt(sc.nextLine());
+       
+       Goods goods =  new Goods(0,goodsName, goodsPrice, goodsDetail,SoldOut,stock,categoryCode);      
+       AdminController adminController = new AdminController();
+       adminController.GoodsInsert(goods); 
+       
+    }
+	
+	
 		//상품 수정하기
 		private static void GoodsUpdate(Goods goodsCode) {
 			while(true) {

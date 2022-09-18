@@ -20,6 +20,7 @@ public class OrdersController {
 		  
 		  if(result[1] != null) EndView.printMessage("기프티콘 코드는 "+ result[1] +" 입니다. 따로 저장해두신 뒤 코드를 입력해서 사용하세요");
 		}catch (Exception e) {
+			e.printStackTrace();
 			FailView.errorMessage(e.getMessage());
 			
 		}

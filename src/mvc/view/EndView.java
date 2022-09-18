@@ -101,7 +101,7 @@ public class EndView {
 
 		System.out.println("1.주문하기\t 2.장바구니에 담기");
 		int choice = Integer.parseInt(sc.nextLine());
-		System.out.println("- 주문 상품 : " + coffeeList.get(orderNo - 1).getGoodsName() + "\t주문 수량 : " + quan);
+		System.out.println("- 주문 상품 : " + coffeeList.get(orderNo - 1).getGoodsName() + "  |  주문 수량 : " + quan+ "  |  주문 금액 : "+ (coffeeList.get(orderNo - 1).getGoodsPrice() * quan));
 
 		switch (choice) {
 		case 1:
@@ -120,7 +120,7 @@ public class EndView {
 			Orders order = new Orders(0, userId, null, quan, 0, null, payment, null, takeOut);
 			OrderLine orderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			order.getOrderLineList().add(orderline);
-			if(orderNo < 6) {
+			if(coffeeList.get(orderNo - 1).getNum() < 6) {
 				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 				orderline.getOptionList().add(option);
 			}
@@ -131,12 +131,13 @@ public class EndView {
 			Orders cartOrder = new Orders(0, userId, null, quan, 0, null, null, null, null);
 			OrderLine cartOrderline = new OrderLine(0, 0, orderGoodsCode, 0, quan, coffeeList.get(orderNo - 1).getGoodsName());
 			
-			if(orderNo < 6) {
+			cartOrder.getOrderLineList().add(cartOrderline);
+			if(coffeeList.get(orderNo - 1).getNum() < 6) {
 				Option option = new Option(0, cup, null, tem, op[0], op[1], op[2]);
 				cartOrderline.getOptionList().add(option);
 			}
 			
-			cartOrder.getOrderLineList().add(cartOrderline);
+			
 			
 			CartController.putCart(cartOrderline,userId);
 			
